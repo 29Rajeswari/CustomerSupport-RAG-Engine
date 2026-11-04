@@ -1,0 +1,47 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local database and backup files
+*.sql
+*.dump
+*.bak
+
+# Local model files
+*.gguf
+
+# Runtime storage and uploaded documents
+storage/
+
+# Local test data (review before publishing)
+
+# Local diagnostic output
+retrieval_search_results.txt
+cross_document_test.txt
+integration_test_warranty.txt
+check_admin_login.py

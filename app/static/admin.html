@@ -1,0 +1,557 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Admin | Indian E-commerce Chatbot</title>
+
+    <style>
+        :root {
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #1e293b;
+            background: #f5f7fb;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 22px 5%;
+        }
+
+        header h1 { margin: 0 0 6px; font-size: 25px; }
+        header p { margin: 0; color: #cbd5e1; }
+
+        main {
+            max-width: 1250px;
+            margin: 28px auto;
+            padding: 0 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .stat, .panel {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px #0f172a08;
+        }
+
+        .stat span {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 27px;
+            margin-top: 8px;
+        }
+
+        .panel { margin-bottom: 22px; }
+        h2 { margin: 0 0 18px; font-size: 20px; }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            font: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #bfdbfe;
+            border-color: #2563eb;
+        }
+
+        .field { min-width: 0; }
+        .full { grid-column: 1 / -1; }
+
+        button {
+            border: 0;
+            border-radius: 7px;
+            padding: 11px 15px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:disabled { opacity: .6; cursor: wait; }
+
+        .primary { background: #2563eb; color: white; }
+        .secondary { background: #e2e8f0; color: #1e293b; }
+        .small { padding: 7px 10px; font-size: 13px; }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .toolbar input { flex: 1; min-width: 180px; }
+
+        .table-wrap { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 13px 11px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            white-space: nowrap;
+        }
+
+        .status {
+            display: inline-block;
+            border-radius: 20px;
+            padding: 5px 9px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .active { background: #dcfce7; color: #166534; }
+        .processing { background: #fef3c7; color: #92400e; }
+        .failed { background: #fee2e2; color: #991b1b; }
+        .superseded { background: #e2e8f0; color: #475569; }
+        .actions { display: flex; gap: 7px; flex-wrap: wrap; }
+
+        #message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        #message.info { display: block; background: #dbeafe; color: #1e40af; }
+        #message.success { display: block; background: #dcfce7; color: #166534; }
+        #message.error { display: block; background: #fee2e2; color: #991b1b; }
+
+        #history {
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8fafc;
+            overflow-x: auto;
+        }
+
+        #history pre {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            font-size: 13px;
+        }
+
+        .muted { color: #64748b; font-size: 13px; }
+
+        @media (max-width: 650px) {
+            .stats { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .full { grid-column: auto; }
+            header h1 { font-size: 21px; }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>Document Management</h1>
+    <p>Indian E-commerce Support Chatbot · Admin Dashboard</p>
+</header>
+
+<main>
+    <div id="message" role="status" aria-live="polite"></div>
+
+    <section class="stats">
+        <div class="stat">
+            <span>Documents</span>
+            <strong id="documentCount">—</strong>
+        </div>
+        <div class="stat">
+            <span>Processing versions</span>
+            <strong id="processingCount">—</strong>
+        </div>
+        <div class="stat">
+            <span>Failed versions</span>
+            <strong id="failedCount">—</strong>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Upload or update a document</h2>
+
+        <form id="uploadForm">
+            <div class="form-grid">
+                <div class="field">
+                    <label for="title">Document title *</label>
+                    <input id="title" name="title"
+                           placeholder="e.g. Samsung Mobile Warranty Policy"
+                           required maxlength="200">
+                </div>
+
+                <div class="field">
+                    <label for="category">Category *</label>
+                    <input id="category" name="category"
+                           placeholder="e.g. Warranty, Returns, Exchange"
+                           required maxlength="100">
+                </div>
+
+                <div class="field">
+                    <label for="productId">Product ID *</label>
+                    <input id="productId" name="product_id"
+                           placeholder="e.g. MOB-1001"
+                           required maxlength="100">
+                </div>
+
+                <div class="field">
+                    <label for="file">Document file *</label>
+                    <input id="file" name="file" type="file"
+                           accept=".pdf,.docx,.xlsx,.txt" required>
+                    <p class="muted">Allowed: PDF, DOCX, XLSX, TXT</p>
+                </div>
+
+                <div class="full">
+                    <button id="uploadButton" class="primary" type="submit">
+                        Upload document
+                    </button>
+                    <button class="secondary" type="reset">Clear form</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section class="panel">
+        <h2>Uploaded documents and versions</h2>
+
+        <div class="toolbar">
+            <input id="productFilter"
+                   placeholder="Filter by product ID, e.g. MOB-1001">
+            <button id="filterButton" class="primary">Search</button>
+            <button id="refreshButton" class="secondary">Refresh</button>
+        </div>
+
+        <p class="muted">
+            Re-uploading with the same title and product ID creates a new version.
+            Processing status may take a few seconds to update.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Document ID</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Product ID</th>
+                    <th>Version</th>
+                    <th>Status</th>
+                    <th>Chunks</th>
+                    <th>Uploaded at (UTC)</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="documentRows">
+                <tr><td colspan="9">Loading documents...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="history" hidden>
+            <h2 id="historyTitle">Version history</h2>
+            <pre id="historyContent"></pre>
+        </div>
+    </section>
+</main>
+
+<script>
+    const form = document.getElementById("uploadForm");
+    const message = document.getElementById("message");
+    const rowsElement = document.getElementById("documentRows");
+    const uploadButton = document.getElementById("uploadButton");
+
+    let documents = [];
+
+    function showMessage(text, type = "info") {
+        message.textContent = text;
+        message.className = type;
+    }
+
+    async function apiRequest(url, options = {}) {
+        const response = await fetch(url, options);
+        const text = await response.text();
+
+        let data;
+        try {
+            data = text ? JSON.parse(text) : {};
+        } catch {
+            data = { detail: text || "Unexpected server response." };
+        }
+
+        if (!response.ok) {
+            const detail = typeof data.detail === "string"
+                ? data.detail
+                : JSON.stringify(data.detail || data);
+
+            throw new Error(detail || `HTTP ${response.status}`);
+        }
+
+        return data;
+    }
+
+    function addCell(row, value) {
+        const cell = document.createElement("td");
+        cell.textContent = value == null || value === "" ? "—" : String(value);
+        row.appendChild(cell);
+        return cell;
+    }
+
+    function addButton(container, label, className, callback) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = label;
+        button.className = className;
+        button.addEventListener("click", callback);
+        container.appendChild(button);
+    }
+
+    function formatDate(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+    }
+
+    function renderDocuments() {
+        rowsElement.replaceChildren();
+
+        const filter = document.getElementById("productFilter")
+            .value.trim().toLowerCase();
+
+        const filtered = documents.filter(item =>
+            !filter || String(item.product_id || "").toLowerCase().includes(filter)
+        );
+
+        if (!filtered.length) {
+            addCell(
+                Object.assign(document.createElement("tr"), {
+                    innerHTML: ""
+                }),
+                ""
+            );
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+            cell.colSpan = 9;
+            cell.textContent = "No documents found for this filter.";
+            row.appendChild(cell);
+            rowsElement.appendChild(row);
+            return;
+        }
+
+        for (const item of filtered) {
+            const row = document.createElement("tr");
+
+            addCell(row, item.document_id);
+            addCell(row, item.title);
+            addCell(row, item.category);
+            addCell(row, item.product_id);
+            addCell(row, item.version_number);
+
+            const statusCell = document.createElement("td");
+            const badge = document.createElement("span");
+            const status = String(item.version_status || "unknown").toLowerCase();
+            badge.className = `status ${status}`;
+            badge.textContent = status;
+            statusCell.appendChild(badge);
+            row.appendChild(statusCell);
+
+            addCell(row, item.chunk_count);
+            addCell(row, formatDate(item.uploaded_at));
+
+            const actionsCell = document.createElement("td");
+            const actions = document.createElement("div");
+            actions.className = "actions";
+
+            addButton(
+                actions, "History", "secondary small",
+                () => loadHistory(item.document_id, item.title)
+            );
+
+            row.appendChild(actionsCell);
+            actionsCell.appendChild(actions);
+            rowsElement.appendChild(row);
+        }
+    }
+
+    async function loadDocuments() {
+        try {
+            const productId = document.getElementById("productFilter")
+                .value.trim();
+
+            const url = productId
+                ? `/documents/history?product_id=${encodeURIComponent(productId)}`
+                : "/documents/history";
+
+            const data = await apiRequest(url);
+            documents = data.documents || [];
+
+            document.getElementById("documentCount").textContent =
+                new Set(documents.map(item => item.document_id)).size;
+
+            document.getElementById("processingCount").textContent =
+                documents.filter(item => item.version_status === "processing").length;
+
+            document.getElementById("failedCount").textContent =
+                documents.filter(item => item.version_status === "failed").length;
+
+            renderDocuments();
+        } catch (error) {
+            showMessage(`Could not load documents: ${error.message}`, "error");
+            rowsElement.replaceChildren();
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+            cell.colSpan = 9;
+            cell.textContent = "Unable to load documents. Check the API server.";
+            row.appendChild(cell);
+            rowsElement.appendChild(row);
+        }
+    }
+
+    async function loadHistory(documentId, title) {
+        const historyPanel = document.getElementById("history");
+        const historyContent = document.getElementById("historyContent");
+
+        historyPanel.hidden = false;
+        document.getElementById("historyTitle").textContent =
+            `Version history: ${title} (Document ${documentId})`;
+        historyContent.textContent = "Loading history...";
+
+        try {
+            const data = await apiRequest(
+                `/documents/${encodeURIComponent(documentId)}/history`
+            );
+
+            historyContent.textContent = JSON.stringify(data, null, 2);
+            historyPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (error) {
+            historyContent.textContent = `Could not load history: ${error.message}`;
+        }
+    }
+
+    form.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const title = document.getElementById("title").value.trim();
+        const category = document.getElementById("category").value.trim();
+        const productId = document.getElementById("productId").value.trim();
+        const fileInput = document.getElementById("file");
+        const file = fileInput.files[0];
+
+        if (!title || !category || !productId || !file) {
+            showMessage("Complete all fields and choose a file.", "error");
+            return;
+        }
+
+        if ([title, category, productId].some(
+            value => value.toLowerCase() === "string"
+        )) {
+            showMessage("Replace placeholder values with real information.", "error");
+            return;
+        }
+
+        const allowedExtensions = [".pdf", ".docx", ".xlsx", ".txt"];
+        const filename = file.name.toLowerCase();
+
+        if (!allowedExtensions.some(ext => filename.endsWith(ext))) {
+            showMessage("Choose a PDF, DOCX, XLSX, or TXT file.", "error");
+            return;
+        }
+
+        const data = new FormData();
+        data.append("title", title);
+        data.append("category", category);
+        data.append("product_id", productId);
+        data.append("file", file);
+
+        uploadButton.disabled = true;
+        uploadButton.textContent = "Uploading...";
+        showMessage("Uploading document. Please wait...");
+
+        try {
+            const result = await apiRequest("/documents/upload", {
+                method: "POST",
+                body: data
+            });
+
+            showMessage(
+                `${result.message} Document ID: ${result.document_id}, ` +
+                `version: ${result.version_number}, status: ${result.status}.`,
+                "success"
+            );
+
+            form.reset();
+            await loadDocuments();
+
+            // Background ingestion may still be running.
+            window.setTimeout(loadDocuments, 2500);
+            window.setTimeout(loadDocuments, 6000);
+        } catch (error) {
+            showMessage(`Upload failed: ${error.message}`, "error");
+        } finally {
+            uploadButton.disabled = false;
+            uploadButton.textContent = "Upload document";
+        }
+    });
+
+    document.getElementById("refreshButton")
+        .addEventListener("click", loadDocuments);
+
+    document.getElementById("filterButton")
+        .addEventListener("click", loadDocuments);
+
+    document.getElementById("productFilter")
+        .addEventListener("keydown", event => {
+            if (event.key === "Enter") loadDocuments();
+        });
+
+    loadDocuments();
+</script>
+</body>
+</html>
+

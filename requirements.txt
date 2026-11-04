@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-dotenv
+ollama
+psycopg[binary]
+pgvector
+sqlalchemy
+alembic
+python-multipart
+pypdf
+python-docx
+openpyxl
+pytest
+httpx
+pwdlib[argon2]
+PyJWT
