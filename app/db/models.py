@@ -609,3 +609,88 @@ class Product(Base):
         ),
     )
 
+# ---------------------------------------------------------
+# 14. CUSTOMER RETURN REQUESTS
+# ---------------------------------------------------------
+
+class ReturnRequest(Base):
+    __tablename__ = "return_requests"
+
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+    )
+
+    return_number: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    order_id: Mapped[int] = mapped_column(
+        ForeignKey("orders.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
+    )
+
+    customer_id: Mapped[int] = mapped_column(
+        ForeignKey("customers.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
+    )
+
+    reason: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False,
+    )
+
+    comments: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    admin_note: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    return_status: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+        default="pending_review",
+        server_default="pending_review",
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=utc_now,
+    )
+
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=utc_now,
+        onupdate=utc_now,
+    )
+
+    order: Mapped["Order"] = relationship()
+
+    customer: Mapped["Customer"] = relationship()
+
+    __table_args__ = (
+        CheckConstraint(
+            "return_status IN ("
+            "'pending_review', "
+            "'approved', "
+            "'rejected', "
+            "'completed'"
+            ")",
+            name="ck_return_requests_status",
+        ),
+    )
+
+# ---------------------------------------------------------
+# 14. CUSTOMER RETURN REQUESTS
+# ---------------------------------------------------------
