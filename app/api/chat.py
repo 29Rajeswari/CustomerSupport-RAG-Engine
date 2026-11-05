@@ -78,6 +78,7 @@ def chat(
             db=db,
             question=request.question,
             product_id=request.product_id,
+            customer_id=current_customer.id,
         )
 
         chat_log = ChatLog(
