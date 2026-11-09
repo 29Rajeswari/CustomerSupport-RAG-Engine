@@ -1,4 +1,4 @@
-
+import logging
 import json
 from datetime import datetime
 
@@ -14,7 +14,7 @@ from app.services.answer_service import answer_customer_question
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
 
-
+logger = logging.getLogger(__name__)
 # ---------------------------------------------------------
 # CHAT REQUEST
 # ---------------------------------------------------------
@@ -112,6 +112,12 @@ def chat(
 
     except Exception as exc:
         db.rollback()
+
+        logger.exception(
+            "Chat processing failed for customer_id=%s",
+            current_customer.id,
+        )
+
         raise HTTPException(
             status_code=500,
             detail="Unable to process your question right now.",

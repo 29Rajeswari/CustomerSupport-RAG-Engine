@@ -1,3 +1,4 @@
+from uuid import uuid4
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
@@ -16,8 +17,11 @@ from app.db.models import (
     ChatLog,
     Customer,
     Order,
+    OrderItem,
+    Product,
     Shipment,
     ReturnRequest,
+    Refund,
 )
 from app.db.session import get_db
 from app.schemas.auth import TokenResponse
@@ -729,6 +733,316 @@ def complete_return_request(
             "return_number": return_request.return_number,
             "return_status": return_request.return_status,
             "updated_at": return_request.updated_at,
+        }
+
+    except Exception:
+        db.rollback()
+        raise
+
+# ---------------------------------------------------------
+# 13. CREATE REFUND FOR COMPLETED RETURN
+# ---------------------------------------------------------
+
+@router.post("/returns/{return_id}/refund", status_code=201)
+def create_return_refund(
+    return_id: int,
+    _: str = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    try:
+        return_request = (
+            db.query(ReturnRequest)
+            .filter(ReturnRequest.id == return_id)
+            .with_for_update()
+            .first()
+        )
+
+        if return_request is None:
+            raise HTTPException(status_code=404, detail="Return request not found.")
+
+        if return_request.return_status != "completed":
+            raise HTTPException(
+                status_code=409,
+                detail="Only completed returns can have refunds.",
+            )
+
+        existing = db.query(Refund).filter(
+            Refund.return_id == return_id
+        ).first()
+
+        if existing:
+            raise HTTPException(
+                status_code=409,
+                detail="A refund already exists for this return.",
+            )
+
+        order = (
+            db.query(Order)
+            .filter(Order.id == return_request.order_id)
+            .with_for_update()
+            .first()
+        )
+
+        if order is None:
+            raise HTTPException(status_code=404, detail="Original order not found.")
+
+        amount = order.total_amount
+
+        if amount is None or amount <= 0:
+            raise HTTPException(
+                status_code=409,
+                detail="Invalid refund amount.",
+            )
+
+        refund = Refund(
+            refund_number=f"REF-{uuid4().hex[:12].upper()}",
+            return_id=return_request.id,
+            order_id=order.id,
+            customer_id=return_request.customer_id,
+            refund_amount=amount,
+            refund_status="pending",
+        )
+
+        db.add(refund)
+        db.commit()
+        db.refresh(refund)
+
+        return {
+            "message": "Refund record created successfully.",
+            "refund_id": refund.id,
+            "refund_number": refund.refund_number,
+            "return_id": refund.return_id,
+            "order_id": refund.order_id,
+            "refund_amount": refund.refund_amount,
+            "refund_status": refund.refund_status,
+        }
+
+    except Exception:
+        db.rollback()
+        raise
+
+
+# ---------------------------------------------------------
+# 14. MARK REFUND AS PROCESSED
+# ---------------------------------------------------------
+
+@router.patch("/refunds/{refund_id}/process")
+def process_refund(
+    refund_id: int,
+    payment_reference: str,
+    _: str = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    try:
+        refund = (
+            db.query(Refund)
+            .filter(Refund.id == refund_id)
+            .with_for_update()
+            .first()
+        )
+
+        if refund is None:
+            raise HTTPException(status_code=404, detail="Refund not found.")
+
+        if refund.refund_status != "pending":
+            raise HTTPException(
+                status_code=409,
+                detail="Only pending refunds can be processed.",
+            )
+
+        order = (
+            db.query(Order)
+            .filter(Order.id == refund.order_id)
+            .with_for_update()
+            .first()
+        )
+
+        if order is None:
+            raise HTTPException(status_code=404, detail="Original order not found.")
+
+        if order.payment_status.lower() != "paid":
+            raise HTTPException(
+                status_code=409,
+                detail="Refund cannot be processed because the original order payment is not confirmed as paid.",
+            )
+
+        reference = payment_reference.strip()
+
+        if not reference or len(reference) > 150:
+            raise HTTPException(
+                status_code=422,
+                detail="A valid payment reference is required.",
+            )
+
+        refund.payment_reference = reference
+        refund.refund_status = "processed"
+
+        db.commit()
+        db.refresh(refund)
+
+        return {
+            "message": "Refund marked as processed.",
+            "refund_id": refund.id,
+            "refund_number": refund.refund_number,
+            "refund_status": refund.refund_status,
+            "payment_reference": refund.payment_reference,
+        }
+
+    except Exception:
+        db.rollback()
+        raise
+
+
+# ---------------------------------------------------------
+# 15. MARK REFUND AS FAILED
+# ---------------------------------------------------------
+
+@router.patch("/refunds/{refund_id}/fail")
+def fail_refund(
+    refund_id: int,
+    reason: str,
+    _: str = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    try:
+        refund = (
+            db.query(Refund)
+            .filter(Refund.id == refund_id)
+            .with_for_update()
+            .first()
+        )
+
+        if refund is None:
+            raise HTTPException(status_code=404, detail="Refund not found.")
+
+        if refund.refund_status != "pending":
+            raise HTTPException(
+                status_code=409,
+                detail="Only pending refunds can be marked as failed.",
+            )
+
+        reason = reason.strip()
+
+        if not reason or len(reason) > 1000:
+            raise HTTPException(
+                status_code=422,
+                detail="A valid failure reason is required.",
+            )
+
+        refund.refund_status = "failed"
+        refund.admin_note = reason
+
+        db.commit()
+        db.refresh(refund)
+
+        return {
+            "message": "Refund marked as failed.",
+            "refund_id": refund.id,
+            "refund_number": refund.refund_number,
+            "refund_status": refund.refund_status,
+            "admin_note": refund.admin_note,
+        }
+
+    except Exception:
+        db.rollback()
+        raise
+
+# ---------------------------------------------------------
+# 16. INSPECT RETURN AND RESTORE INVENTORY
+# ---------------------------------------------------------
+
+class ReturnInspectionRequest(BaseModel):
+    resellable: bool
+    note: str | None = Field(default=None, max_length=1000)
+
+
+@router.patch("/returns/{return_id}/inspect")
+def inspect_return(
+    return_id: int,
+    payload: ReturnInspectionRequest,
+    _: str = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    try:
+        return_request = (
+            db.query(ReturnRequest)
+            .filter(ReturnRequest.id == return_id)
+            .with_for_update()
+            .first()
+        )
+
+        if return_request is None:
+            raise HTTPException(status_code=404, detail="Return not found.")
+
+        if return_request.return_status != "completed":
+            raise HTTPException(
+                status_code=409,
+                detail="Only completed returns can be inspected.",
+            )
+
+        if return_request.inspection_status != "pending":
+            raise HTTPException(
+                status_code=409,
+                detail="This return has already been inspected.",
+            )
+
+        items = (
+            db.query(OrderItem)
+            .filter(OrderItem.order_id == return_request.order_id)
+            .all()
+        )
+
+        if not items:
+            raise HTTPException(
+                status_code=409,
+                detail="No order items found for this return.",
+            )
+
+        if payload.resellable:
+            # Validate all products before changing any stock.
+            locked_products = {}
+
+            for item in items:
+                product = (
+                    db.query(Product)
+                    .filter(Product.product_id == item.product_id)
+                    .with_for_update()
+                    .first()
+                )
+
+                if product is None:
+                    raise HTTPException(
+                        status_code=409,
+                        detail=f"Product {item.product_id} not found.",
+                    )
+
+                locked_products[item.product_id] = product
+
+            # Restore stock for every returned order item.
+            for item in items:
+                product = locked_products[item.product_id]
+                product.stock_quantity += item.quantity
+
+            return_request.inspection_status = "resellable"
+            return_request.restocked_at = datetime.now(timezone.utc)
+
+            message = "Inspection completed. Inventory restored successfully."
+
+        else:
+            return_request.inspection_status = "damaged"
+            message = "Inspection completed. Damaged products were not restocked."
+
+        if payload.note:
+            return_request.admin_note = payload.note
+
+        db.commit()
+
+        return {
+            "message": message,
+            "return_id": return_request.id,
+            "return_number": return_request.return_number,
+            "inspection_status": return_request.inspection_status,
+            "restocked_at": return_request.restocked_at,
         }
 
     except Exception:

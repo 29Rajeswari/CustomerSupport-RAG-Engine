@@ -690,7 +690,103 @@ class ReturnRequest(Base):
             name="ck_return_requests_status",
         ),
     )
+    inspection_status: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+        default="pending",
+        server_default="pending",
+    )
 
+    restocked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
 # ---------------------------------------------------------
 # 14. CUSTOMER RETURN REQUESTS
 # ---------------------------------------------------------
+
+
+
+# ---------------------------------------------------------
+# 15. REFUND MANAGEMENT
+# ---------------------------------------------------------
+
+class Refund(Base):
+    __tablename__ = "refunds"
+
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+    )
+
+    refund_number: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    return_id: Mapped[int] = mapped_column(
+        ForeignKey("return_requests.id", ondelete="RESTRICT"),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    order_id: Mapped[int] = mapped_column(
+        ForeignKey("orders.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
+    )
+
+    customer_id: Mapped[int] = mapped_column(
+        ForeignKey("customers.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
+    )
+
+    refund_amount: Mapped[Decimal] = mapped_column(
+        Numeric(12, 2),
+        nullable=False,
+    )
+
+    refund_status: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+        default="pending",
+        server_default="pending",
+    )
+
+    payment_reference: Mapped[str | None] = mapped_column(
+        String(150),
+        nullable=True,
+    )
+
+    admin_note: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=utc_now,
+    )
+
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=utc_now,
+        onupdate=utc_now,
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "refund_amount >= 0",
+            name="ck_refunds_amount_nonnegative",
+        ),
+        CheckConstraint(
+            "refund_status IN ('pending', 'processed', 'failed')",
+            name="ck_refunds_status",
+        ),
+    )

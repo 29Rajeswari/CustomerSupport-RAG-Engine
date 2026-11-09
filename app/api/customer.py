@@ -15,6 +15,7 @@ from app.db.models import (
     Product,
     Shipment,
     ReturnRequest,
+    Refund,
 )
 from app.db.session import get_db
 from app.schemas.order import OrderCreate
@@ -669,4 +670,39 @@ def get_customer_return_request(
         "return_status": return_request.return_status,
         "created_at": return_request.created_at,
         "updated_at": return_request.updated_at,
+    }
+
+# ---------------------------------------------------------
+# 11. CUSTOMER REFUND HISTORY
+# ---------------------------------------------------------
+
+@router.get("/refunds")
+def get_customer_refunds(
+    current_customer: Customer = Depends(get_current_customer),
+    db: Session = Depends(get_db),
+):
+    refunds = (
+        db.query(Refund)
+        .filter(Refund.customer_id == current_customer.id)
+        .order_by(Refund.created_at.desc())
+        .all()
+    )
+
+    return {
+        "total": len(refunds),
+        "refunds": [
+            {
+                "refund_id": item.id,
+                "refund_number": item.refund_number,
+                "return_id": item.return_id,
+                "order_id": item.order_id,
+                "refund_amount": str(item.refund_amount),
+                "refund_status": item.refund_status,
+                "payment_reference": item.payment_reference,
+                "admin_note": item.admin_note,
+                "created_at": item.created_at,
+                "updated_at": item.updated_at,
+            }
+            for item in refunds
+        ],
     }
