@@ -2,7 +2,7 @@
 import subprocess
 import sys
 
-backup = Path("storage/backups/ecommerce_chatbot_before_migration.dump")
+backup = Path("storage/backups/database/ecommerce_chatbot_before_migration.dump")
 
 if not backup.exists() or backup.stat().st_size == 0:
     print("ERROR: Backup file is missing or empty.")

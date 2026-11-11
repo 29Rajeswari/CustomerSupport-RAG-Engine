@@ -1,4 +1,4 @@
-﻿# CustomerSupport-RAG-Engine
+# CustomerSupport-RAG-Engine
 
 
 
@@ -70,113 +70,63 @@ The platform combines locally hosted Large Language Models with document-based r
 
 ## Project Structure
 
-
-
 ```text
-
-CustomerSupport-RAG-Engine/
-
-â”‚
-
-â”œâ”€â”€ app/
-
-â”‚   â”œâ”€â”€ api/
-
-â”‚   â”‚   â”œâ”€â”€ admin.py
-
-â”‚   â”‚   â”œâ”€â”€ auth.py
-
-â”‚   â”‚   â”œâ”€â”€ chat.py
-
-â”‚   â”‚   â”œâ”€â”€ customer.py
-
-â”‚   â”‚   â”œâ”€â”€ documents.py
-
-â”‚   â”‚   â”œâ”€â”€ document_history.py
-
-â”‚   â”‚   â””â”€â”€ products.py
-
-â”‚   â”‚
-
-â”‚   â”œâ”€â”€ core/
-
-â”‚   â”‚   â”œâ”€â”€ config.py
-
-â”‚   â”‚   â”œâ”€â”€ dependencies.py
-
-â”‚   â”‚   â”œâ”€â”€ security.py
-
-â”‚   â”‚   â””â”€â”€ text_normalizer.py
-
-â”‚   â”‚
-
-â”‚   â”œâ”€â”€ db/
-
-â”‚   â”œâ”€â”€ ingestion/
-
-â”‚   â”œâ”€â”€ integrations/
-
-â”‚   â”œâ”€â”€ llm/
-
-â”‚   â”œâ”€â”€ retrieval/
-
-â”‚   â”œâ”€â”€ schemas/
-
-â”‚   â”œâ”€â”€ services/
-
-â”‚   â”œâ”€â”€ static/
-
-â”‚   â””â”€â”€ main.py
-
-â”‚
-
-â”œâ”€â”€ RAG/
-
-â”‚   â”œâ”€â”€ database/
-
-â”‚   â”œâ”€â”€ diagnostics/
-
-â”‚   â”œâ”€â”€ maintenance/
-
-â”‚   â”œâ”€â”€ migrations/
-
-â”‚   â””â”€â”€ verification/
-
-â”‚
-
-â”œâ”€â”€ scripts/
-
-â”‚   â””â”€â”€ database/
-
-â”‚
-
-â”œâ”€â”€ tests/
-
-â”‚   â”œâ”€â”€ api/
-
-â”‚   â”œâ”€â”€ ingestion/
-
-â”‚   â”œâ”€â”€ llm/
-
-â”‚   â”œâ”€â”€ retrieval/
-
-â”‚   â”œâ”€â”€ services/
-
-â”‚   â””â”€â”€ versioning/
-
-â”‚
-
-â”œâ”€â”€ test_data/
-
-â”œâ”€â”€ requirements.txt
-
-â”œâ”€â”€ .gitignore
-
-â””â”€â”€ README.md
-
+indian-ecommerce-support-chatbot/
+├── app/                          # FastAPI application
+│   ├── api/
+│   │   ├── api_router.py         # Combines all route modules
+│   │   └── routes/               # admin_, auth_, chat_, customer_, document_,
+│   │                             # document_history_, product_ routes
+│   ├── config/                   # settings.py (environment-based Settings)
+│   ├── core/                     # security.py, dependencies.py
+│   ├── db/                       # session.py (engine and get_db)
+│   ├── models/                   # SQLAlchemy models: base, document, chat, customer,
+│   │                             # auth, activity_log, order, shipment, product, return_request
+│   ├── schemas/                  # Pydantic request/response schemas
+│   ├── services/                 # Business logic (answers, documents, email, OTP, orders, products)
+│   ├── ingestion/                # Parsers, processor, document versioning
+│   ├── retrieval/                # Vector search
+│   ├── llm/                      # Ollama client
+│   ├── integrations/             # External integrations (reserved)
+│   ├── utils/                    # text_normalizer.py
+│   ├── static/                   # Admin UI
+│   └── main.py                   # Application entry point
+│
+├── scripts/                      # Operational scripts (run from project root)
+│   ├── database/                 # create_tables, backup_database, verify_backup, export_table_inventory
+│   ├── migrations/               # migrate_* schema migrations
+│   ├── maintenance/              # backfill_*, inspect_version_history, retry_stuck_documents
+│   └── diagnostics/              # check_* health and consistency checks
+│
+├── tests/                        # Pytest suite
+│   ├── api/  ingestion/  llm/  retrieval/  services/  versioning/
+│   └── fixtures/                 # Small files used by tests
+│
+├── data/
+│   └── samples/                  # Sample products.csv and sample policy documents
+│
+├── storage/                      # Runtime data (git-ignored)
+│   ├── uploads/                  # Uploaded documents
+│   ├── backups/                  # database/ dumps and code/ snapshots
+│   └── diagnostics/              # Saved diagnostic output
+│
+├── .env.example                  # Copy to .env and fill in
+├── pytest.ini
+├── requirements.txt
+└── README.md
 ```
 
+## Running Scripts
 
+Run scripts from the project root as modules so that the `app` package is importable:
+
+```bash
+python -m scripts.database.create_tables
+python -m scripts.diagnostics.check_ollama
+python -m scripts.maintenance.retry_stuck_documents
+```
+
+Run the tests with `pytest`.
 
 ## Architecture Overview
 

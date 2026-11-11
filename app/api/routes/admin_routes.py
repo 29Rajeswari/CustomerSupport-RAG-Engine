@@ -5,14 +5,14 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session, joinedload
 
 
-from app.core.config import settings
+from app.config import settings
 from app.core.dependencies import get_current_admin
 from app.core.security import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     create_access_token,
     verify_password,
 )
-from app.db.models import (
+from app.models import (
     ActivityLog,
     ChatLog,
     Customer,

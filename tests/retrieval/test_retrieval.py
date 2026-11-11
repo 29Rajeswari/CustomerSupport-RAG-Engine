@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from sqlalchemy import select
 
-from app.db.models import Document, DocumentChunk, DocumentVersion
+from app.models import Document, DocumentChunk, DocumentVersion
 from app.db.session import SessionLocal
 from app.retrieval.search import search_relevant_chunks
 

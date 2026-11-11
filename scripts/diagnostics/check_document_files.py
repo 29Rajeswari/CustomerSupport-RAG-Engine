@@ -3,7 +3,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.db.models import Document
+from app.models import Document
 from app.db.session import engine
 
 with Session(engine) as db:

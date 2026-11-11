@@ -1,20 +1,11 @@
-﻿
+
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from app.core.config import settings
-
-from app.api.customer import router as customer_router
-from app.api.auth import router as auth_router
-from app.api.admin import router as admin_router
-from app.api.documents import router as documents_router
-from app.api.chat import router as chat_router
-from app.api.document_history import router as document_history_router
-
-from app.api.products import router as products_router
-
+from app.api.api_router import api_router
+from app.config import settings
 
 
 app = FastAPI(
@@ -27,14 +18,8 @@ app = FastAPI(
 )
 
 
-# API routers
-app.include_router(auth_router)
-app.include_router(admin_router)
-app.include_router(documents_router)
-app.include_router(document_history_router)
-app.include_router(chat_router)
-app.include_router(customer_router)
-app.include_router(products_router)
+# API routes
+app.include_router(api_router)
 
 @app.get("/health", tags=["Health"])
 def health_check():

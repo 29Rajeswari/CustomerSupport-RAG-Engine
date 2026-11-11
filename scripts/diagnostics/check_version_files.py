@@ -3,7 +3,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.db.models import Document, DocumentVersion, DocumentChunk
+from app.models import Document, DocumentVersion, DocumentChunk
 from app.db.session import engine
 
 CANDIDATE_VERSION_IDS = [12, 17, 21]

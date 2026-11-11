@@ -6,7 +6,7 @@ from fastapi import HTTPException, status
 from pwdlib import PasswordHash
 from sqlalchemy.orm import Session
 
-from app.db.models import PendingRegistration, PasswordResetOTP
+from app.models import PendingRegistration, PasswordResetOTP
 
 
 # ---------------------------------------------------------

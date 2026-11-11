@@ -6,8 +6,8 @@ from pathlib import Path
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.text_normalizer import normalize_text
-from app.db.models import Document, DocumentChunk, DocumentVersion
+from app.utils.text_normalizer import normalize_text
+from app.models import Document, DocumentChunk, DocumentVersion
 from app.db.session import SessionLocal
 from app.ingestion.parsers import extract_text
 from app.ingestion.versioning import (

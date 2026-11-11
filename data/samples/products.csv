@@ -1,0 +1,8 @@
+
+product_id,product_name,description,category,price,stock_quantity
+MOB-1002,Redmi Smartphone,Android smartphone with 128GB storage,Mobiles,12000,15
+LAP-1001,HP Laptop,HP laptop for everyday use,Laptops,45000,5
+MOB-1003,Vivo Smartphone,Vivo Android smartphone,Mobiles,18000,12
+ACC-1001,Wireless Earbuds,Bluetooth wireless earbuds,Accessories,1500,25
+LAP-1002,Dell Laptop,Dell laptop with SSD storage,Laptops,55000,8
+MOB-1001,Another Samsung Phone,Duplicate product ID,Mobiles,16000,20

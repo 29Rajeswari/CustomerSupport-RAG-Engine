@@ -12,7 +12,7 @@ from app.core.security import (
     hash_password,
     verify_password,
 )
-from app.db.models import (
+from app.models import (
     ActivityLog,
     Customer,
     PendingRegistration,

@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_current_customer
-from app.db.models import ActivityLog, ChatLog, Customer
+from app.models import ActivityLog, ChatLog, Customer
 from app.db.session import get_db
 from app.services.answer_service import answer_customer_question
 

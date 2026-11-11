@@ -4,8 +4,8 @@ from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
-from app.core.config import PROJECT_ROOT, settings
-from app.db.models import Document, DocumentVersion
+from app.config import PROJECT_ROOT, settings
+from app.models import Document, DocumentVersion
 from app.ingestion.versioning import (
     create_document_version,
     normalize_category,

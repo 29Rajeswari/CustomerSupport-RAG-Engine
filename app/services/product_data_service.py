@@ -5,7 +5,7 @@ from decimal import Decimal
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from app.db.models import Product
+from app.models import Product
 
 
 def search_products(
