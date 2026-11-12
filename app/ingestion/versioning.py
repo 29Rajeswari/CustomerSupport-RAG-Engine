@@ -6,7 +6,7 @@ from pathlib import Path
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.db.models import (
+from app.models import (
     Document,
     DocumentChunk,
     DocumentVersion,

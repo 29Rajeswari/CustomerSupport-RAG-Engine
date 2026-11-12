@@ -1,0 +1,9 @@
+﻿Indian E-commerce Product Warranty Policy
+Document ID: cross-document-test
+Product ID: 002
+Category: Warranty
+
+This is a fictional test policy for software testing only.
+The example product has a sample warranty period of 36 months
+from the date of purchase. This is not an official manufacturer
+warranty. Actual coverage must be confirmed with the seller.

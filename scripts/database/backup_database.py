@@ -1,31 +1,31 @@
 ﻿from pathlib import Path
-from datetime import datetime
+import subprocess
+import sys
 
-from sqlalchemy import text
-from app.db.session import engine
-
-backup_dir = Path("storage/backups")
+backup_dir = Path("storage/backups/database")
 backup_dir.mkdir(parents=True, exist_ok=True)
+backup_file = backup_dir / "ecommerce_chatbot_before_email_verification.dump"
 
-backup_file = backup_dir / (
-    f"ecommerce_chatbot_schema_check_{datetime.now():%Y%m%d_%H%M%S}.txt"
-)
+cmd = [
+    "docker", "exec", "ecommerce-postgres",
+    "pg_dump", "-U", "chatbot_user",
+    "-d", "ecommerce_chatbot", "-F", "c",
+    "--no-owner", "--no-privileges",
+]
 
-with engine.connect() as connection:
-    tables = connection.execute(
-        text("""
-            SELECT tablename
-            FROM pg_tables
-            WHERE schemaname = 'public'
-            ORDER BY tablename
-        """)
-    ).scalars().all()
+try:
+    result = subprocess.run(cmd, capture_output=True)
+    if result.returncode != 0:
+        print(result.stderr.decode("utf-8", errors="replace"))
+        sys.exit(result.returncode)
 
-    with backup_file.open("w", encoding="utf-8") as f:
-        f.write("Database: ecommerce_chatbot\n")
-        f.write("Public tables:\n")
-        for table in tables:
-            f.write(f"- {table}\n")
+    if not result.stdout:
+        print("Backup was empty; no file written.")
+        sys.exit(1)
 
-print(f"Table inventory saved to: {backup_file}")
-print(f"Tables found: {len(tables)}")
+    backup_file.write_bytes(result.stdout)
+    print(f"Backup saved: {backup_file}")
+    print(f"Backup size: {backup_file.stat().st_size:,} bytes")
+except FileNotFoundError:
+    print("Docker command was not found.")
+    sys.exit(1)

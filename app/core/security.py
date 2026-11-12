@@ -5,7 +5,7 @@ from typing import Any, Literal
 import jwt
 from pwdlib import PasswordHash
 
-from app.core.config import settings
+from app.config import settings
 
 
 # ---------------------------------------------------------

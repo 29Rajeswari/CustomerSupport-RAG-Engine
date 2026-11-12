@@ -5,7 +5,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.db.models import Base, Document, DocumentVersion
+from app.models import Base, Document, DocumentVersion
 from app.ingestion.versioning import (
     create_document_version,
     get_active_version,

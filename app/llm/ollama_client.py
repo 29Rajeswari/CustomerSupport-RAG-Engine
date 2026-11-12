@@ -3,7 +3,7 @@
 
 import ollama
 
-from app.core.config import settings
+from app.config import settings
 
 
 def check_ollama_connection() -> bool:
