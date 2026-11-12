@@ -1,4 +1,10 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
+from typing import List
+
+
+class ReturnItemCreate(BaseModel):
+    order_item_id: int = Field(..., gt=0)
+    quantity: int = Field(..., gt=0)
 
 
 class ReturnRequestCreate(BaseModel):
@@ -6,11 +12,14 @@ class ReturnRequestCreate(BaseModel):
         ...,
         min_length=3,
         max_length=100,
-        description="Reason for requesting a return",
     )
 
     comments: str | None = Field(
         default=None,
         max_length=1000,
-        description="Additional details about the return",
+    )
+
+    items: List[ReturnItemCreate] = Field(
+        ...,
+        min_length=1,
     )

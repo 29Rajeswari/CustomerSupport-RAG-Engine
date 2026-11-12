@@ -1,7 +1,7 @@
 
 from sqlalchemy.orm import Session
 
-from app.db.models import Order
+from app.models import Order
 
 
 def _format_datetime(value):

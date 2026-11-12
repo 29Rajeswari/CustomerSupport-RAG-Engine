@@ -1,5 +1,6 @@
 
 import re
+from decimal import Decimal, InvalidOperation
 
 from sqlalchemy.orm import Session
 
@@ -104,6 +105,11 @@ def contains_sample_warning(content: str) -> bool:
 
 
 def detect_category(question: str) -> str | None:
+    """
+    Detect policy categories only.
+    Product categories are handled separately.
+    """
+
     text = question.casefold()
 
     category_keywords = {
@@ -128,6 +134,20 @@ def detect_category(question: str) -> str | None:
             "delivery rules",
             "delivery time",
             "shipping charges",
+            "delivery",
+            "shipping",
+            "arrive",
+            "arrival",
+            "track my order",
+            "track order",
+            "track my shipment",
+            "track shipment",
+            "shipment tracking",
+            "shipping status",
+            "delivery status",
+            "where is my shipment",
+            "when will my order",
+            "when is my order",
         ),
         "exchange": (
             "exchange",
@@ -187,11 +207,12 @@ def is_order_request(question: str) -> bool:
     return any(keyword in text for keyword in order_keywords)
 
 
+
 def is_product_request(
     question: str,
     product_id: str | None = None,
 ) -> bool:
-    """Identify product price, availability and stock questions."""
+    """Identify product price, availability and product-name searches."""
 
     if product_id:
         return True
@@ -205,13 +226,33 @@ def is_product_request(
         "available",
         "availability",
         "in stock",
-        "product details",
-        "show products",
-        "list products",
-        "how much",
+        "product",
+        "products",
+        "show",
+        "list",
+        "smartphone",
+        "smartphones",
+        "mobile",
+        "mobiles",
+        "phone",
+        "phones",
+        "laptop",
+        "laptops",
+        "earbuds",
+        "headphones",
+        "accessories",
+        "oneplus",
+        "samsung",
+        "redmi",
+        "vivo",
+        "dell",
+        "hp",
     )
 
-    return any(keyword in text for keyword in product_keywords)
+    return any(
+        re.search(rf"\b{re.escape(keyword)}\b", text)
+        for keyword in product_keywords
+    )
 
 
 def extract_order_number(question: str) -> str | None:
@@ -225,11 +266,47 @@ def extract_order_number(question: str) -> str | None:
     return match.group(0) if match else None
 
 
+def detect_product_category(question: str) -> str | None:
+    """Map customer product terms to database categories."""
+
+    text = question.lower()
+
+    category_mapping = {
+        "Mobiles": (
+            "mobile",
+            "mobiles",
+            "smartphone",
+            "smartphones",
+            "phone",
+            "phones",
+        ),
+        "Laptops": (
+            "laptop",
+            "laptops",
+        ),
+        "Accessories": (
+            "accessory",
+            "accessories",
+            "earbuds",
+            "headphones",
+        ),
+    }
+
+    for category, keywords in category_mapping.items():
+        if any(
+            re.search(rf"\b{re.escape(keyword)}\b", text)
+            for keyword in keywords
+        ):
+            return category
+
+    return None
+
+
 def extract_product_query(
     question: str,
     product_id: str | None = None,
 ) -> str | None:
-    """Remove common question words to isolate a product search."""
+    """Extract meaningful product names or brands from a question."""
 
     if product_id:
         return product_id.strip().upper()
@@ -242,45 +319,132 @@ def extract_product_query(
     if product_code:
         return product_code.group(0)
 
-    text = question.strip()
+    text = question.casefold().strip()
+
+    # Remove price conditions before product-name extraction.
+    text = re.sub(
+        r"\b(?:under|below|less than|within)\s+"
+        r"(?:₹|rs\.?\s*)?\d+(?:,\d{3})*(?:\.\d+)?"
+        r"\s*(?:rupees|rs\.?)?",
+        " ",
+        text,
+    )
+
+    text = re.sub(
+        r"\bmaximum\s+(?:price\s+)?(?:of\s+)?"
+        r"(?:₹|rs\.?\s*)?\d+(?:,\d{3})*(?:\.\d+)?"
+        r"\s*(?:rupees|rs\.?)?",
+        " ",
+        text,
+    )
 
     remove_phrases = (
-        r"\bwhat is the price of\b",
-        r"\bwhat's the price of\b",
-        r"\bhow much is\b",
-        r"\bhow much does\b",
-        r"\bwhat is the cost of\b",
         r"\bshow me\b",
+        r"\bavailble\b",
+        r"\bshow\b",
+        r"\bhi\b",
+        r"\bhello\b",
+        r"\bhey\b",
+        r"\bcan\b",
+        r"\bcould\b",
+        r"\bwhat\b",
+        r"\bwhich\b",
+        r"\byour\b",
+        r"\bstore\b",
+        r"\bin\b",
+        r"\bour\b",
+        r"\bdo\b",
+        r"\bdoes\b",
+        r"\bany\b",
+        r"\bthere\b",
+        r"\bwant\b",
+        r"\bme\b",
+        r"\bnew\b",
+        r"\blatest\b",
+        r"\bmodel\b",
+        r"\bmodels\b",
+        r"\bseries\b",
+        r"\bdevice\b",
+        r"\bdevices\b",
+        r"\blist\b",
         r"\btell me about\b",
         r"\bdetails about\b",
         r"\bdetails of\b",
         r"\bdo you have\b",
         r"\bis there\b",
-        r"\bis\b",
-        r"\bthe\b",
-        r"\bproduct\b",
+        r"\bwhat is\b",
+        r"\bwhat are\b",
+        r"\bwhich\b",
         r"\bavailable\b",
         r"\bin stock\b",
         r"\bstock\b",
         r"\bprice\b",
         r"\bcost\b",
         r"\bplease\b",
-        r"\bwhat\b",
+        r"\bthe\b",
+        r"\bproduct\b",
+        r"\bproducts\b",
+        r"\ball\b",
         r"\bof\b",
+        r"\bare\b",
+        r"\bis\b",
+        r"\byou\b",
+        r"\bi\b",
+        r"\bwant\b",
+        r"\bto buy\b",
+        r"\bmobile\b",
+        r"\bmobiles\b",
+        r"\bsmartphone\b",
+        r"\bsmartphones\b",
+        r"\bphone\b",
+        r"\bphones\b",
+        r"\blaptop\b",
+        r"\blaptops\b",
+        r"\bearbuds\b",
+        r"\bheadphones\b",
+        r"\baccessories\b",
+        r"\brupees\b",
     )
 
     for phrase in remove_phrases:
-        text = re.sub(
-            phrase,
-            " ",
-            text,
-            flags=re.IGNORECASE,
-        )
+        text = re.sub(phrase, " ", text)
 
     text = re.sub(r"[^\w\s-]", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
 
     return text or None
+
+
+def extract_max_price(question: str) -> Decimal | None:
+    """
+    Extract a maximum price from questions such as:
+    - smartphones under 20000
+    - laptops below Rs. 50000
+    - mobiles under ₹20,000
+    - products less than 15000 rupees
+    """
+
+    text = question.casefold().replace(",", "")
+
+    patterns = (
+        r"\bunder\s+(?:₹|rs\.?\s*)?(\d+(?:\.\d+)?)",
+        r"\bbelow\s+(?:₹|rs\.?\s*)?(\d+(?:\.\d+)?)",
+        r"\bless than\s+(?:₹|rs\.?\s*)?(\d+(?:\.\d+)?)",
+        r"\bwithin\s+(?:₹|rs\.?\s*)?(\d+(?:\.\d+)?)",
+        r"\bmaximum\s+(?:price\s+)?(?:of\s+)?"
+        r"(?:₹|rs\.?\s*)?(\d+(?:\.\d+)?)",
+    )
+
+    for pattern in patterns:
+        match = re.search(pattern, text)
+
+        if match:
+            try:
+                return Decimal(match.group(1))
+            except InvalidOperation:
+                return None
+
+    return None
 
 
 def should_search_policy(
@@ -317,6 +481,22 @@ def answer_customer_question(
         raise ValueError("Question cannot be empty.")
 
     clean_question = question.strip()
+    # Handle simple greetings.
+    if re.fullmatch(
+        r"(hi|hello|hey|good morning|good afternoon|good evening)[!. ]*",
+        clean_question,
+        flags=re.IGNORECASE,
+    ):
+        return {
+            "answer": (
+                "Hello! Welcome to our store. "
+                "I can help you find products, check prices "
+                "and availability, track orders, and answer "
+                "warranty and return questions. "
+                "How can I help you today?"
+            ),
+            "sources": [],
+    }
 
     selected_category = (
         category.strip()
@@ -327,8 +507,10 @@ def answer_customer_question(
     live_data = []
     sources = []
     chunks = []
+    products = []
 
     order_request = is_order_request(clean_question)
+
     product_request = is_product_request(
         clean_question,
         product_id,
@@ -395,9 +577,17 @@ def answer_customer_question(
             product_id,
         )
 
+        product_category = detect_product_category(
+            clean_question
+        )
+
+        max_price = extract_max_price(clean_question)
+
         products = search_products(
             db=db,
             query=search_query,
+            category=product_category,
+            max_price=max_price,
             limit=10,
         )
 
@@ -479,8 +669,87 @@ def answer_customer_question(
             "sources": [],
         }
 
+
     # -----------------------------------------------------
-    # 5. GENERATE GROUNDED ANSWER USING OLLAMA
+    # 5. RETURN EXACT LIVE PRODUCT INFORMATION
+    # -----------------------------------------------------
+
+    if product_request and not policy_request:
+
+        # No matching products found.
+        if not products:
+            return {
+                "answer": (
+                    "Sorry, we couldn't find a matching active product "
+                    "in our inventory. Please check the product name "
+                    "or try another brand or category."
+                ),
+                "sources": [],
+            }
+
+        # Matching products found.
+        lines = []
+
+        for product in products:
+
+            availability = (
+                "In stock"
+                if product["in_stock"]
+                else "Out of stock"
+            )
+
+            lines.append(
+                f"Product: {product['product_name']}\n"
+                f"Product ID: {product['product_id']}\n"
+                f"Category: {product['category']}\n"
+                f"Price: ₹{product['price']}\n"
+                f"Available quantity: {product['stock_quantity']}\n"
+                f"Availability: {availability}"
+            )
+
+        answer = (
+            "Here is the latest product information "
+            "from our inventory:\n\n"
+            + "\n\n".join(lines)
+        )
+
+        return {
+            "answer": answer,
+            "sources": sources,
+        }
+
+        lines = []
+
+        for product in products:
+
+            availability = (
+                "In stock"
+                if product["in_stock"]
+                else "Out of stock"
+            )
+
+            lines.append(
+                f"Product: {product['product_name']}\n"
+                f"Product ID: {product['product_id']}\n"
+                f"Category: {product['category']}\n"
+                f"Price: ₹{product['price']}\n"
+                f"Available quantity: {product['stock_quantity']}\n"
+                f"Availability: {availability}"
+            )
+
+        answer = (
+            "Here is the latest product information "
+            "from our inventory:\n\n"
+            + "\n\n".join(lines)
+        )
+
+        return {
+            "answer": answer,
+            "sources": sources,
+        }
+
+    # -----------------------------------------------------
+    # 6. GENERATE GROUNDED ANSWER USING OLLAMA
     # -----------------------------------------------------
 
     prompt = f"""
@@ -508,7 +777,7 @@ Instructions:
     )
 
     # -----------------------------------------------------
-    # 6. SAMPLE DOCUMENT WARNING
+    # 7. SAMPLE DOCUMENT WARNING
     # -----------------------------------------------------
 
     is_sample = any(

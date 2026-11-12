@@ -1,0 +1,16 @@
+﻿Product: Integration Test Smartphone
+Product ID: TEST-INGEST-001
+
+Warranty Policy:
+This smartphone comes with a one year manufacturer warranty.
+
+The warranty period is 12 months from the date of purchase.
+
+The warranty covers manufacturing defects and hardware failures
+under normal usage conditions.
+
+Physical damage, water damage, and unauthorized repairs
+are not covered under this warranty.
+
+Customers must provide a valid purchase invoice
+to claim warranty service.

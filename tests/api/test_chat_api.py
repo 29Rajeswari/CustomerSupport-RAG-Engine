@@ -53,7 +53,7 @@ def test_chat_returns_answer_and_sources(mock_customer_and_database):
     }
 
     with patch(
-        "app.api.chat.answer_customer_question",
+        "app.api.routes.chat_routes.answer_customer_question",
         return_value=mock_result,
     ) as mock_answer:
         response = client.post(
@@ -86,7 +86,7 @@ def test_chat_without_product_id():
     }
 
     with patch(
-        "app.api.chat.answer_customer_question",
+        "app.api.routes.chat_routes.answer_customer_question",
         return_value=mock_result,
     ) as mock_answer:
         response = client.post(
@@ -133,7 +133,7 @@ def test_chat_handles_value_error():
     """A service validation error should return HTTP 400."""
 
     with patch(
-        "app.api.chat.answer_customer_question",
+        "app.api.routes.chat_routes.answer_customer_question",
         side_effect=ValueError("Question cannot be empty."),
     ):
         response = client.post(
