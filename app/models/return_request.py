@@ -1,3 +1,4 @@
+
 from typing import TYPE_CHECKING
 from datetime import datetime
 from decimal import Decimal
@@ -12,12 +13,18 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.models.base import Base, utc_now
 
 if TYPE_CHECKING:
     from app.models.order import Order
     from app.models.customer import Customer
+    from app.models.order import OrderItem
 
+
+# ---------------------------------------------------------
+# RETURN REQUEST MODEL
+# ---------------------------------------------------------
 
 class ReturnRequest(Base):
     __tablename__ = "return_requests"
@@ -68,6 +75,18 @@ class ReturnRequest(Base):
         server_default="pending_review",
     )
 
+    inspection_status: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+        default="pending",
+        server_default="pending",
+    )
+
+    restocked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,
@@ -85,6 +104,11 @@ class ReturnRequest(Base):
 
     customer: Mapped["Customer"] = relationship()
 
+    items: Mapped[list["ReturnItem"]] = relationship(
+        back_populates="return_request",
+        cascade="all, delete-orphan",
+    )
+
     __table_args__ = (
         CheckConstraint(
             "return_status IN ("
@@ -96,18 +120,60 @@ class ReturnRequest(Base):
             name="ck_return_requests_status",
         ),
     )
-    inspection_status: Mapped[str] = mapped_column(
-        String(30),
+
+
+# ---------------------------------------------------------
+# RETURN ITEM MODEL
+# ---------------------------------------------------------
+
+class ReturnItem(Base):
+    __tablename__ = "return_items"
+
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+    )
+
+    return_id: Mapped[int] = mapped_column(
+        ForeignKey("return_requests.id", ondelete="CASCADE"),
         nullable=False,
-        default="pending",
-        server_default="pending",
+        index=True,
     )
 
-    restocked_at: Mapped[datetime | None] = mapped_column(
+    order_item_id: Mapped[int] = mapped_column(
+        ForeignKey("order_items.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
+    )
+
+    quantity: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        nullable=True,
+        nullable=False,
+        default=utc_now,
     )
 
+    return_request: Mapped["ReturnRequest"] = relationship(
+        back_populates="items",
+    )
+
+    order_item: Mapped["OrderItem"] = relationship()
+
+    __table_args__ = (
+        CheckConstraint(
+            "quantity > 0",
+            name="ck_return_items_quantity_positive",
+        ),
+    )
+
+
+# ---------------------------------------------------------
+# REFUND MODEL
+# ---------------------------------------------------------
 
 class Refund(Base):
     __tablename__ = "refunds"

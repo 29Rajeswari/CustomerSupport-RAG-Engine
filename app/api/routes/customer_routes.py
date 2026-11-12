@@ -15,6 +15,7 @@ from app.models import (
     Product,
     Shipment,
     ReturnRequest,
+    ReturnItem,
     Refund,
 )
 from app.db.session import get_db
@@ -82,11 +83,13 @@ def get_customer_orders(
             "updated_at": order.updated_at,
             "products": [
                 {
+                    "id": item.id,
                     "product_id": item.product_id,
                     "product_name": item.product_name,
                     "quantity": item.quantity,
                     "unit_price": item.unit_price,
                     "subtotal": item.quantity * item.unit_price,
+                    
                 }
                 for item in order.items
             ],
@@ -505,8 +508,9 @@ def track_customer_order(
         },
     }
 
+
 # ---------------------------------------------------------
-# 8. CUSTOMER RETURN REQUESTS
+# 8. CUSTOMER RETURN REQUESTS (ITEM-LEVEL)
 # ---------------------------------------------------------
 
 @router.post(
@@ -519,122 +523,403 @@ def create_return_request(
     current_customer: Customer = Depends(get_current_customer),
     db: Session = Depends(get_db),
 ):
-    # 1. Find the order belonging to the logged-in customer.
-    order = (
-        db.query(Order)
-        .filter(
-            Order.id == order_id,
-            Order.customer_id == current_customer.id,
-        )
-        .first()
-    )
-
-    if order is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Order not found.",
-        )
-
-    # 2. Only delivered orders can currently be submitted.
-    if order.order_status.lower() != "delivered":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Return requests can only be submitted for delivered orders.",
-        )
-
-    # 3. Prevent another active return request for this order.
-    existing_request = (
-        db.query(ReturnRequest)
-        .filter(
-            ReturnRequest.order_id == order_id,
-            ReturnRequest.customer_id == current_customer.id,
-            ReturnRequest.return_status.in_(
-                ["pending_review", "approved"]
-            ),
-        )
-        .first()
-    )
-
-    if existing_request:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="An active return request already exists for this order.",
-        )
-
-    # 4. Generate a unique return number.
-    return_number = f"RET-{uuid4().hex[:12].upper()}"
-
-    # 5. Create the return request.
-    return_request = ReturnRequest(
-        return_number=return_number,
-        order_id=order.id,
-        customer_id=current_customer.id,
-        reason=request.reason.strip(),
-        comments=(
-            request.comments.strip()
-            if request.comments and request.comments.strip()
-            else None
-        ),
-        return_status="pending_review",
-    )
-
     try:
+        # 1. Lock and verify the customer's order.
+        order = (
+            db.query(Order)
+            .filter(
+                Order.id == order_id,
+                Order.customer_id == current_customer.id,
+            )
+            .with_for_update()
+            .first()
+        )
+
+        if order is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Order not found.",
+            )
+
+        # 2. Only delivered orders can be returned.
+        if order.order_status.lower() != "delivered":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Return requests can only be submitted for delivered orders.",
+            )
+
+        # 3. Prevent another active return request.
+        existing_request = (
+            db.query(ReturnRequest)
+            .filter(
+                ReturnRequest.order_id == order_id,
+                ReturnRequest.customer_id == current_customer.id,
+                ReturnRequest.return_status.in_(
+                    ["pending_review", "approved"]
+                ),
+            )
+            .first()
+        )
+
+        if existing_request:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="An active return request already exists for this order.",
+            )
+
+        # 4. Validate duplicate order item IDs.
+        requested_ids = [
+            item.order_item_id for item in request.items
+        ]
+
+        if len(requested_ids) != len(set(requested_ids)):
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Duplicate order item IDs are not allowed.",
+            )
+
+        # 5. Retrieve and lock only the requested order items.
+        order_items = (
+            db.query(OrderItem)
+            .filter(
+                OrderItem.order_id == order.id,
+                OrderItem.id.in_(requested_ids),
+            )
+            .order_by(OrderItem.id)
+            .with_for_update()
+            .all()
+        )
+
+        order_items_by_id = {
+            item.id: item for item in order_items
+        }
+
+        if len(order_items_by_id) != len(requested_ids):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="One or more items do not belong to this order.",
+            )
+
+        # 6. Calculate quantities already returned or reserved.
+        previous_returns = (
+            db.query(ReturnItem, ReturnRequest)
+            .join(
+                ReturnRequest,
+                ReturnItem.return_id == ReturnRequest.id,
+            )
+            .filter(
+                ReturnRequest.order_id == order.id,
+                ReturnRequest.return_status != "rejected",
+            )
+            .all()
+        )
+
+        previously_returned = {}
+
+        for return_item, previous_request in previous_returns:
+            item_id = return_item.order_item_id
+
+            previously_returned[item_id] = (
+                previously_returned.get(item_id, 0)
+                + return_item.quantity
+            )
+
+        # 7. Validate requested quantities.
+        for requested_item in request.items:
+            purchased_item = order_items_by_id[
+                requested_item.order_item_id
+            ]
+
+            already_returned = previously_returned.get(
+                purchased_item.id, 0
+            )
+
+            remaining_quantity = (
+                purchased_item.quantity - already_returned
+            )
+
+            if requested_item.quantity > remaining_quantity:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail={
+                        "message": (
+                            "Return quantity exceeds the remaining "
+                            "eligible quantity."
+                        ),
+                        "order_item_id": purchased_item.id,
+                        "purchased_quantity": purchased_item.quantity,
+                        "previously_returned": already_returned,
+                        "remaining_quantity": remaining_quantity,
+                        "requested_quantity": requested_item.quantity,
+                    },
+                )
+
+        # 8. Create the return request.
+        return_request = ReturnRequest(
+            return_number=f"RET-{uuid4().hex[:12].upper()}",
+            order_id=order.id,
+            customer_id=current_customer.id,
+            reason=request.reason.strip(),
+            comments=(
+                request.comments.strip()
+                if request.comments and request.comments.strip()
+                else None
+            ),
+            return_status="pending_review",
+        )
+
         db.add(return_request)
+
+        # Generate the return_request.id before creating child records.
+        db.flush()
+
+        # 9. Create individual return item records.
+        response_items = []
+
+        for requested_item in request.items:
+            purchased_item = order_items_by_id[
+                requested_item.order_item_id
+            ]
+
+            return_item = ReturnItem(
+                return_id=return_request.id,
+                order_item_id=purchased_item.id,
+                quantity=requested_item.quantity,
+            )
+
+            db.add(return_item)
+
+            response_items.append({
+                "order_item_id": purchased_item.id,
+                "product_id": purchased_item.product_id,
+                "product_name": purchased_item.product_name,
+                "purchased_quantity": purchased_item.quantity,
+                "return_quantity": requested_item.quantity,
+            })
+
+        # 10. Commit parent and child records in one transaction.
         db.commit()
         db.refresh(return_request)
+
+        return {
+            "message": "Return request submitted successfully.",
+            "return_id": return_request.id,
+            "return_number": return_request.return_number,
+            "order_id": order.id,
+            "order_number": order.order_number,
+            "reason": return_request.reason,
+            "comments": return_request.comments,
+            "return_status": return_request.return_status,
+            "items": response_items,
+            "created_at": return_request.created_at,
+        }
 
     except Exception:
         db.rollback()
         raise
-
-    return {
-        "message": "Return request submitted successfully.",
-        "return_id": return_request.id,
-        "return_number": return_request.return_number,
-        "order_id": return_request.order_id,
-        "order_number": order.order_number,
-        "reason": return_request.reason,
-        "comments": return_request.comments,
-        "return_status": return_request.return_status,
-        "created_at": return_request.created_at,
-    }
 
 
 # ---------------------------------------------------------
 # 9. VIEW CUSTOMER RETURN REQUESTS
 # ---------------------------------------------------------
 
-@router.get("/returns")
-def get_customer_return_requests(
+def create_return_request(
+    order_id: int,
+    request: ReturnRequestCreate,
     current_customer: Customer = Depends(get_current_customer),
     db: Session = Depends(get_db),
 ):
-    return_requests = (
-        db.query(ReturnRequest)
-        .filter(
-            ReturnRequest.customer_id == current_customer.id
+    try:
+        # 1. Lock and verify the customer's order.
+        order = (
+            db.query(Order)
+            .filter(
+                Order.id == order_id,
+                Order.customer_id == current_customer.id,
+            )
+            .with_for_update()
+            .first()
         )
-        .order_by(ReturnRequest.created_at.desc())
-        .all()
-    )
 
-    return {
-        "total": len(return_requests),
-        "returns": [
-            {
-                "return_id": item.id,
-                "return_number": item.return_number,
-                "order_id": item.order_id,
-                "reason": item.reason,
-                "comments": item.comments,
-                "return_status": item.return_status,
-                "created_at": item.created_at,
-                "updated_at": item.updated_at,
-            }
-            for item in return_requests
-        ],
-    }
+        if order is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Order not found.",
+            )
 
+        # 2. Only delivered orders can be returned.
+        if order.order_status.lower() != "delivered":
+            raise HTTPException(
+                status_code=400,
+                detail="Return requests can only be submitted for delivered orders.",
+            )
+
+        # 3. Prevent another active return request.
+        existing_request = (
+            db.query(ReturnRequest)
+            .filter(
+                ReturnRequest.order_id == order_id,
+                ReturnRequest.customer_id == current_customer.id,
+                ReturnRequest.return_status.in_(
+                    ["pending_review", "approved"]
+                ),
+            )
+            .first()
+        )
+
+        if existing_request:
+            raise HTTPException(
+                status_code=409,
+                detail="An active return request already exists for this order.",
+            )
+
+        # 4. Reject duplicate order item IDs.
+        requested_ids = [
+            item.order_item_id for item in request.items
+        ]
+
+        if len(requested_ids) != len(set(requested_ids)):
+            raise HTTPException(
+                status_code=422,
+                detail="Duplicate order item IDs are not allowed.",
+            )
+
+        # 5. Lock and retrieve requested order items.
+        order_items = (
+            db.query(OrderItem)
+            .filter(
+                OrderItem.order_id == order.id,
+                OrderItem.id.in_(requested_ids),
+            )
+            .order_by(OrderItem.id)
+            .with_for_update()
+            .all()
+        )
+
+        order_items_by_id = {
+            item.id: item for item in order_items
+        }
+
+        if len(order_items_by_id) != len(requested_ids):
+            raise HTTPException(
+                status_code=400,
+                detail="One or more items do not belong to this order.",
+            )
+
+        # 6. Calculate quantities already returned or reserved.
+        previous_returns = (
+            db.query(ReturnItem, ReturnRequest)
+            .join(
+                ReturnRequest,
+                ReturnItem.return_id == ReturnRequest.id,
+            )
+            .filter(
+                ReturnRequest.order_id == order.id,
+                ReturnRequest.return_status != "rejected",
+            )
+            .all()
+        )
+
+        previously_returned = {}
+
+        for return_item, previous_request in previous_returns:
+            previously_returned[return_item.order_item_id] = (
+                previously_returned.get(
+                    return_item.order_item_id, 0
+                )
+                + return_item.quantity
+            )
+
+        # 7. Validate requested quantities.
+        for requested_item in request.items:
+            purchased_item = order_items_by_id[
+                requested_item.order_item_id
+            ]
+
+            already_returned = previously_returned.get(
+                purchased_item.id, 0
+            )
+
+            remaining_quantity = (
+                purchased_item.quantity - already_returned
+            )
+
+            if requested_item.quantity > remaining_quantity:
+                raise HTTPException(
+                    status_code=409,
+                    detail={
+                        "message": (
+                            "Return quantity exceeds the remaining "
+                            "eligible quantity."
+                        ),
+                        "order_item_id": purchased_item.id,
+                        "purchased_quantity": purchased_item.quantity,
+                        "previously_returned": already_returned,
+                        "remaining_quantity": remaining_quantity,
+                        "requested_quantity": requested_item.quantity,
+                    },
+                )
+
+        # 8. Create the return request.
+        return_request = ReturnRequest(
+            return_number=f"RET-{uuid4().hex[:12].upper()}",
+            order_id=order.id,
+            customer_id=current_customer.id,
+            reason=request.reason.strip(),
+            comments=(
+                request.comments.strip()
+                if request.comments and request.comments.strip()
+                else None
+            ),
+            return_status="pending_review",
+        )
+
+        db.add(return_request)
+        db.flush()
+
+        # 9. Save individual returned items and quantities.
+        response_items = []
+
+        for requested_item in request.items:
+            purchased_item = order_items_by_id[
+                requested_item.order_item_id
+            ]
+
+            return_item = ReturnItem(
+                return_id=return_request.id,
+                order_item_id=purchased_item.id,
+                quantity=requested_item.quantity,
+            )
+
+            db.add(return_item)
+
+            response_items.append({
+                "order_item_id": purchased_item.id,
+                "product_id": purchased_item.product_id,
+                "product_name": purchased_item.product_name,
+                "purchased_quantity": purchased_item.quantity,
+                "return_quantity": requested_item.quantity,
+            })
+
+        db.commit()
+        db.refresh(return_request)
+
+        return {
+            "message": "Return request submitted successfully.",
+            "return_id": return_request.id,
+            "return_number": return_request.return_number,
+            "order_id": order.id,
+            "order_number": order.order_number,
+            "reason": return_request.reason,
+            "comments": return_request.comments,
+            "return_status": return_request.return_status,
+            "items": response_items,
+            "created_at": return_request.created_at,
+        }
+
+    except Exception:
+        db.rollback()
+        raise
 
 # ---------------------------------------------------------
 # 10. VIEW SINGLE CUSTOMER RETURN REQUEST

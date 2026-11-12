@@ -4,7 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session, joinedload
 
-
+from decimal import Decimal
+from app.models import ReturnItem
 from app.config import settings
 from app.core.dependencies import get_current_admin
 from app.core.security import (
@@ -743,6 +744,7 @@ def complete_return_request(
 # 13. CREATE REFUND FOR COMPLETED RETURN
 # ---------------------------------------------------------
 
+
 @router.post("/returns/{return_id}/refund", status_code=201)
 def create_return_refund(
     return_id: int,
@@ -750,6 +752,7 @@ def create_return_refund(
     db: Session = Depends(get_db),
 ):
     try:
+        # 1. Lock the return request.
         return_request = (
             db.query(ReturnRequest)
             .filter(ReturnRequest.id == return_id)
@@ -758,17 +761,31 @@ def create_return_refund(
         )
 
         if return_request is None:
-            raise HTTPException(status_code=404, detail="Return request not found.")
+            raise HTTPException(
+                status_code=404,
+                detail="Return request not found.",
+            )
 
+        # 2. Only completed returns can receive refunds.
         if return_request.return_status != "completed":
             raise HTTPException(
                 status_code=409,
                 detail="Only completed returns can have refunds.",
             )
 
-        existing = db.query(Refund).filter(
-            Refund.return_id == return_id
-        ).first()
+        # 3. Ensure the returned product has been inspected.
+        if return_request.inspection_status == "pending":
+            raise HTTPException(
+                status_code=409,
+                detail="Returned products must be inspected before creating a refund.",
+            )
+
+        # 4. Prevent duplicate refunds.
+        existing = (
+            db.query(Refund)
+            .filter(Refund.return_id == return_id)
+            .first()
+        )
 
         if existing:
             raise HTTPException(
@@ -776,6 +793,7 @@ def create_return_refund(
                 detail="A refund already exists for this return.",
             )
 
+        # 5. Lock the original order.
         order = (
             db.query(Order)
             .filter(Order.id == return_request.order_id)
@@ -784,22 +802,69 @@ def create_return_refund(
         )
 
         if order is None:
-            raise HTTPException(status_code=404, detail="Original order not found.")
+            raise HTTPException(
+                status_code=404,
+                detail="Original order not found.",
+            )
 
-        amount = order.total_amount
+        # 6. Retrieve the actual returned items and purchase prices.
+        returned_items = (
+            db.query(ReturnItem, OrderItem)
+            .join(
+                OrderItem,
+                ReturnItem.order_item_id == OrderItem.id,
+            )
+            .filter(
+                ReturnItem.return_id == return_request.id,
+                OrderItem.order_id == order.id,
+            )
+            .all()
+        )
 
-        if amount is None or amount <= 0:
+        if not returned_items:
+            raise HTTPException(
+                status_code=409,
+                detail="No valid returned items were found for this refund.",
+            )
+
+        # 7. Calculate refund using original purchase prices.
+        refund_amount = Decimal("0.00")
+        refund_items = []
+
+        for return_item, order_item in returned_items:
+            item_amount = (
+                Decimal(str(order_item.unit_price))
+                * return_item.quantity
+            )
+
+            refund_amount += item_amount
+
+            refund_items.append({
+                "order_item_id": order_item.id,
+                "product_id": order_item.product_id,
+                "product_name": order_item.product_name,
+                "returned_quantity": return_item.quantity,
+                "unit_price": str(order_item.unit_price),
+                "refund_amount": str(item_amount),
+            })
+
+        refund_amount = refund_amount.quantize(
+            Decimal("0.01")
+        )
+
+        if refund_amount <= 0:
             raise HTTPException(
                 status_code=409,
                 detail="Invalid refund amount.",
             )
 
+        # 8. Create the refund record.
         refund = Refund(
             refund_number=f"REF-{uuid4().hex[:12].upper()}",
             return_id=return_request.id,
             order_id=order.id,
             customer_id=return_request.customer_id,
-            refund_amount=amount,
+            refund_amount=refund_amount,
             refund_status="pending",
         )
 
@@ -808,13 +873,14 @@ def create_return_refund(
         db.refresh(refund)
 
         return {
-            "message": "Refund record created successfully.",
+            "message": "Partial refund calculated and created successfully.",
             "refund_id": refund.id,
             "refund_number": refund.refund_number,
             "return_id": refund.return_id,
             "order_id": refund.order_id,
-            "refund_amount": refund.refund_amount,
+            "refund_amount": str(refund.refund_amount),
             "refund_status": refund.refund_status,
+            "items": refund_items,
         }
 
     except Exception:
@@ -956,6 +1022,7 @@ class ReturnInspectionRequest(BaseModel):
     note: str | None = Field(default=None, max_length=1000)
 
 
+
 @router.patch("/returns/{return_id}/inspect")
 def inspect_return(
     return_id: int,
@@ -972,7 +1039,10 @@ def inspect_return(
         )
 
         if return_request is None:
-            raise HTTPException(status_code=404, detail="Return not found.")
+            raise HTTPException(
+                status_code=404,
+                detail="Return not found.",
+            )
 
         if return_request.return_status != "completed":
             raise HTTPException(
@@ -986,62 +1056,87 @@ def inspect_return(
                 detail="This return has already been inspected.",
             )
 
-        items = (
-            db.query(OrderItem)
-            .filter(OrderItem.order_id == return_request.order_id)
+        # Retrieve only the items included in this return.
+        return_items = (
+            db.query(ReturnItem)
+            .filter(ReturnItem.return_id == return_id)
             .all()
         )
 
-        if not items:
+        if not return_items:
             raise HTTPException(
                 status_code=409,
-                detail="No order items found for this return.",
+                detail="No items were recorded for this return.",
             )
 
+        restored_items = []
+
         if payload.resellable:
-            # Validate all products before changing any stock.
-            locked_products = {}
+            # Lock all returned products before updating inventory.
+            product_ids = sorted({
+                item.order_item.product_id
+                for item in return_items
+            })
 
-            for item in items:
-                product = (
-                    db.query(Product)
-                    .filter(Product.product_id == item.product_id)
-                    .with_for_update()
-                    .first()
-                )
+            products = (
+                db.query(Product)
+                .filter(Product.product_id.in_(product_ids))
+                .order_by(Product.product_id)
+                .with_for_update()
+                .all()
+            )
 
-                if product is None:
+            products_by_id = {
+                product.product_id: product
+                for product in products
+            }
+
+            # Validate all products before modifying stock.
+            for item in return_items:
+                product_id = item.order_item.product_id
+
+                if product_id not in products_by_id:
                     raise HTTPException(
                         status_code=409,
-                        detail=f"Product {item.product_id} not found.",
+                        detail=f"Product {product_id} not found.",
                     )
 
-                locked_products[item.product_id] = product
+            # Restore only the quantities actually returned.
+            for item in return_items:
+                order_item = item.order_item
+                product = products_by_id[order_item.product_id]
 
-            # Restore stock for every returned order item.
-            for item in items:
-                product = locked_products[item.product_id]
                 product.stock_quantity += item.quantity
+
+                restored_items.append({
+                    "product_id": product.product_id,
+                    "product_name": product.product_name,
+                    "restored_quantity": item.quantity,
+                    "available_stock": product.stock_quantity,
+                })
 
             return_request.inspection_status = "resellable"
             return_request.restocked_at = datetime.now(timezone.utc)
 
-            message = "Inspection completed. Inventory restored successfully."
+            message = "Inspection completed. Returned quantities restored successfully."
 
         else:
             return_request.inspection_status = "damaged"
+
             message = "Inspection completed. Damaged products were not restocked."
 
         if payload.note:
             return_request.admin_note = payload.note
 
         db.commit()
+        db.refresh(return_request)
 
         return {
             "message": message,
             "return_id": return_request.id,
             "return_number": return_request.return_number,
             "inspection_status": return_request.inspection_status,
+            "restocked_items": restored_items,
             "restocked_at": return_request.restocked_at,
         }
 
