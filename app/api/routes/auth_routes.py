@@ -1,3 +1,4 @@
+import logging
 
 from datetime import datetime, timedelta, timezone
 
@@ -44,7 +45,7 @@ from app.services.otp_service import (
     get_verified_password_reset,
 )
 
-
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
@@ -380,6 +381,7 @@ def login_customer(
 # POST /auth/forgot-password/request-otp
 # ---------------------------------------------------------
 
+
 @router.post(
     "/forgot-password/request-otp",
     response_model=MessageResponse,
@@ -422,27 +424,41 @@ def request_password_reset_otp(
         )
 
     except Exception as exc:
-        reset_record = (
-            db.query(PasswordResetOTP)
-            .filter(
-                PasswordResetOTP.customer_id == customer.id
-            )
-            .first()
+        # Log the actual error in the backend terminal.
+        # Do not expose SMTP credentials or internal details to customers.
+        logger.exception(
+            "Password reset OTP email delivery failed."
         )
 
-        if reset_record:
-            reset_record.expires_at = datetime.now(timezone.utc)
-            db.commit()
+        try:
+            reset_record = (
+                db.query(PasswordResetOTP)
+                .filter(
+                    PasswordResetOTP.customer_id == customer.id
+                )
+                .first()
+            )
+
+            if reset_record:
+                reset_record.expires_at = datetime.now(timezone.utc)
+                db.commit()
+
+        except Exception:
+            db.rollback()
+            logger.exception(
+                "Failed to invalidate password reset OTP."
+            )
 
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=(
                 "Unable to send the password reset email. "
-                "Please try again after the cooldown."
+                "Please try again later."
             ),
         ) from exc
 
     return MessageResponse(message=generic_message)
+
 
 
 # ---------------------------------------------------------
