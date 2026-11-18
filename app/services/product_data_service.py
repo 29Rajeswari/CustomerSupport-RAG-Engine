@@ -1,3 +1,4 @@
+#app/services/product_data_service.py
 
 import re
 from decimal import Decimal
@@ -14,27 +15,58 @@ def search_products(
     category: str | None = None,
     max_price: Decimal | None = None,
     limit: int = 10,
+    in_stock: bool | None = None,
 ) -> list[dict]:
     """
     Search active products using product name, ID,
-    description and category.
+    description, category, price and stock availability.
 
     Supports:
     - Product name searches
     - Multiple brand searches using OR
     - Category filtering
     - Maximum price filtering
+    - In-stock product filtering
+    - Out-of-stock product filtering
+
+    Args:
+        db: SQLAlchemy database session.
+        query: Product name, product ID or search terms.
+        category: Product category.
+        max_price: Maximum product price.
+        limit: Maximum number of products to return.
+        in_stock:
+            True  = Only products with stock_quantity > 0.
+            False = Only products with stock_quantity == 0.
+            None  = Return products regardless of stock.
     """
 
+    # Validate result limit.
     if not 1 <= limit <= 50:
         raise ValueError("Limit must be between 1 and 50.")
 
+    # Start with active products.
     statement = db.query(Product).filter(
         Product.is_active.is_(True)
     )
 
-    # Product name or ID search.
-    if query:
+    # -------------------------------------------------
+    # 1. STOCK AVAILABILITY FILTER
+    # -------------------------------------------------
+    if in_stock is True:
+        statement = statement.filter(
+            Product.stock_quantity > 0
+        )
+
+    elif in_stock is False:
+        statement = statement.filter(
+            Product.stock_quantity == 0
+        )
+
+    # -------------------------------------------------
+    # 2. PRODUCT NAME OR PRODUCT ID SEARCH
+    # -------------------------------------------------
+    if query is not None:
         search_term = query.strip()
 
         if not search_term:
@@ -49,6 +81,9 @@ def search_products(
             )
             if term.strip()
         ]
+
+        if not search_terms:
+            raise ValueError("Search query cannot be empty.")
 
         search_conditions = []
 
@@ -65,8 +100,10 @@ def search_products(
             or_(*search_conditions)
         )
 
-    # Category filtering.
-    if category:
+    # -------------------------------------------------
+    # 3. CATEGORY FILTER
+    # -------------------------------------------------
+    if category is not None:
         normalized_category = category.strip()
 
         if not normalized_category:
@@ -76,7 +113,9 @@ def search_products(
             Product.category.ilike(normalized_category)
         )
 
-    # Maximum price filtering.
+    # -------------------------------------------------
+    # 4. MAXIMUM PRICE FILTER
+    # -------------------------------------------------
     if max_price is not None:
         if max_price < 0:
             raise ValueError("Maximum price cannot be negative.")
@@ -85,6 +124,9 @@ def search_products(
             Product.price <= max_price
         )
 
+    # -------------------------------------------------
+    # 5. EXECUTE DATABASE QUERY
+    # -------------------------------------------------
     products = (
         statement
         .order_by(Product.product_name.asc())
@@ -92,6 +134,9 @@ def search_products(
         .all()
     )
 
+    # -------------------------------------------------
+    # 6. FORMAT PRODUCT RESULTS
+    # -------------------------------------------------
     return [
         {
             "product_id": product.product_id,
@@ -110,7 +155,9 @@ def get_product_by_id(
     db: Session,
     product_id: str,
 ) -> dict | None:
-    """Retrieve one active product using its product ID."""
+    """
+    Retrieve one active product using its product ID.
+    """
 
     if not product_id or not product_id.strip():
         raise ValueError("Product ID cannot be empty.")
