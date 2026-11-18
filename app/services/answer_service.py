@@ -1,7 +1,8 @@
+# app/services/answer_service.py
 
 import re
 from decimal import Decimal, InvalidOperation
-
+from app.models import Product
 from sqlalchemy.orm import Session
 
 from app.retrieval.search import search_relevant_chunks
@@ -16,63 +17,22 @@ from app.services.order_data_service import (
 SYSTEM_PROMPT = """
 You are an Indian e-commerce customer support assistant.
 
-You receive two possible information sources:
+You receive information from:
+1. Live database records for products, orders and shipments.
+2. Retrieved policy documents for warranty, returns, refunds and exchanges.
 
-1. Live database information:
-   Current product prices, stock, customer orders and shipments.
-
-2. Retrieved policy documents:
-   Warranty, returns, refunds, exchanges and other policies.
-
-IMPORTANT RULES:
-
-1. Use only the supplied live database information
-   and retrieved document evidence.
-
-2. Never invent product prices, stock quantities,
-   order details, tracking numbers or delivery dates.
-
-3. Treat live database information as authoritative
-   for current product and order details.
-
-4. Treat policy documents as authoritative for
-   warranty, returns, refunds and coverage conditions.
-
-5. Never use an old document to override a current
-   product price or stock quantity.
-
-6. Never claim customer-specific warranty eligibility
-   without verification.
-
-7. Distinguish between manufacturing defects,
-   hardware failures, physical damage, water damage
-   and unauthorized repairs.
-
-8. Do not assume every battery problem is covered
-   or excluded. Follow the supplied policy exactly.
-
-9. If policy evidence is insufficient, clearly say so.
-
-10. Never guarantee a repair, replacement, refund
-    or claim approval without verified eligibility.
-
-11. If a document is fictional, sample or unofficial,
-    clearly identify it as sample information.
-
-12. 12 months equals one year.
-    18 months equals one and a half years.
-    24 months equals two years.
-    6 months equals half a year.
-
-13. Do not expose internal database IDs or private
-    information belonging to other customers.
-
-14. If no matching product or order is found,
-    clearly explain that it could not be found.
-
-15. Never make up missing information.
-
-Use simple, polite language.
+Rules:
+- Use only the supplied live database information and retrieved document evidence.
+- Live database information is authoritative for current prices, stock, orders and shipments.
+- Policy documents are authoritative for policy conditions.
+- Never invent prices, stock quantities, order details, tracking numbers or delivery dates.
+- Never combine information from different orders.
+- Never claim warranty, refund, replacement or repair eligibility without evidence.
+- If policy evidence is insufficient, clearly say so.
+- If a document is sample, fictional or unofficial, identify it as sample information.
+- Do not expose internal database IDs or other customers' private information.
+- If requested information is unavailable, say that it could not be verified.
+- Use simple, polite language.
 """
 
 
@@ -88,16 +48,15 @@ SAMPLE_DOCUMENT_MARKERS = (
 )
 
 SAMPLE_WARNING = (
-    "Important: This answer is based on fictional or sample data "
-    "used for testing, not verified official product policy. "
-    "Please confirm the actual warranty with the manufacturer "
-    "or authorized seller."
+    "Important: The retrieved information comes from sample, "
+    "fictional or testing documents. It has not been verified "
+    "as an official store policy."
 )
 
 
 def contains_sample_warning(content: str) -> bool:
+    """Return True when retrieved policy content is marked as sample data."""
     normalized = content.casefold()
-
     return any(
         marker in normalized
         for marker in SAMPLE_DOCUMENT_MARKERS
@@ -105,12 +64,8 @@ def contains_sample_warning(content: str) -> bool:
 
 
 def detect_category(question: str) -> str | None:
-    """
-    Detect policy categories only.
-    Product categories are handled separately.
-    """
-
-    text = question.casefold()
+    """Detect the specific policy category in a customer question."""
+    text = re.sub(r"\s+", " ", question.casefold()).strip()
 
     category_keywords = {
         "extended_warranty": (
@@ -121,11 +76,14 @@ def detect_category(question: str) -> str | None:
             "protection plan",
         ),
         "cancellation": (
+            "cancellation",
             "cancel my order",
             "cancel the order",
-            "order cancellation",
             "cancel this order",
             "cancel an order",
+            "how do i cancel",
+            "can i cancel",
+            "order cancel",
         ),
         "delivery": (
             "delivery policy",
@@ -136,28 +94,21 @@ def detect_category(question: str) -> str | None:
             "shipping charges",
             "delivery",
             "shipping",
-            "arrive",
             "arrival",
-            "track my order",
-            "track order",
-            "track my shipment",
-            "track shipment",
-            "shipment tracking",
-            "shipping status",
-            "delivery status",
-            "where is my shipment",
-            "when will my order",
-            "when is my order",
         ),
         "exchange": (
             "exchange",
-            "replace my product",
             "replacement",
+            "replace my product",
+        ),
+        "refund": (
+            "refund",
+            "money back",
+            "refund policy",
         ),
         "return": (
             "return",
-            "refund",
-            "money back",
+            "return policy",
         ),
         "warranty": (
             "warranty",
@@ -174,46 +125,60 @@ def detect_category(question: str) -> str | None:
 
     return None
 
-
 def is_order_request(question: str) -> bool:
-    """Identify questions about a customer's own orders."""
+    """Identify questions about the authenticated customer's orders."""
+    text = re.sub(r"\s+", " ", question.casefold()).strip()
 
-    text = question.casefold()
-
-    order_number = re.search(
-        r"\bORD-[A-Z0-9]+\b",
-        question.upper(),
-    )
-
-    if order_number:
+    if re.search(r"\bORD-[A-Z0-9]+\b", question.upper()):
         return True
 
-    order_keywords = (
-        "my order",
-        "my orders",
-        "recent orders",
-        "order status",
-        "track my order",
-        "track order",
-        "tracking number",
-        "where is my order",
-        "where's my order",
-        "shipment status",
-        "has my order",
-        "when will my order",
-        "when is my order",
+    order_patterns = (
+        r"\bmy\s+orders?\b",
+        r"\b(show|view|check|get|list)\s+my\s+orders?\b",
+        r"\b(last|latest|previous|recent|most recent)\s+orders?\b",
+        r"\bmy\s+(last|latest|previous|recent|most recent)\s+orders?\b",
+        r"\b(order|orders)\s+history\b",
+        r"\b(show|view|check|get)\s+my\s+order\s+history\b",
+        r"\btrack\s+(my\s+)?orders?\b",
+        r"\btracking\s+(number|details|status)\b",
+        r"\bwhere\s+is\s+my\s+order\b",
+        r"\bwhere's\s+my\s+order\b",
+        r"\bshipment\s+status\b",
+        r"\bhas\s+my\s+order\b",
+        r"\bwhen\s+(will|is)\s+my\s+order\b",
+        r"\b(order|purchase)\s+(status|details|tracking)\b",
+        r"\bmy\s+(recent|previous|last)\s+purchase\b",
+        r"\bshow\s+my\s+previous\s+order\b",
     )
 
-    return any(keyword in text for keyword in order_keywords)
+    if any(re.search(pattern, text) for pattern in order_patterns):
+        return True
 
+    tracking_pattern = (
+        r"\b(track|tracking|where is|check|status of)\b"
+        r".*\b(my|the)\b"
+    )
+    return bool(re.search(tracking_pattern, text))
+
+
+def is_latest_order_request(question: str) -> bool:
+    """Identify requests for the customer's most recent order."""
+    text = re.sub(r"\s+", " ", question.casefold()).strip()
+
+    patterns = (
+        r"\b(last|latest|previous|most recent)\s+(?:product\s+)?order\b",
+        r"\bmy\s+(last|latest|previous|most recent)\s+(?:product\s+)?order\b",
+        r"\btrack\s+my\s+(last|latest|previous)\s+order\b",
+        r"\bmy\s+(last|latest|previous|most recent)\s+purchase\b",
+    )
+    return any(re.search(pattern, text) for pattern in patterns)
 
 
 def is_product_request(
     question: str,
     product_id: str | None = None,
 ) -> bool:
-    """Identify product price, availability and product-name searches."""
-
+    """Identify product catalogue, price and availability questions."""
     if product_id:
         return True
 
@@ -222,7 +187,14 @@ def is_product_request(
     product_keywords = (
         "price",
         "cost",
+        "cheap",
+        "cheaper",
+        "cheapest",
+        "costly",
+        "expensive",
         "stock",
+        "stocks",
+        "zero stock",
         "available",
         "availability",
         "in stock",
@@ -257,19 +229,16 @@ def is_product_request(
 
 def extract_order_number(question: str) -> str | None:
     """Extract an order number such as ORD-ABC123."""
-
     match = re.search(
         r"\bORD-[A-Z0-9]+\b",
         question.upper(),
     )
-
     return match.group(0) if match else None
 
 
 def detect_product_category(question: str) -> str | None:
     """Map customer product terms to database categories."""
-
-    text = question.lower()
+    text = question.casefold()
 
     category_mapping = {
         "Mobiles": (
@@ -302,11 +271,161 @@ def detect_product_category(question: str) -> str | None:
     return None
 
 
+
+
+def detect_stock_filter(question: str) -> bool | None:
+    """Return True for in-stock, False for out-of-stock, otherwise None."""
+    text = re.sub(r"[\s_-]+", " ", question.casefold()).strip()
+
+    out_of_stock_patterns = (
+        r"\bout of stock\b",
+        r"\bnot available\b",
+        r"\bunavailable\b",
+        r"\bno stock\b",
+        r"\bzero stocks?\b",
+        r"\bproducts? with zero stocks?\b",
+    )
+    in_stock_patterns = (
+        r"\bonly available products?\b",
+        r"\bavailable products?\b",
+        r"\bonly in stock\b",
+        r"\bin stock products?\b",
+        r"\bproducts? in stock\b",
+    )
+
+    if any(re.search(pattern, text) for pattern in out_of_stock_patterns):
+        return False
+    if any(re.search(pattern, text) for pattern in in_stock_patterns):
+        return True
+    return None
+
+
+def is_product_comparison_request(question: str) -> bool:
+    """Identify explicit requests to compare named catalogue products."""
+    text = question.casefold()
+    return bool(re.search(
+        r"\b(compare|comparison|difference between|vs|versus)\b",
+        text,
+    ))
+
+
+def find_products_for_comparison(db: Session, question: str) -> list[dict]:
+    """Find active catalogue products explicitly named in a comparison question."""
+    catalogue = (
+        db.query(Product)
+        .filter(Product.is_active.is_(True))
+        .all()
+    )
+    text = question.casefold()
+    matches = []
+
+    for product in catalogue:
+        name = (product.product_name or "").strip()
+        if not name:
+            continue
+
+        brand = name.split()[0]
+        full_name_match = bool(re.search(
+            rf"(?<!\w){re.escape(name.casefold())}(?!\w)", text
+        ))
+        brand_match = bool(re.search(
+            rf"(?<!\w){re.escape(brand.casefold())}(?!\w)", text
+        ))
+
+        if full_name_match or brand_match:
+            matches.append({
+                "product_id": product.product_id,
+                "product_name": name,
+                "category": product.category,
+                "price": product.price,
+                "stock_quantity": product.stock_quantity,
+                "in_stock": (product.stock_quantity or 0) > 0,
+            })
+
+    # Avoid returning duplicate records if a name matched by both rules.
+    unique = {}
+    for item in matches:
+        unique[item["product_id"]] = item
+    return list(unique.values())
+
+
+def format_product_comparison(products: list[dict]) -> str:
+    """Format a factual side-by-side comparison from live database values."""
+    lines = ["Here is the comparison based on the latest inventory data:"]
+    for product in products:
+        availability = "In stock" if product["in_stock"] else "Out of stock"
+        lines.extend([
+            "",
+            f"Product: {product['product_name']}",
+            f"Product ID: {product['product_id']}",
+            f"Category: {product['category']}",
+            f"Price: {_format_inr(product['price'])}",
+            f"Available quantity: {product['stock_quantity']}",
+            f"Availability: {availability}",
+        ])
+
+    if len(products) == 2:
+        try:
+            first_price = Decimal(str(products[0]["price"]))
+            second_price = Decimal(str(products[1]["price"]))
+            if first_price < second_price:
+                lines.extend(["", f"Lower-priced option: {products[0]['product_name']}"])
+            elif second_price < first_price:
+                lines.extend(["", f"Lower-priced option: {products[1]['product_name']}"])
+            else:
+                lines.extend(["", "Both products have the same price."])
+        except (InvalidOperation, TypeError, ValueError):
+            pass
+
+    return "\n".join(lines)
+
+
+def is_multi_product_comparison(db: Session, question: str) -> bool:
+    """Treat a named 'A and B' catalogue request as a comparison."""
+    if not re.search(r"\band\b", question.casefold()):
+        return False
+    return len(find_products_for_comparison(db, question)) >= 2
+
+
+def is_latest_model_request(question: str) -> bool:
+    """Identify requests that ask which catalogue model is the newest."""
+    text = re.sub(r"\s+", " ", question.casefold()).strip()
+    return bool(re.search(
+        r"\b(latest|lastest|newest|most recent)\b"
+        r"(?:\s+\w+){0,2}\s+\b(model|product|products|laptop|laptops|phone|phones|mobile|mobiles)\b"
+        r"|\b(latest|lastest|newest)\s+model\b",
+        text,
+    ))
+
+
+def is_price_ranking_request(question: str) -> str | None:
+    """Return ascending/descending for explicit cheapest or most expensive requests."""
+    text = question.casefold()
+    if re.search(r"\b(cheapest|cheaper|cheap|least expensive|lowest price)\b", text):
+        return "ascending"
+    if re.search(r"\b(costly|costlier|expensive|most expensive|highest price)\b", text):
+        return "descending"
+    return None
+
+
+def requested_recommendation_categories(question: str) -> set[str]:
+    """Identify all product categories explicitly requested in a recommendation."""
+    text = question.casefold()
+    categories = set()
+    if re.search(r"\b(laptop|laptops)\b", text):
+        categories.add("Laptops")
+    if re.search(r"\b(phone|phones|mobile|mobiles|smartphone|smartphones)\b", text):
+        categories.add("Mobiles")
+    if re.search(r"\b(accessor(?:y|ies)|earbuds|headphones|mouse|cable|speaker)\b", text):
+        categories.add("Accessories")
+    return categories
+
+
 def extract_product_query(
     question: str,
     product_id: str | None = None,
 ) -> str | None:
-    """Extract meaningful product names or brands from a question."""
+    """Extract a product name or return None for category-only searches."""
 
     if product_id:
         return product_id.strip().upper()
@@ -321,7 +440,7 @@ def extract_product_query(
 
     text = question.casefold().strip()
 
-    # Remove price conditions before product-name extraction.
+    # Remove price conditions.
     text = re.sub(
         r"\b(?:under|below|less than|within)\s+"
         r"(?:₹|rs\.?\s*)?\d+(?:,\d{3})*(?:\.\d+)?"
@@ -332,41 +451,33 @@ def extract_product_query(
 
     text = re.sub(
         r"\bmaximum\s+(?:price\s+)?(?:of\s+)?"
-        r"(?:₹|rs\.?\s*)?\d+(?:,\d{3})*(?:\.\d+)?"
-        r"\s*(?:rupees|rs\.?)?",
+        r"(?:₹|rs\.?\s*)?\d+(?:,\d{3})*(?:\.\d+)?",
         " ",
         text,
     )
 
     remove_phrases = (
-        r"\bshow me\b",
-        r"\bavailble\b",
-        r"\bshow\b",
-        r"\bhi\b",
-        r"\bhello\b",
-        r"\bhey\b",
-        r"\bcan\b",
-        r"\bcould\b",
-        r"\bwhat\b",
-        r"\bwhich\b",
-        r"\byour\b",
-        r"\bstore\b",
-        r"\bin\b",
-        r"\bour\b",
-        r"\bdo\b",
-        r"\bdoes\b",
-        r"\bany\b",
-        r"\bthere\b",
-        r"\bwant\b",
-        r"\bme\b",
-        r"\bnew\b",
+        r"\bbest\b",
+        r"\bcheap\b",
+        r"\bcheaper\b",
+        r"\bcheapest\b",
+        r"\bcostly\b",
+        r"\bcostlier\b",
+        r"\bexpensive\b",
+        r"\bcheapest\b",
         r"\blatest\b",
+        r"\blastest\b",
         r"\bmodel\b",
-        r"\bmodels\b",
-        r"\bseries\b",
-        r"\bdevice\b",
-        r"\bdevices\b",
+        r"\btop\b",
+        r"\bgood\b",
+        r"\brecommended\b",
+        r"\brecommend\b",
+        r"\bsuggest\b",
+        r"\bshow me\b",
+        r"\bshow\b",
         r"\blist\b",
+        r"\bfind\b",
+        r"\bsearch for\b",
         r"\btell me about\b",
         r"\bdetails about\b",
         r"\bdetails of\b",
@@ -375,34 +486,29 @@ def extract_product_query(
         r"\bwhat is\b",
         r"\bwhat are\b",
         r"\bwhich\b",
+        r"\bcan\b",
+        r"\bcould\b",
+        r"\bplease\b",
+        r"\bonly\b",
         r"\bavailable\b",
         r"\bin stock\b",
         r"\bstock\b",
         r"\bprice\b",
         r"\bcost\b",
-        r"\bplease\b",
-        r"\bthe\b",
         r"\bproduct\b",
         r"\bproducts\b",
         r"\ball\b",
-        r"\bof\b",
-        r"\bare\b",
-        r"\bis\b",
-        r"\byou\b",
-        r"\bi\b",
+        r"\bthe\b",
+        r"\bin\b",
+        r"\byour\b",
+        r"\bour\b",
+        r"\bstore\b",
+        r"\bany\b",
+        r"\bme\b",
         r"\bwant\b",
+        r"\bi\b",
+        r"\byou\b",
         r"\bto buy\b",
-        r"\bmobile\b",
-        r"\bmobiles\b",
-        r"\bsmartphone\b",
-        r"\bsmartphones\b",
-        r"\bphone\b",
-        r"\bphones\b",
-        r"\blaptop\b",
-        r"\blaptops\b",
-        r"\bearbuds\b",
-        r"\bheadphones\b",
-        r"\baccessories\b",
         r"\brupees\b",
     )
 
@@ -412,18 +518,30 @@ def extract_product_query(
     text = re.sub(r"[^\w\s-]", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
 
+    # Category-only searches should use the category filter,
+    # not the product-name search.
+    category_terms = {
+        "mobile",
+        "mobiles",
+        "phone",
+        "phones",
+        "smartphone",
+        "smartphones",
+        "laptop",
+        "laptops",
+        "accessory",
+        "accessories",
+    }
+
+    if text in category_terms:
+        return None
+
     return text or None
 
 
-def extract_max_price(question: str) -> Decimal | None:
-    """
-    Extract a maximum price from questions such as:
-    - smartphones under 20000
-    - laptops below Rs. 50000
-    - mobiles under ₹20,000
-    - products less than 15000 rupees
-    """
 
+def extract_max_price(question: str) -> Decimal | None:
+    """Extract a maximum price from common customer question formats."""
     text = question.casefold().replace(",", "")
 
     patterns = (
@@ -437,7 +555,6 @@ def extract_max_price(question: str) -> Decimal | None:
 
     for pattern in patterns:
         match = re.search(pattern, text)
-
         if match:
             try:
                 return Decimal(match.group(1))
@@ -452,7 +569,6 @@ def should_search_policy(
     order_request: bool,
 ) -> bool:
     """Avoid unnecessary policy retrieval for ordinary tracking questions."""
-
     category = detect_category(question)
 
     if category is None:
@@ -464,6 +580,309 @@ def should_search_policy(
     return True
 
 
+def filter_orders_by_mentioned_product(
+    orders: list[dict],
+    question: str,
+) -> list[dict]:
+    """
+    Filter orders by a complete purchased product name mentioned in the
+    customer's question. If no product name matches, preserve the original
+    order list so a general order question can ask the customer to choose.
+    """
+    normalized_question = question.casefold()
+
+    matching_orders = [
+        order
+        for order in orders
+        if any(
+            item.get("product_name", "").casefold() in normalized_question
+            for item in order.get("items", [])
+            if item.get("product_name")
+        )
+    ]
+
+    return matching_orders if matching_orders else orders
+
+
+def format_product_results(products: list[dict]) -> str:
+    """Format database product records without asking the LLM to invent details."""
+    lines = []
+
+    for product in products:
+        availability = (
+            "In stock"
+            if product["in_stock"]
+            else "Out of stock"
+        )
+
+        lines.append(
+            f"Product: {product['product_name']}\n"
+            f"Product ID: {product['product_id']}\n"
+            f"Category: {product['category']}\n"
+            f"Price: ₹{product['price']}\n"
+            f"Available quantity: {product['stock_quantity']}\n"
+            f"Availability: {availability}"
+        )
+
+    return (
+        "Here is the latest product information from our inventory:\n\n"
+        + "\n\n".join(lines)
+    )
+
+
+def _format_inr(value) -> str:
+    """Format a database amount as Indian Rupees without changing its value."""
+    try:
+        amount = Decimal(str(value))
+    except (InvalidOperation, TypeError, ValueError):
+        return f"₹{value}"
+
+    if amount == amount.to_integral_value():
+        return f"₹{int(amount):,}"
+    return f"₹{amount:,.2f}"
+
+
+def _format_order_date(value) -> str | None:
+    """Format an ISO date/datetime from the database for customer display."""
+    if not value:
+        return None
+
+    from datetime import datetime, date
+
+    if isinstance(value, datetime):
+        parsed = value
+    elif isinstance(value, date):
+        return value.strftime("%B %d, %Y").replace(" 0", " ")
+    else:
+        try:
+            parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        except (TypeError, ValueError):
+            return str(value)
+
+    return parsed.strftime("%B %d, %Y").replace(" 0", " ")
+
+
+def _order_created_at_sort_key(order: dict) -> float:
+    """Return a sortable timestamp; undated orders sort after dated orders."""
+    from datetime import datetime, date, timezone
+
+    value = order.get("created_at")
+    if not value:
+        return float("-inf")
+
+    try:
+        if isinstance(value, datetime):
+            parsed = value
+        elif isinstance(value, date):
+            parsed = datetime.combine(value, datetime.min.time())
+        else:
+            parsed = datetime.fromisoformat(
+                str(value).replace("Z", "+00:00")
+            )
+
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+
+        return parsed.timestamp()
+    except (TypeError, ValueError, OverflowError):
+        return float("-inf")
+
+
+def format_customer_order_answer(order: dict, question: str) -> str:
+    """
+    Build order answers from database values directly.
+    The LLM is deliberately bypassed for customer-specific order records.
+    """
+    order_number = order.get("order_number", "your order")
+    order_status = str(order.get("order_status") or "unknown").casefold()
+    payment_status = str(order.get("payment_status") or "unknown").casefold()
+    items = order.get("items") or []
+    shipment = order.get("shipment") or {}
+    text = question.casefold()
+
+    asks_for_items = any(
+        phrase in text
+        for phrase in (
+            "what product", "which product", "products did",
+            "items did", "what did i buy", "what did i purchase",
+            "purchased in", "bought in",
+        )
+    )
+
+    lines = [f"Order: {order_number}"]
+
+    if asks_for_items:
+        lines.append("Products purchased:")
+        if items:
+            for item in items:
+                name = item.get("product_name") or "Product"
+                quantity = item.get("quantity", "Not available")
+                unit_price = item.get("unit_price")
+                subtotal = item.get("subtotal")
+
+                lines.append(f"- {name}")
+                lines.append(f"  Quantity: {quantity}")
+                if unit_price is not None:
+                    lines.append(f"  Unit price: {_format_inr(unit_price)}")
+                if subtotal is not None:
+                    lines.append(f"  Subtotal: {_format_inr(subtotal)}")
+        else:
+            lines.append("Product details are not available for this order.")
+
+        lines.append(f"Order status: {order_status.title()}")
+        if payment_status != "unknown":
+            lines.append(f"Payment status: {payment_status.title()}")
+
+        total = order.get("total_amount")
+        if total is not None:
+            total_label = (
+                "Total amount paid"
+                if payment_status == "paid"
+                else "Order total"
+            )
+            lines.append(f"{total_label}: {_format_inr(total)}")
+
+        placed_date = _format_order_date(order.get("created_at"))
+        if placed_date:
+            lines.append(f"Order date: {placed_date}")
+
+        return "\n".join(lines)
+
+    # Order status is authoritative. Never let a shipment row override
+    # a cancelled order's status.
+    if order_status == "cancelled":
+        lines.append("Order status: Cancelled")
+        lines.append("This order is not eligible for shipment tracking.")
+        if payment_status != "unknown":
+            lines.append(f"Payment status: {payment_status.title()}")
+        return "\n".join(lines)
+
+    lines.append(f"Order status: {order_status.title()}")
+
+    courier = shipment.get("courier_name")
+    tracking_number = shipment.get("tracking_number")
+    shipment_status = str(shipment.get("shipment_status") or "").casefold()
+
+    if courier:
+        lines.append(f"Courier: {courier}")
+    if tracking_number:
+        lines.append(f"Tracking number: {tracking_number}")
+
+    # Do not describe a shipment as delivered unless the order itself
+    # is also marked delivered.
+    if order_status == "delivered":
+        delivered_date = _format_order_date(shipment.get("delivered_at"))
+        if delivered_date:
+            lines.append(f"Delivery date: {delivered_date}")
+        elif shipment_status == "delivered":
+            lines.append("Delivery status: Delivered")
+    elif shipment_status:
+        lines.append(f"Shipment status: {shipment_status.replace('_', ' ').title()}")
+
+    estimated_date = _format_order_date(shipment.get("estimated_delivery"))
+    if order_status not in ("delivered", "cancelled") and estimated_date:
+        lines.append(f"Estimated delivery: {estimated_date}")
+
+    if payment_status != "unknown":
+        lines.append(f"Payment status: {payment_status.title()}")
+
+    return "\n".join(lines)
+
+
+
+def resolve_product_id(
+    db: Session,
+    question: str,
+    supplied_product_id: str | None = None,
+) -> str | None:
+    """
+    Identify a product from its complete name or a unique brand token.
+
+    Ambiguous matches are never resolved arbitrarily.
+    """
+
+    if supplied_product_id:
+        product = (
+            db.query(Product)
+            .filter(
+                Product.product_id == supplied_product_id.strip().upper(),
+                Product.is_active.is_(True),
+            )
+            .first()
+        )
+
+        return product.product_id if product else None
+
+    normalized_question = question.casefold()
+
+    products = (
+        db.query(Product)
+        .filter(Product.is_active.is_(True))
+        .all()
+    )
+
+    # First: match complete product names.
+    exact_name_matches = [
+        product
+        for product in products
+        if product.product_name
+        and re.search(
+            rf"(?<!\w){re.escape(product.product_name.casefold())}(?!\w)",
+            normalized_question,
+        )
+    ]
+
+    if exact_name_matches:
+        longest_length = max(
+            len(product.product_name)
+            for product in exact_name_matches
+        )
+
+        best_matches = [
+            product
+            for product in exact_name_matches
+            if len(product.product_name) == longest_length
+        ]
+
+        matching_ids = {
+            product.product_id for product in best_matches
+        }
+
+        return (
+            best_matches[0].product_id
+            if len(matching_ids) == 1
+            else None
+        )
+
+    # Second: allow a unique first-token brand match.
+    brand_matches = []
+
+    for product in products:
+        if not product.product_name:
+            continue
+
+        brand = product.product_name.split()[0].casefold()
+
+        if len(brand) < 3:
+            continue
+
+        if re.search(
+            rf"(?<!\w){re.escape(brand)}(?!\w)",
+            normalized_question,
+        ):
+            brand_matches.append(product)
+
+    matching_ids = {
+        product.product_id for product in brand_matches
+    }
+
+    if len(matching_ids) == 1:
+        return brand_matches[0].product_id
+
+    return None
+
+
+
 def answer_customer_question(
     db: Session,
     question: str,
@@ -473,14 +892,14 @@ def answer_customer_question(
     customer_id: int | None = None,
 ) -> dict:
     """
-    Combine live PostgreSQL information and RAG evidence
-    to answer customer support questions.
+    Combine live PostgreSQL information and RAG evidence to answer
+    an authenticated customer's support question.
     """
-
     if not question or not question.strip():
         raise ValueError("Question cannot be empty.")
 
     clean_question = question.strip()
+
     # Handle simple greetings.
     if re.fullmatch(
         r"(hi|hello|hey|good morning|good afternoon|good evening)[!. ]*",
@@ -489,14 +908,12 @@ def answer_customer_question(
     ):
         return {
             "answer": (
-                "Hello! Welcome to our store. "
-                "I can help you find products, check prices "
-                "and availability, track orders, and answer "
-                "warranty and return questions. "
-                "How can I help you today?"
+                "Hello! Welcome to our store. I can help you find products, "
+                "check prices and availability, track orders, and answer "
+                "warranty and return questions. How can I help you today?"
             ),
             "sources": [],
-    }
+        }
 
     selected_category = (
         category.strip()
@@ -504,24 +921,62 @@ def answer_customer_question(
         else detect_category(clean_question)
     )
 
-    live_data = []
-    sources = []
-    chunks = []
-    products = []
+    live_data: list[str] = []
+    sources: list[dict] = []
+    chunks: list[dict] = []
+    products: list[dict] = []
 
     order_request = is_order_request(clean_question)
 
-    product_request = is_product_request(
+    policy_request = should_search_policy(
         clean_question,
-        product_id,
+        order_request,
     )
 
+    product_request = (
+        is_product_request(clean_question, product_id)
+        and not order_request
+        and not policy_request
+    )
+    # Explicit compare/vs wording is a comparison. Comparative price words
+    # become a comparison only when at least two catalogue products are named.
+    # A general "cheapest product" request remains a catalogue ranking request.
+    price_ranking_intent = is_price_ranking_request(clean_question)
+    named_comparison_products = (
+        find_products_for_comparison(db, clean_question)
+        if price_ranking_intent is not None
+        else []
+    )
+    comparison_request = (
+        (
+            is_product_comparison_request(clean_question)
+            or (
+                price_ranking_intent is not None
+                and len(named_comparison_products) >= 2
+            )
+            or is_multi_product_comparison(db, clean_question)
+        )
+        and not order_request
+        and not policy_request
+    )
+
+    
+    resolved_product_id = None
+
+    if policy_request:
+        resolved_product_id = resolve_product_id(
+            db=db,
+            question=clean_question,
+            supplied_product_id=product_id,
+        )
+
+    # A tracking request must not also trigger a product catalogue search
+
+    # -----------------------------------------------------
     # -----------------------------------------------------
     # 1. LIVE CUSTOMER ORDER AND SHIPMENT INFORMATION
     # -----------------------------------------------------
-
     if order_request:
-
         if customer_id is None or customer_id <= 0:
             return {
                 "answer": (
@@ -532,99 +987,359 @@ def answer_customer_question(
             }
 
         order_number = extract_order_number(clean_question)
+        latest_order_request = is_latest_order_request(clean_question)
 
         if order_number:
+            # Verify both the order number and authenticated customer ID.
             order = get_customer_order_by_number(
                 db=db,
                 customer_id=customer_id,
                 order_number=order_number,
             )
 
-            orders = [order] if order else []
+            if not order:
+                return {
+                    "answer": (
+                        f"I couldn't find order {order_number} in your account. "
+                        "Please check the order number."
+                    ),
+                    "sources": [],
+                }
+
+            orders = [order]
 
         else:
+            # Fetch only this authenticated customer's orders.
             orders = get_customer_orders(
                 db=db,
                 customer_id=customer_id,
-                limit=5,
+                limit=50,
             )
 
-        if orders:
-            live_data.append(
-                "LIVE CUSTOMER ORDER INFORMATION:\n"
-                + str(orders)
+            orders = filter_orders_by_mentioned_product(
+                orders=orders,
+                question=clean_question,
             )
 
-            sources.append({
+            if latest_order_request and orders:
+                # "Last", "latest" and "previous" mean most recently placed.
+                orders = sorted(
+                    orders,
+                    key=_order_created_at_sort_key,
+                    reverse=True,
+                )[:1]
+
+            elif len(orders) > 1:
+                order_options = []
+
+                for order in orders:
+                    product_names = ", ".join(
+                        item.get("product_name", "Product")
+                        for item in order.get("items", [])
+                    )
+
+                    order_options.append(
+                        f"- Order: {order.get('order_number', 'Unavailable')} | "
+                        f"Status: {order.get('order_status', 'Unknown')} | "
+                        f"Products: {product_names or 'Not available'}"
+                    )
+
+                return {
+                    "answer": (
+                        "You have multiple matching orders. "
+                        "Which order would you like me to check?\n\n"
+                        + "\n".join(order_options)
+                        + "\n\nPlease provide the order number."
+                    ),
+                    "sources": [
+                        {
+                            "source_type": "customer_orders",
+                            "order_count": len(orders),
+                        }
+                    ],
+                }
+
+        if not orders:
+            if latest_order_request:
+                return {
+                    "answer": (
+                        "I couldn't find a previous order in your account. "
+                        "You can check your order history for more information."
+                    ),
+                    "sources": [],
+                }
+
+            return {
+                "answer": "I couldn't find any orders in your account.",
+                "sources": [],
+            }
+
+        sources.append(
+            {
                 "source_type": "customer_orders",
                 "order_count": len(orders),
-            })
+            }
+        )
 
-        else:
-            live_data.append(
-                "No matching orders were found for "
-                "the authenticated customer."
-            )
+        if order_number or latest_order_request or len(orders) == 1:
+            return {
+                "answer": format_customer_order_answer(
+                    order=orders[0],
+                    question=clean_question,
+                ),
+                "sources": sources,
+            }
 
-    # -----------------------------------------------------
+        live_data.append(
+            "LIVE CUSTOMER ORDER INFORMATION:\n"
+            + str(orders)
+        )
+
     # 2. LIVE PRODUCT INFORMATION
     # -----------------------------------------------------
+    if product_request and comparison_request:
+        compared_products = find_products_for_comparison(db, clean_question)
+
+        if len(compared_products) < 2:
+            return {
+                "answer": (
+                    "I could identify fewer than two active products to compare. "
+                    "Please mention two product names or brands from our catalogue."
+                ),
+                "sources": [],
+            }
+
+        if len(compared_products) > 2:
+            product_names = ", ".join(
+                item["product_name"] for item in compared_products
+            )
+            return {
+                "answer": (
+                    "I found more than two matching products: "
+                    f"{product_names}. Please specify the two products "
+                    "you want to compare."
+                ),
+                "sources": [
+                    {"source_type": "products", "product_count": len(compared_products)}
+                ],
+            }
+
+        return {
+            "answer": format_product_comparison(compared_products),
+            "sources": [
+                {"source_type": "products", "product_count": len(compared_products)}
+            ],
+        }
 
     if product_request:
-
         search_query = extract_product_query(
             clean_question,
             product_id,
         )
 
-        product_category = detect_product_category(
-            clean_question
-        )
-
+        product_category = detect_product_category(clean_question)
         max_price = extract_max_price(clean_question)
+        stock_filter = detect_stock_filter(clean_question)
+        price_ranking = is_price_ranking_request(clean_question)
+        latest_model_request = is_latest_model_request(clean_question)
+        recommendation_request = bool(re.search(
+            r"\b(suggest|recommend|recommendation|best)\b",
+            clean_question.casefold(),
+        ))
+        recommendation_categories = requested_recommendation_categories(clean_question)
+
+        # Ranking/recommendation requests should search the catalogue rather
+        # than treating words such as "cheap" or "latest model" as product names.
+        if price_ranking or recommendation_request or latest_model_request:
+            search_query = None
+
+        # If more than one category is requested (for example laptop and phone),
+        # do not constrain the query to only the first detected category.
+        if len(recommendation_categories) > 1:
+            product_category = None
 
         products = search_products(
             db=db,
             query=search_query,
             category=product_category,
             max_price=max_price,
-            limit=10,
+            limit=50,
+            in_stock=stock_filter,
         )
+
+        if recommendation_categories:
+            products = [
+                item for item in products
+                if item.get("category") in recommendation_categories
+            ]
+
+        # The current Product catalogue has no release_date/model_year field.
+        # Show matching active inventory, but do not guess which model is newest.
+        if latest_model_request:
+            if products:
+                answer = (
+                    "I can show the active products in this category, but I cannot "
+                    "verify which is the latest model because the product catalogue "
+                    "does not currently contain model release dates or model-year data.\n\n"
+                    + format_product_results(products)
+                )
+                return {
+                    "answer": answer,
+                    "sources": [
+                        {"source_type": "products", "product_count": len(products)}
+                    ],
+                }
+            return {
+                "answer": (
+                    "I couldn't find active products matching that category. "
+                    "I also cannot verify the latest model without model release-date "
+                    "or model-year information in the catalogue."
+                ),
+                "sources": [],
+            }
+
+        if price_ranking and products:
+            products = sorted(
+                products,
+                key=lambda item: Decimal(str(item.get("price", 0))),
+                reverse=(price_ranking == "descending"),
+            )
+            # A singular cheapest/costliest request returns all products tied
+            # at the best price instead of arbitrarily selecting one.
+            if re.search(r"\b(product|item)\b", clean_question.casefold()):
+                best_price = Decimal(str(products[0].get("price", 0)))
+                products = [
+                    item for item in products
+                    if Decimal(str(item.get("price", 0))) == best_price
+                ]
+
+        elif recommendation_request and products:
+            # With no quality/rating data in the catalogue, recommend the
+            # lowest-priced available item in each requested category.
+            if recommendation_categories:
+                selected = []
+                for requested_category in sorted(recommendation_categories):
+                    category_products = [
+                        item for item in products
+                        if item.get("category") == requested_category
+                    ]
+                    if category_products:
+                        selected.append(min(
+                            category_products,
+                            key=lambda item: Decimal(str(item.get("price", 0))),
+                        ))
+                products = selected
+            else:
+                products = sorted(
+                    products,
+                    key=lambda item: Decimal(str(item.get("price", 0))),
+                )[:3]
+
+        # Prefer exact product-name or product-ID matches when available.
+        # This prevents a broad partial match such as "Wireless Mouse"
+        # from appearing when the customer requested "Wireless Earbuds".
+        if search_query and products:
+            normalized_query = search_query.casefold()
+
+            exact_matches = [
+                product
+                for product in products
+                if (
+                    product["product_name"].casefold() == normalized_query
+                    or product["product_id"].casefold() == normalized_query
+                )
+            ]
+
+            if exact_matches:
+                products = exact_matches
 
         if products:
             live_data.append(
                 "LIVE PRODUCT INFORMATION:\n"
                 + str(products)
             )
-
-            sources.append({
-                "source_type": "products",
-                "product_count": len(products),
-            })
-
-        else:
-            live_data.append(
-                "No matching active products were found "
-                "in the product database."
+            sources.append(
+                {
+                    "source_type": "products",
+                    "product_count": len(products),
+                }
             )
+        else:
+            if stock_filter is False:
+                no_products_message = (
+                    "There are currently no active products marked as out of stock."
+                )
+            elif stock_filter is True:
+                no_products_message = (
+                    "There are currently no active in-stock products matching "
+                    "the requested filters."
+                )
+            else:
+                no_products_message = (
+                    "No matching active products were found in the product database."
+                )
 
+            live_data.append(no_products_message)
+
+   
     # -----------------------------------------------------
     # 3. POLICY DOCUMENT RETRIEVAL
     # -----------------------------------------------------
-
-    policy_request = should_search_policy(
-        clean_question,
-        order_request,
-    )
-
     if policy_request:
 
+        # Determine whether the customer is asking about a
+        # specific product or requesting a general policy.
+        text = clean_question.casefold()
+
+        product_specific_pattern = (
+            r"\b(for|on)\s+"
+            r"(?:the\s+)?"
+            r"(?!all\b|general\b|returns?\b|refunds?\b|orders?\b)"
+            r"[a-z0-9]"
+        )
+
+        is_product_specific = (
+            product_id is not None
+            or resolved_product_id is not None
+            or bool(
+                re.search(
+                    product_specific_pattern,
+                    text,
+                )
+            )
+            or bool(
+                re.search(
+                    r"\b(my|this|these|purchased|bought)\s+"
+                    r"(product|item|device|phone|laptop|earbuds)\b",
+                    text,
+                )
+            )
+        )
+
+        # A product-specific question must resolve to an active
+        # catalogue product before policy retrieval.
+        if is_product_specific and not resolved_product_id:
+            return {
+                "answer": (
+                    "I couldn't identify the exact product in our "
+                    "catalogue. Please provide the complete product "
+                    "name or product ID so I can check its policy."
+                ),
+                "sources": [],
+            }
+
+        # General policy questions use no product filter.
         chunks = search_relevant_chunks(
             db=db,
             question=clean_question,
-            product_id=product_id,
+            product_id=(
+                resolved_product_id
+                if is_product_specific
+                else None
+            ),
             top_k=top_k,
             category=selected_category,
+            general_only=not is_product_specific,
         )
 
         if chunks:
@@ -656,10 +1371,21 @@ def answer_customer_question(
                 for chunk in chunks
             ])
 
+        else:
+            return {
+                "answer": (
+                    f"Sorry, I couldn't find an active "
+                    f"{selected_category or 'relevant'} policy document "
+                    "in our database. Please contact customer support "
+                    "for confirmation."
+                ),
+                "sources": [],
+            }
+
+
     # -----------------------------------------------------
     # 4. HANDLE QUESTIONS WITHOUT A DATA SOURCE
     # -----------------------------------------------------
-
     if not live_data:
         return {
             "answer": (
@@ -669,79 +1395,43 @@ def answer_customer_question(
             "sources": [],
         }
 
-
     # -----------------------------------------------------
     # 5. RETURN EXACT LIVE PRODUCT INFORMATION
     # -----------------------------------------------------
-
-    if product_request and not policy_request:
-
-        # No matching products found.
+    if product_request and not policy_request and not comparison_request:
         if not products:
-            return {
-                "answer": (
+            if stock_filter is False:
+                answer = (
+                    "There are currently no active products marked as out of stock."
+                )
+            elif stock_filter is True:
+                answer = (
+                    "There are currently no active in-stock products matching "
+                    "your requested filters."
+                )
+            else:
+                answer = (
                     "Sorry, we couldn't find a matching active product "
                     "in our inventory. Please check the product name "
                     "or try another brand or category."
-                ),
+                )
+
+            return {
+                "answer": answer,
                 "sources": [],
             }
 
-        # Matching products found.
-        lines = []
-
-        for product in products:
-
-            availability = (
-                "In stock"
-                if product["in_stock"]
-                else "Out of stock"
+        answer = format_product_results(products)
+        if (
+            recommendation_request
+            and re.search(r"\bbest\b", clean_question.casefold())
+        ):
+            answer = (
+                "These suggestions are selected using the lowest available prices. "
+                "The catalogue does not currently contain customer ratings or review "
+                "scores, so I cannot verify which products are objectively the best.\n\n"
+                + answer
             )
-
-            lines.append(
-                f"Product: {product['product_name']}\n"
-                f"Product ID: {product['product_id']}\n"
-                f"Category: {product['category']}\n"
-                f"Price: ₹{product['price']}\n"
-                f"Available quantity: {product['stock_quantity']}\n"
-                f"Availability: {availability}"
-            )
-
-        answer = (
-            "Here is the latest product information "
-            "from our inventory:\n\n"
-            + "\n\n".join(lines)
-        )
-
-        return {
-            "answer": answer,
-            "sources": sources,
-        }
-
-        lines = []
-
-        for product in products:
-
-            availability = (
-                "In stock"
-                if product["in_stock"]
-                else "Out of stock"
-            )
-
-            lines.append(
-                f"Product: {product['product_name']}\n"
-                f"Product ID: {product['product_id']}\n"
-                f"Category: {product['category']}\n"
-                f"Price: ₹{product['price']}\n"
-                f"Available quantity: {product['stock_quantity']}\n"
-                f"Availability: {availability}"
-            )
-
-        answer = (
-            "Here is the latest product information "
-            "from our inventory:\n\n"
-            + "\n\n".join(lines)
-        )
 
         return {
             "answer": answer,
@@ -751,22 +1441,20 @@ def answer_customer_question(
     # -----------------------------------------------------
     # 6. GENERATE GROUNDED ANSWER USING OLLAMA
     # -----------------------------------------------------
-
     prompt = f"""
 Customer question:
 {clean_question}
 
 Available information:
-
 {"".join(live_data)}
 
 Instructions:
 - Answer the customer's exact question.
 - Use live database information for products and orders.
 - Use policy documents for policy-related questions.
+- Do not combine information from different orders.
 - Do not invent missing information.
-- If the requested information is unavailable,
-  clearly explain that it could not be verified.
+- If the requested information is unavailable, clearly say it could not be verified.
 - Do not expose internal customer IDs.
 - Keep the response concise and polite.
 """
@@ -779,7 +1467,6 @@ Instructions:
     # -----------------------------------------------------
     # 7. SAMPLE DOCUMENT WARNING
     # -----------------------------------------------------
-
     is_sample = any(
         contains_sample_warning(
             str(chunk.get("content", ""))
@@ -797,3 +1484,5 @@ Instructions:
         "answer": answer,
         "sources": sources,
     }
+
+
