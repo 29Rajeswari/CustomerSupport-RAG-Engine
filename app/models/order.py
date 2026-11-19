@@ -1,6 +1,8 @@
-from typing import TYPE_CHECKING
+#app/models/order.py
+
 from datetime import datetime
 from decimal import Decimal
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     DateTime,
@@ -10,6 +12,7 @@ from sqlalchemy import (
     String,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.models.base import Base, utc_now
 
 if TYPE_CHECKING:
@@ -35,9 +38,7 @@ class Order(Base):
     payment_status: Mapped[str] = mapped_column(
         String(30), nullable=False, default="pending"
     )
-    total_amount: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2), nullable=False
-    )
+    total_amount: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
@@ -48,9 +49,7 @@ class Order(Base):
         nullable=False,
     )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="orders"
-    )
+    customer: Mapped["Customer"] = relationship(back_populates="orders")
     items: Mapped[list["OrderItem"]] = relationship(
         back_populates="order",
         cascade="all, delete-orphan",
@@ -71,19 +70,9 @@ class OrderItem(Base):
         nullable=False,
         index=True,
     )
-    product_id: Mapped[str] = mapped_column(
-        String(100), nullable=False
-    )
-    product_name: Mapped[str] = mapped_column(
-        String(255), nullable=False
-    )
-    quantity: Mapped[int] = mapped_column(
-        Integer, nullable=False
-    )
-    unit_price: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2), nullable=False
-    )
+    product_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    product_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    quantity: Mapped[int] = mapped_column(Integer, nullable=False)
+    unit_price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
 
-    order: Mapped["Order"] = relationship(
-        back_populates="items"
-    )
+    order: Mapped["Order"] = relationship(back_populates="items")

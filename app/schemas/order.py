@@ -1,3 +1,5 @@
+#app/schemas/order.py
+
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
@@ -26,8 +28,6 @@ class OrderCreate(BaseModel):
         product_ids = [item.product_id for item in self.items]
 
         if len(product_ids) != len(set(product_ids)):
-            raise ValueError(
-                "Each product must appear only once in an order."
-            )
+            raise ValueError("Each product must appear only once in an order.")
 
         return self

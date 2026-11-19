@@ -1,4 +1,4 @@
-
+# app/api/routes/document_routes.py
 import logging
 from pathlib import Path
 
@@ -14,18 +14,15 @@ from fastapi import (
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.core.dependencies import get_current_admin
 from app.config import settings
-
-from app.models import Document
+from app.core.dependencies import get_current_admin
 from app.db.session import get_db
-
 from app.ingestion.processor import process_document_version
 from app.ingestion.versioning import (
     create_document_version,
     normalize_category,
 )
-
+from app.models import Document
 from app.services.document_service import (
     create_document_record,
     save_uploaded_file,
@@ -74,12 +71,11 @@ def upload_document(
     background_tasks: BackgroundTasks,
     title: str = Form(...),
     category: str = Form(...),
-    product_id: str = Form(...),
+    product_id: str | None = Form(None),
     file: UploadFile = File(...),
     _: str = Depends(get_current_admin),
     db: Session = Depends(get_db),
 ):
-
     """
     Upload a new document or create a new version.
 
@@ -92,10 +88,12 @@ def upload_document(
     try:
         # 1. Validate required form fields.
         title = clean_required_field(title, "title")
-        category = normalize_category(
-            clean_required_field(category, "category")
-        )
-        product_id = clean_required_field(product_id, "product_id")
+        category = normalize_category(clean_required_field(category, "category"))
+        if product_id:
+            product_id = clean_required_field(
+                product_id,
+                "product_id",
+            )
 
         original_filename = file.filename or ""
         extension = validate_document_file(original_filename)

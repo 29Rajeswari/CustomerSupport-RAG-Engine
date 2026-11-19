@@ -1,19 +1,17 @@
-
 import re
 
 from pydantic import (
     BaseModel,
     ConfigDict,
-    EmailStr,
     Field,
     field_validator,
     model_validator,
 )
 
-
 # ---------------------------------------------------------
 # COMMON VALIDATION
 # ---------------------------------------------------------
+
 
 def normalize_email(value: str) -> str:
     email = value.strip().lower()
@@ -39,6 +37,7 @@ def normalize_username(value: str) -> str:
 # ---------------------------------------------------------
 # REGISTRATION SCHEMAS
 # ---------------------------------------------------------
+
 
 class RegisterOTPRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -93,6 +92,7 @@ class CompleteRegistrationRequest(BaseModel):
 # LOGIN SCHEMA
 # ---------------------------------------------------------
 
+
 class LoginRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -108,6 +108,7 @@ class LoginRequest(BaseModel):
 # ---------------------------------------------------------
 # FORGOT PASSWORD SCHEMAS
 # ---------------------------------------------------------
+
 
 class ForgotPasswordOTPRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -156,6 +157,7 @@ class ResetPasswordRequest(BaseModel):
 # GENERAL RESPONSES
 # ---------------------------------------------------------
 
+
 class MessageResponse(BaseModel):
     message: str
 
@@ -169,6 +171,7 @@ class TokenResponse(BaseModel):
 # ---------------------------------------------------------
 # CUSTOMER PROFILE
 # ---------------------------------------------------------
+
 
 class CustomerResponse(BaseModel):
     id: int

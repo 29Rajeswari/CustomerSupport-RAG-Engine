@@ -1,11 +1,13 @@
-﻿import json
-from uuid import uuid4
+# app/api/routes/customer_routes.py
+import json
 from decimal import Decimal
+from uuid import uuid4
 
-from fastapi import APIRouter, Depends, Query, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.dependencies import get_current_customer
+from app.db.session import get_db
 from app.models import (
     ActivityLog,
     ChatLog,
@@ -13,12 +15,11 @@ from app.models import (
     Order,
     OrderItem,
     Product,
-    Shipment,
-    ReturnRequest,
-    ReturnItem,
     Refund,
+    ReturnItem,
+    ReturnRequest,
 )
-from app.db.session import get_db
+from app.models.shipment_event import ShipmentEvent
 from app.schemas.order import OrderCreate
 from app.schemas.return_request import ReturnRequestCreate
 
@@ -28,6 +29,7 @@ router = APIRouter(prefix="/customer", tags=["Customer"])
 # ---------------------------------------------------------
 # 1. CUSTOMER PROFILE
 # ---------------------------------------------------------
+
 
 @router.get("/profile")
 def get_customer_profile(
@@ -47,6 +49,7 @@ def get_customer_profile(
 # ---------------------------------------------------------
 # 2. CUSTOMER ORDERS
 # ---------------------------------------------------------
+
 
 @router.get("/orders")
 def get_customer_orders(
@@ -73,39 +76,40 @@ def get_customer_orders(
     for order in orders:
         shipment = order.shipment
 
-        results.append({
-            "id": order.id,
-            "order_number": order.order_number,
-            "order_status": order.order_status,
-            "payment_status": order.payment_status,
-            "total_amount": order.total_amount,
-            "created_at": order.created_at,
-            "updated_at": order.updated_at,
-            "products": [
-                {
-                    "id": item.id,
-                    "product_id": item.product_id,
-                    "product_name": item.product_name,
-                    "quantity": item.quantity,
-                    "unit_price": item.unit_price,
-                    "subtotal": item.quantity * item.unit_price,
-                    
-                }
-                for item in order.items
-            ],
-            "shipment": (
-                {
-                    "courier_name": shipment.courier_name,
-                    "tracking_number": shipment.tracking_number,
-                    "shipment_status": shipment.shipment_status,
-                    "estimated_delivery": shipment.estimated_delivery,
-                    "shipped_at": shipment.shipped_at,
-                    "delivered_at": shipment.delivered_at,
-                }
-                if shipment
-                else None
-            ),
-        })
+        results.append(
+            {
+                "id": order.id,
+                "order_number": order.order_number,
+                "order_status": order.order_status,
+                "payment_status": order.payment_status,
+                "total_amount": order.total_amount,
+                "created_at": order.created_at,
+                "updated_at": order.updated_at,
+                "products": [
+                    {
+                        "id": item.id,
+                        "product_id": item.product_id,
+                        "product_name": item.product_name,
+                        "quantity": item.quantity,
+                        "unit_price": item.unit_price,
+                        "subtotal": item.quantity * item.unit_price,
+                    }
+                    for item in order.items
+                ],
+                "shipment": (
+                    {
+                        "courier_name": shipment.courier_name,
+                        "tracking_number": shipment.tracking_number,
+                        "shipment_status": shipment.shipment_status,
+                        "estimated_delivery": shipment.estimated_delivery,
+                        "shipped_at": shipment.shipped_at,
+                        "delivered_at": shipment.delivered_at,
+                    }
+                    if shipment
+                    else None
+                ),
+            }
+        )
 
     return {
         "total_returned": len(results),
@@ -118,6 +122,7 @@ def get_customer_orders(
 # ---------------------------------------------------------
 # 3. CUSTOMER CHAT HISTORY
 # ---------------------------------------------------------
+
 
 @router.get("/chats")
 def get_customer_chats(
@@ -146,15 +151,17 @@ def get_customer_chats(
             except (json.JSONDecodeError, TypeError):
                 sources = []
 
-        results.append({
-            "id": chat.id,
-            "session_id": chat.session_id,
-            "question": chat.question,
-            "answer": chat.answer,
-            "sources": sources,
-            "feedback": chat.feedback,
-            "created_at": chat.created_at,
-        })
+        results.append(
+            {
+                "id": chat.id,
+                "session_id": chat.session_id,
+                "question": chat.question,
+                "answer": chat.answer,
+                "sources": sources,
+                "feedback": chat.feedback,
+                "created_at": chat.created_at,
+            }
+        )
 
     return {
         "total_returned": len(results),
@@ -167,6 +174,7 @@ def get_customer_chats(
 # ---------------------------------------------------------
 # 4. CUSTOMER ACTIVITY HISTORY
 # ---------------------------------------------------------
+
 
 @router.get("/activity")
 def get_customer_activity(
@@ -199,9 +207,11 @@ def get_customer_activity(
         ],
     }
 
+
 # ---------------------------------------------------------
 # 5. CREATE CUSTOMER ORDER AND REDUCE INVENTORY
 # ---------------------------------------------------------
+
 
 @router.post("/orders", status_code=status.HTTP_201_CREATED)
 def create_customer_order(
@@ -210,9 +220,7 @@ def create_customer_order(
     db: Session = Depends(get_db),
 ):
     try:
-        requested_ids = [
-            item.product_id for item in order_data.items
-        ]
+        requested_ids = [item.product_id for item in order_data.items]
 
         # Lock product rows in a consistent order to prevent
         # concurrent purchases from overselling inventory.
@@ -227,9 +235,7 @@ def create_customer_order(
             .all()
         )
 
-        products_by_id = {
-            product.product_id: product for product in products
-        }
+        products_by_id = {product.product_id: product for product in products}
 
         # Validate product existence and available stock.
         for requested_item in order_data.items:
@@ -258,8 +264,7 @@ def create_customer_order(
         # Calculate the order total using database prices.
         total_amount = sum(
             (
-                products_by_id[item.product_id].price
-                * item.quantity
+                products_by_id[item.product_id].price * item.quantity
                 for item in order_data.items
             ),
             Decimal("0.00"),
@@ -293,16 +298,16 @@ def create_customer_order(
 
             db.add(order_item)
 
-            response_items.append({
-                "product_id": product.product_id,
-                "product_name": product.product_name,
-                "quantity": requested_item.quantity,
-                "unit_price": product.price,
-                "subtotal": (
-                    product.price * requested_item.quantity
-                ),
-                "remaining_stock": product.stock_quantity,
-            })
+            response_items.append(
+                {
+                    "product_id": product.product_id,
+                    "product_name": product.product_name,
+                    "quantity": requested_item.quantity,
+                    "unit_price": product.price,
+                    "subtotal": (product.price * requested_item.quantity),
+                    "remaining_stock": product.stock_quantity,
+                }
+            )
 
         # Commit order, order items and stock changes together.
         db.commit()
@@ -326,6 +331,7 @@ def create_customer_order(
 # ---------------------------------------------------------
 # 6. CANCEL CUSTOMER ORDER AND RESTORE INVENTORY
 # ---------------------------------------------------------
+
 
 @router.post("/orders/{order_id}/cancel")
 def cancel_customer_order(
@@ -396,9 +402,7 @@ def cancel_customer_order(
             )
 
         # Lock all corresponding products in a consistent order.
-        product_ids = sorted({
-            item.product_id for item in order_items
-        })
+        product_ids = sorted({item.product_id for item in order_items})
 
         products = (
             db.query(Product)
@@ -408,10 +412,7 @@ def cancel_customer_order(
             .all()
         )
 
-        products_by_id = {
-            product.product_id: product
-            for product in products
-        }
+        products_by_id = {product.product_id: product for product in products}
 
         # Do not cancel if any product record is missing.
         for item in order_items:
@@ -432,12 +433,14 @@ def cancel_customer_order(
 
             product.stock_quantity += item.quantity
 
-            restored_items.append({
-                "product_id": product.product_id,
-                "product_name": product.product_name,
-                "restored_quantity": item.quantity,
-                "available_stock": product.stock_quantity,
-            })
+            restored_items.append(
+                {
+                    "product_id": product.product_id,
+                    "product_name": product.product_name,
+                    "restored_quantity": item.quantity,
+                    "available_stock": product.stock_quantity,
+                }
+            )
 
         # Mark the order as cancelled.
         order.order_status = "cancelled"
@@ -459,10 +462,10 @@ def cancel_customer_order(
         raise
 
 
-
 # ---------------------------------------------------------
 # 7. CUSTOMER ORDER TRACKING
 # ---------------------------------------------------------
+
 
 @router.get("/orders/{order_id}/tracking")
 def track_customer_order(
@@ -490,9 +493,19 @@ def track_customer_order(
 
     if shipment is None:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Shipment has not been created for this order yet.",
         )
+
+    events = (
+        db.query(ShipmentEvent)
+        .filter(ShipmentEvent.shipment_id == shipment.id)
+        .order_by(
+            ShipmentEvent.created_at.asc(),
+            ShipmentEvent.id.asc(),
+        )
+        .all()
+    )
 
     return {
         "order_id": order.id,
@@ -505,6 +518,15 @@ def track_customer_order(
             "estimated_delivery": shipment.estimated_delivery,
             "shipped_at": shipment.shipped_at,
             "delivered_at": shipment.delivered_at,
+            "events": [
+                {
+                    "status": event.status,
+                    "location": event.location,
+                    "description": event.description,
+                    "created_at": event.created_at,
+                }
+                for event in events
+            ],
         },
     }
 
@@ -512,6 +534,7 @@ def track_customer_order(
 # ---------------------------------------------------------
 # 8. CUSTOMER RETURN REQUESTS (ITEM-LEVEL)
 # ---------------------------------------------------------
+
 
 @router.post(
     "/orders/{order_id}/returns",
@@ -554,9 +577,7 @@ def create_return_request(
             .filter(
                 ReturnRequest.order_id == order_id,
                 ReturnRequest.customer_id == current_customer.id,
-                ReturnRequest.return_status.in_(
-                    ["pending_review", "approved"]
-                ),
+                ReturnRequest.return_status.in_(["pending_review", "approved"]),
             )
             .first()
         )
@@ -568,9 +589,7 @@ def create_return_request(
             )
 
         # 4. Validate duplicate order item IDs.
-        requested_ids = [
-            item.order_item_id for item in request.items
-        ]
+        requested_ids = [item.order_item_id for item in request.items]
 
         if len(requested_ids) != len(set(requested_ids)):
             raise HTTPException(
@@ -590,9 +609,7 @@ def create_return_request(
             .all()
         )
 
-        order_items_by_id = {
-            item.id: item for item in order_items
-        }
+        order_items_by_id = {item.id: item for item in order_items}
 
         if len(order_items_by_id) != len(requested_ids):
             raise HTTPException(
@@ -620,31 +637,23 @@ def create_return_request(
             item_id = return_item.order_item_id
 
             previously_returned[item_id] = (
-                previously_returned.get(item_id, 0)
-                + return_item.quantity
+                previously_returned.get(item_id, 0) + return_item.quantity
             )
 
         # 7. Validate requested quantities.
         for requested_item in request.items:
-            purchased_item = order_items_by_id[
-                requested_item.order_item_id
-            ]
+            purchased_item = order_items_by_id[requested_item.order_item_id]
 
-            already_returned = previously_returned.get(
-                purchased_item.id, 0
-            )
+            already_returned = previously_returned.get(purchased_item.id, 0)
 
-            remaining_quantity = (
-                purchased_item.quantity - already_returned
-            )
+            remaining_quantity = purchased_item.quantity - already_returned
 
             if requested_item.quantity > remaining_quantity:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
                     detail={
                         "message": (
-                            "Return quantity exceeds the remaining "
-                            "eligible quantity."
+                            "Return quantity exceeds the remaining eligible quantity."
                         ),
                         "order_item_id": purchased_item.id,
                         "purchased_quantity": purchased_item.quantity,
@@ -677,9 +686,7 @@ def create_return_request(
         response_items = []
 
         for requested_item in request.items:
-            purchased_item = order_items_by_id[
-                requested_item.order_item_id
-            ]
+            purchased_item = order_items_by_id[requested_item.order_item_id]
 
             return_item = ReturnItem(
                 return_id=return_request.id,
@@ -689,13 +696,15 @@ def create_return_request(
 
             db.add(return_item)
 
-            response_items.append({
-                "order_item_id": purchased_item.id,
-                "product_id": purchased_item.product_id,
-                "product_name": purchased_item.product_name,
-                "purchased_quantity": purchased_item.quantity,
-                "return_quantity": requested_item.quantity,
-            })
+            response_items.append(
+                {
+                    "order_item_id": purchased_item.id,
+                    "product_id": purchased_item.product_id,
+                    "product_name": purchased_item.product_name,
+                    "purchased_quantity": purchased_item.quantity,
+                    "return_quantity": requested_item.quantity,
+                }
+            )
 
         # 10. Commit parent and child records in one transaction.
         db.commit()
@@ -723,207 +732,10 @@ def create_return_request(
 # 9. VIEW CUSTOMER RETURN REQUESTS
 # ---------------------------------------------------------
 
-def create_return_request(
-    order_id: int,
-    request: ReturnRequestCreate,
-    current_customer: Customer = Depends(get_current_customer),
-    db: Session = Depends(get_db),
-):
-    try:
-        # 1. Lock and verify the customer's order.
-        order = (
-            db.query(Order)
-            .filter(
-                Order.id == order_id,
-                Order.customer_id == current_customer.id,
-            )
-            .with_for_update()
-            .first()
-        )
-
-        if order is None:
-            raise HTTPException(
-                status_code=404,
-                detail="Order not found.",
-            )
-
-        # 2. Only delivered orders can be returned.
-        if order.order_status.lower() != "delivered":
-            raise HTTPException(
-                status_code=400,
-                detail="Return requests can only be submitted for delivered orders.",
-            )
-
-        # 3. Prevent another active return request.
-        existing_request = (
-            db.query(ReturnRequest)
-            .filter(
-                ReturnRequest.order_id == order_id,
-                ReturnRequest.customer_id == current_customer.id,
-                ReturnRequest.return_status.in_(
-                    ["pending_review", "approved"]
-                ),
-            )
-            .first()
-        )
-
-        if existing_request:
-            raise HTTPException(
-                status_code=409,
-                detail="An active return request already exists for this order.",
-            )
-
-        # 4. Reject duplicate order item IDs.
-        requested_ids = [
-            item.order_item_id for item in request.items
-        ]
-
-        if len(requested_ids) != len(set(requested_ids)):
-            raise HTTPException(
-                status_code=422,
-                detail="Duplicate order item IDs are not allowed.",
-            )
-
-        # 5. Lock and retrieve requested order items.
-        order_items = (
-            db.query(OrderItem)
-            .filter(
-                OrderItem.order_id == order.id,
-                OrderItem.id.in_(requested_ids),
-            )
-            .order_by(OrderItem.id)
-            .with_for_update()
-            .all()
-        )
-
-        order_items_by_id = {
-            item.id: item for item in order_items
-        }
-
-        if len(order_items_by_id) != len(requested_ids):
-            raise HTTPException(
-                status_code=400,
-                detail="One or more items do not belong to this order.",
-            )
-
-        # 6. Calculate quantities already returned or reserved.
-        previous_returns = (
-            db.query(ReturnItem, ReturnRequest)
-            .join(
-                ReturnRequest,
-                ReturnItem.return_id == ReturnRequest.id,
-            )
-            .filter(
-                ReturnRequest.order_id == order.id,
-                ReturnRequest.return_status != "rejected",
-            )
-            .all()
-        )
-
-        previously_returned = {}
-
-        for return_item, previous_request in previous_returns:
-            previously_returned[return_item.order_item_id] = (
-                previously_returned.get(
-                    return_item.order_item_id, 0
-                )
-                + return_item.quantity
-            )
-
-        # 7. Validate requested quantities.
-        for requested_item in request.items:
-            purchased_item = order_items_by_id[
-                requested_item.order_item_id
-            ]
-
-            already_returned = previously_returned.get(
-                purchased_item.id, 0
-            )
-
-            remaining_quantity = (
-                purchased_item.quantity - already_returned
-            )
-
-            if requested_item.quantity > remaining_quantity:
-                raise HTTPException(
-                    status_code=409,
-                    detail={
-                        "message": (
-                            "Return quantity exceeds the remaining "
-                            "eligible quantity."
-                        ),
-                        "order_item_id": purchased_item.id,
-                        "purchased_quantity": purchased_item.quantity,
-                        "previously_returned": already_returned,
-                        "remaining_quantity": remaining_quantity,
-                        "requested_quantity": requested_item.quantity,
-                    },
-                )
-
-        # 8. Create the return request.
-        return_request = ReturnRequest(
-            return_number=f"RET-{uuid4().hex[:12].upper()}",
-            order_id=order.id,
-            customer_id=current_customer.id,
-            reason=request.reason.strip(),
-            comments=(
-                request.comments.strip()
-                if request.comments and request.comments.strip()
-                else None
-            ),
-            return_status="pending_review",
-        )
-
-        db.add(return_request)
-        db.flush()
-
-        # 9. Save individual returned items and quantities.
-        response_items = []
-
-        for requested_item in request.items:
-            purchased_item = order_items_by_id[
-                requested_item.order_item_id
-            ]
-
-            return_item = ReturnItem(
-                return_id=return_request.id,
-                order_item_id=purchased_item.id,
-                quantity=requested_item.quantity,
-            )
-
-            db.add(return_item)
-
-            response_items.append({
-                "order_item_id": purchased_item.id,
-                "product_id": purchased_item.product_id,
-                "product_name": purchased_item.product_name,
-                "purchased_quantity": purchased_item.quantity,
-                "return_quantity": requested_item.quantity,
-            })
-
-        db.commit()
-        db.refresh(return_request)
-
-        return {
-            "message": "Return request submitted successfully.",
-            "return_id": return_request.id,
-            "return_number": return_request.return_number,
-            "order_id": order.id,
-            "order_number": order.order_number,
-            "reason": return_request.reason,
-            "comments": return_request.comments,
-            "return_status": return_request.return_status,
-            "items": response_items,
-            "created_at": return_request.created_at,
-        }
-
-    except Exception:
-        db.rollback()
-        raise
-
 # ---------------------------------------------------------
 # 10. VIEW SINGLE CUSTOMER RETURN REQUEST
 # ---------------------------------------------------------
+
 
 @router.get("/returns/{return_number}")
 def get_customer_return_request(
@@ -957,9 +769,11 @@ def get_customer_return_request(
         "updated_at": return_request.updated_at,
     }
 
+
 # ---------------------------------------------------------
 # 11. CUSTOMER REFUND HISTORY
 # ---------------------------------------------------------
+
 
 @router.get("/refunds")
 def get_customer_refunds(

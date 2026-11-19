@@ -1,15 +1,15 @@
-
+# app/services/document_service.py
 from pathlib import Path
 from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
 from app.config import PROJECT_ROOT, settings
-from app.models import Document, DocumentVersion
 from app.ingestion.versioning import (
     create_document_version,
     normalize_category,
 )
+from app.models import Document, DocumentVersion
 
 ALLOWED_EXTENSIONS = {".pdf", ".docx", ".xlsx", ".txt"}
 
@@ -21,8 +21,7 @@ def validate_document_file(filename: str) -> str:
     if extension not in ALLOWED_EXTENSIONS:
         allowed = ", ".join(sorted(ALLOWED_EXTENSIONS))
         raise ValueError(
-            f"Unsupported file type '{extension}'. "
-            f"Allowed types: {allowed}"
+            f"Unsupported file type '{extension}'. Allowed types: {allowed}"
         )
 
     return extension
@@ -53,8 +52,7 @@ def save_uploaded_file(filename: str, content: bytes) -> Path:
 
     if len(content) > max_bytes:
         raise ValueError(
-            f"File exceeds the maximum size of "
-            f"{settings.MAX_UPLOAD_SIZE_MB} MB."
+            f"File exceeds the maximum size of {settings.MAX_UPLOAD_SIZE_MB} MB."
         )
 
     upload_dir = get_upload_directory()

@@ -1,8 +1,6 @@
-
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
 
 # Project root: indian-ecommerce-support-chatbot/
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -30,7 +28,7 @@ class Settings(BaseSettings):
     SMTP_USERNAME: str = ""
     SMTP_PASSWORD: str = ""
     SMTP_FROM_EMAIL: str = ""
- 
+
     # Fixed administrator account
     ADMIN_USERNAME: str
     ADMIN_EMAIL: str

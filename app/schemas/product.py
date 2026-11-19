@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from decimal import Decimal
 
@@ -9,10 +8,10 @@ from pydantic import (
     field_validator,
 )
 
-
 # ---------------------------------------------------------
 # COMMON PRODUCT VALIDATION
 # ---------------------------------------------------------
+
 
 def normalize_product_id(value: str) -> str:
     value = value.strip().upper()
@@ -35,6 +34,7 @@ def normalize_product_name(value: str) -> str:
 # ---------------------------------------------------------
 # 1. CREATE PRODUCT
 # ---------------------------------------------------------
+
 
 class ProductCreate(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -71,6 +71,7 @@ class ProductCreate(BaseModel):
 # ---------------------------------------------------------
 # 2. UPDATE PRODUCT
 # ---------------------------------------------------------
+
 
 class ProductUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -124,6 +125,7 @@ class ProductUpdate(BaseModel):
 # 3. PRODUCT RESPONSE
 # ---------------------------------------------------------
 
+
 class ProductResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -143,9 +145,9 @@ class ProductResponse(BaseModel):
 # 4. PRODUCT LIST RESPONSE
 # ---------------------------------------------------------
 
+
 class ProductListResponse(BaseModel):
     total: int
     limit: int
     offset: int
     products: list[ProductResponse]
-

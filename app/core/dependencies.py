@@ -1,13 +1,11 @@
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.core.security import decode_access_token
-from app.models import Customer
 from app.db.session import get_db
-
+from app.models import Customer
 
 bearer_scheme = HTTPBearer(auto_error=False)
 
@@ -54,9 +52,7 @@ def get_current_customer(
             detail="Invalid customer token.",
         )
 
-    customer = db.query(Customer).filter(
-        Customer.id == customer_id
-    ).first()
+    customer = db.query(Customer).filter(Customer.id == customer_id).first()
 
     if customer is None or not customer.is_active:
         raise HTTPException(
@@ -78,14 +74,10 @@ def get_current_admin(
 ) -> str:
     """Allow access only to the fixed administrator account."""
 
-    if (
-        payload.get("role") != "admin"
-        or payload.get("sub") != settings.ADMIN_USERNAME
-    ):
+    if payload.get("role") != "admin" or payload.get("sub") != settings.ADMIN_USERNAME:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Administrator access required.",
         )
 
     return settings.ADMIN_USERNAME
-

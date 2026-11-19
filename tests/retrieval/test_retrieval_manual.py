@@ -1,3 +1,4 @@
+# tests/retrieval/test_retrieval_manual.py
 
 from app.db.session import SessionLocal
 from app.retrieval.search import search_relevant_chunks

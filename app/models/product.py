@@ -1,3 +1,4 @@
+# app/models/product.py
 from datetime import datetime
 from decimal import Decimal
 
@@ -11,6 +12,7 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column
+
 from app.models.base import Base, utc_now
 
 

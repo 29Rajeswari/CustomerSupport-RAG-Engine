@@ -1,7 +1,8 @@
+#app\models\return_request.py
 
-from typing import TYPE_CHECKING
 from datetime import datetime
 from decimal import Decimal
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     CheckConstraint,
@@ -17,14 +18,14 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base, utc_now
 
 if TYPE_CHECKING:
-    from app.models.order import Order
     from app.models.customer import Customer
-    from app.models.order import OrderItem
+    from app.models.order import Order, OrderItem
 
 
 # ---------------------------------------------------------
 # RETURN REQUEST MODEL
 # ---------------------------------------------------------
+
 
 class ReturnRequest(Base):
     __tablename__ = "return_requests"
@@ -111,12 +112,7 @@ class ReturnRequest(Base):
 
     __table_args__ = (
         CheckConstraint(
-            "return_status IN ("
-            "'pending_review', "
-            "'approved', "
-            "'rejected', "
-            "'completed'"
-            ")",
+            "return_status IN ('pending_review', 'approved', 'rejected', 'completed')",
             name="ck_return_requests_status",
         ),
     )
@@ -125,6 +121,7 @@ class ReturnRequest(Base):
 # ---------------------------------------------------------
 # RETURN ITEM MODEL
 # ---------------------------------------------------------
+
 
 class ReturnItem(Base):
     __tablename__ = "return_items"
@@ -174,6 +171,7 @@ class ReturnItem(Base):
 # ---------------------------------------------------------
 # REFUND MODEL
 # ---------------------------------------------------------
+
 
 class Refund(Base):
     __tablename__ = "refunds"

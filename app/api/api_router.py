@@ -1,11 +1,12 @@
+# app/api/api_router.py
 from fastapi import APIRouter
 
-from app.api.routes.auth_routes import router as auth_router
 from app.api.routes.admin_routes import router as admin_router
-from app.api.routes.document_routes import router as documents_router
-from app.api.routes.document_history_routes import router as document_history_router
+from app.api.routes.auth_routes import router as auth_router
 from app.api.routes.chat_routes import router as chat_router
 from app.api.routes.customer_routes import router as customer_router
+from app.api.routes.document_history_routes import router as document_history_router
+from app.api.routes.document_routes import router as documents_router
 from app.api.routes.product_routes import router as products_router
 
 # Registration order matters: /documents/history must be registered

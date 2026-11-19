@@ -1,5 +1,6 @@
-from typing import TYPE_CHECKING
+# app/models/shipments.py
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     DateTime,
@@ -8,6 +9,7 @@ from sqlalchemy import (
     String,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.models.base import Base
 
 if TYPE_CHECKING:
@@ -24,12 +26,8 @@ class Shipment(Base):
         unique=True,
         index=True,
     )
-    courier_name: Mapped[str | None] = mapped_column(
-        String(100), nullable=True
-    )
-    tracking_number: Mapped[str | None] = mapped_column(
-        String(100), nullable=True
-    )
+    courier_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    tracking_number: Mapped[str | None] = mapped_column(String(100), nullable=True)
     shipment_status: Mapped[str] = mapped_column(
         String(30), nullable=False, default="not_shipped"
     )
@@ -43,6 +41,4 @@ class Shipment(Base):
         DateTime(timezone=True), nullable=True
     )
 
-    order: Mapped["Order"] = relationship(
-        back_populates="shipment"
-    )
+    order: Mapped["Order"] = relationship(back_populates="shipment")

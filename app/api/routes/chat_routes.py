@@ -1,5 +1,6 @@
-import logging
+# app/api/routes/chat_routes.py
 import json
+import logging
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -7,10 +8,9 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_current_customer
-from app.models import ActivityLog, ChatLog, Customer
 from app.db.session import get_db
+from app.models import ActivityLog, ChatLog, Customer
 from app.services.answer_service import answer_customer_question
-
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
 
@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------
 # CHAT REQUEST
 # ---------------------------------------------------------
+
 
 class ChatRequest(BaseModel):
     question: str = Field(
@@ -38,6 +39,7 @@ class ChatRequest(BaseModel):
 # CHAT RESPONSE
 # ---------------------------------------------------------
 
+
 class ChatResponse(BaseModel):
     answer: str
     sources: list[dict]
@@ -46,6 +48,7 @@ class ChatResponse(BaseModel):
 # ---------------------------------------------------------
 # CHAT HISTORY RESPONSE
 # ---------------------------------------------------------
+
 
 class ChatHistoryItem(BaseModel):
     id: int
@@ -66,6 +69,7 @@ class ChatHistoryResponse(BaseModel):
 # CUSTOMER CHAT ENDPOINT
 # POST /chat
 # ---------------------------------------------------------
+
 
 @router.post("", response_model=ChatResponse)
 def chat(
@@ -129,6 +133,7 @@ def chat(
 # GET /chat/history
 # ---------------------------------------------------------
 
+
 @router.get("/history", response_model=ChatHistoryResponse)
 def get_chat_history(
     limit: int = Query(default=20, ge=1, le=100),
@@ -139,9 +144,7 @@ def get_chat_history(
     try:
         # Count only this customer's conversations
         total = (
-            db.query(ChatLog)
-            .filter(ChatLog.customer_id == current_customer.id)
-            .count()
+            db.query(ChatLog).filter(ChatLog.customer_id == current_customer.id).count()
         )
 
         # Retrieve this customer's conversations
@@ -162,9 +165,7 @@ def get_chat_history(
         for record in chat_records:
             try:
                 sources = (
-                    json.loads(record.source_details)
-                    if record.source_details
-                    else []
+                    json.loads(record.source_details) if record.source_details else []
                 )
 
                 if not isinstance(sources, list):

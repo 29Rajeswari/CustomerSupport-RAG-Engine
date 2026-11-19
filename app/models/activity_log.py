@@ -8,6 +8,7 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column
+
 from app.models.base import Base, utc_now
 
 
@@ -20,12 +21,8 @@ class ActivityLog(Base):
         nullable=True,
         index=True,
     )
-    action: Mapped[str] = mapped_column(
-        String(100), nullable=False, index=True
-    )
-    details: Mapped[str | None] = mapped_column(
-        Text, nullable=True
-    )
+    action: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    details: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,

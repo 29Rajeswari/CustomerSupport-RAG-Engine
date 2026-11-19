@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     Boolean,
@@ -9,6 +9,7 @@ from sqlalchemy import (
     String,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.models.base import Base, utc_now
 
 if TYPE_CHECKING:
@@ -16,6 +17,7 @@ if TYPE_CHECKING:
 
 
 # Retained for compatibility with the previous registration flow.
+
 
 class EmailVerification(Base):
     __tablename__ = "email_verifications"
@@ -26,9 +28,7 @@ class EmailVerification(Base):
         nullable=False,
         index=True,
     )
-    otp_hash: Mapped[str] = mapped_column(
-        String(255), nullable=False
-    )
+    otp_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, index=True
     )
@@ -50,6 +50,7 @@ class EmailVerification(Base):
 
 # OTP verification before creating a Customer account.
 
+
 class PendingRegistration(Base):
     __tablename__ = "pending_registrations"
 
@@ -62,9 +63,7 @@ class PendingRegistration(Base):
         String(254), nullable=False, unique=True, index=True
     )
 
-    otp_hash: Mapped[str] = mapped_column(
-        String(255), nullable=False
-    )
+    otp_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, index=True
     )
@@ -91,6 +90,7 @@ class PendingRegistration(Base):
 # PASSWORD RESET OTP
 # Separate OTP storage for customer password recovery.
 
+
 class PasswordResetOTP(Base):
     __tablename__ = "password_reset_otps"
 
@@ -103,9 +103,7 @@ class PasswordResetOTP(Base):
         index=True,
     )
 
-    otp_hash: Mapped[str] = mapped_column(
-        String(255), nullable=False
-    )
+    otp_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, index=True

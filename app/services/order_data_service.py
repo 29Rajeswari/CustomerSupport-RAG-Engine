@@ -1,4 +1,3 @@
-
 from sqlalchemy.orm import Session
 
 from app.models import Order
@@ -21,7 +20,6 @@ def _format_order(order: Order) -> dict:
         "payment_status": order.payment_status,
         "total_amount": str(order.total_amount),
         "created_at": _format_datetime(order.created_at),
-
         "items": [
             {
                 "product_id": item.product_id,
@@ -32,15 +30,12 @@ def _format_order(order: Order) -> dict:
             }
             for item in order.items
         ],
-
         "shipment": (
             {
                 "courier_name": shipment.courier_name,
                 "tracking_number": shipment.tracking_number,
                 "shipment_status": shipment.shipment_status,
-                "estimated_delivery": _format_datetime(
-                    shipment.estimated_delivery
-                ),
+                "estimated_delivery": _format_datetime(shipment.estimated_delivery),
                 "shipped_at": _format_datetime(shipment.shipped_at),
                 "delivered_at": _format_datetime(shipment.delivered_at),
             }

@@ -1,16 +1,14 @@
-﻿import csv
+import csv
 import io
 
-from fastapi import File, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
 from pydantic import ValidationError
-
-from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_current_admin
-from app.models import Product
 from app.db.session import get_db
+from app.models import Product
 from app.schemas.product import (
     ProductCreate,
     ProductListResponse,
@@ -18,13 +16,13 @@ from app.schemas.product import (
     ProductUpdate,
 )
 
-
 router = APIRouter(tags=["Products"])
 
 
 # ---------------------------------------------------------
 # 1. ADD A PRODUCT (ADMIN ONLY)
 # ---------------------------------------------------------
+
 
 @router.post(
     "/admin/products",
@@ -36,9 +34,9 @@ def create_product(
     _: str = Depends(get_current_admin),
     db: Session = Depends(get_db),
 ):
-    existing_product = db.query(Product).filter(
-        Product.product_id == request.product_id
-    ).first()
+    existing_product = (
+        db.query(Product).filter(Product.product_id == request.product_id).first()
+    )
 
     if existing_product:
         raise HTTPException(
@@ -75,6 +73,7 @@ def create_product(
 # 2. LIST ALL PRODUCTS (ADMIN ONLY)
 # ---------------------------------------------------------
 
+
 @router.get(
     "/admin/products",
     response_model=ProductListResponse,
@@ -90,8 +89,7 @@ def list_admin_products(
     total = query.count()
 
     products = (
-        query
-        .order_by(Product.created_at.desc(), Product.id.desc())
+        query.order_by(Product.created_at.desc(), Product.id.desc())
         .offset(offset)
         .limit(limit)
         .all()
@@ -109,6 +107,7 @@ def list_admin_products(
 # 3. UPDATE PRODUCT (ADMIN ONLY)
 # ---------------------------------------------------------
 
+
 @router.patch(
     "/admin/products/{product_id}",
     response_model=ProductResponse,
@@ -119,9 +118,11 @@ def update_product(
     _: str = Depends(get_current_admin),
     db: Session = Depends(get_db),
 ):
-    product = db.query(Product).filter(
-        Product.product_id == product_id.strip().upper()
-    ).first()
+    product = (
+        db.query(Product)
+        .filter(Product.product_id == product_id.strip().upper())
+        .first()
+    )
 
     if product is None:
         raise HTTPException(
@@ -166,6 +167,7 @@ def update_product(
 # 4. CUSTOMER PRODUCT CATALOGUE
 # ---------------------------------------------------------
 
+
 @router.get(
     "/products",
     response_model=ProductListResponse,
@@ -177,14 +179,10 @@ def list_customer_products(
     offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
 ):
-    query = db.query(Product).filter(
-        Product.is_active.is_(True)
-    )
+    query = db.query(Product).filter(Product.is_active.is_(True))
 
     if category and category.strip():
-        query = query.filter(
-            Product.category.ilike(category.strip())
-        )
+        query = query.filter(Product.category.ilike(category.strip()))
 
     if search and search.strip():
         search_term = f"%{search.strip()}%"
@@ -197,8 +195,7 @@ def list_customer_products(
     total = query.count()
 
     products = (
-        query
-        .order_by(Product.product_name.asc(), Product.id.asc())
+        query.order_by(Product.product_name.asc(), Product.id.asc())
         .offset(offset)
         .limit(limit)
         .all()
@@ -216,6 +213,7 @@ def list_customer_products(
 # 5. CUSTOMER VIEW ONE PRODUCT
 # ---------------------------------------------------------
 
+
 @router.get(
     "/products/{product_id}",
     response_model=ProductResponse,
@@ -224,10 +222,14 @@ def get_customer_product(
     product_id: str,
     db: Session = Depends(get_db),
 ):
-    product = db.query(Product).filter(
-        Product.product_id == product_id.strip().upper(),
-        Product.is_active.is_(True),
-    ).first()
+    product = (
+        db.query(Product)
+        .filter(
+            Product.product_id == product_id.strip().upper(),
+            Product.is_active.is_(True),
+        )
+        .first()
+    )
 
     if product is None:
         raise HTTPException(
@@ -238,10 +240,10 @@ def get_customer_product(
     return product
 
 
-
 # ---------------------------------------------------------
 # 6. BULK PRODUCT UPLOAD FROM CSV (ADMIN ONLY)
 # ---------------------------------------------------------
+
 
 @router.post(
     "/admin/products/upload-csv",
@@ -285,22 +287,22 @@ async def upload_products_csv(
 
     # Create a CSV stream.
     csv_stream = io.StringIO(csv_text, newline="")
-    
+
     # Skip empty lines before the CSV header.
     while True:
         line_position = csv_stream.tell()
         line = csv_stream.readline()
-    
+
         if line == "":
             break
-    
+
         if line.strip():
             csv_stream.seek(line_position)
             break
-    
+
     # Read CSV data.
     reader = csv.DictReader(csv_stream)
-    
+
     if not reader.fieldnames:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -309,8 +311,7 @@ async def upload_products_csv(
 
     # Normalize column names.
     reader.fieldnames = [
-        name.strip().lower() if name else ""
-        for name in reader.fieldnames
+        name.strip().lower() if name else "" for name in reader.fieldnames
     ]
 
     required_columns = {
@@ -328,9 +329,7 @@ async def upload_products_csv(
     available_columns = set(reader.fieldnames)
 
     missing_columns = required_columns - available_columns
-    unexpected_columns = (
-        available_columns - required_columns - optional_columns
-    )
+    unexpected_columns = available_columns - required_columns - optional_columns
 
     if missing_columns:
         raise HTTPException(
@@ -366,8 +365,7 @@ async def upload_products_csv(
     for row_number, row in enumerate(reader, start=2):
         # Ignore completely blank rows.
         if not row or not any(
-            value and value.strip() for value in row.values()
-            if isinstance(value, str)
+            value and value.strip() for value in row.values() if isinstance(value, str)
         ):
             continue
 
@@ -388,22 +386,20 @@ async def upload_products_csv(
             validated_products.append(product)
 
         except (ValidationError, ValueError, TypeError) as exc:
-            errors.append({
-                "row": row_number,
-                "errors": (
-                    exc.errors()
-                    if isinstance(exc, ValidationError)
-                    else str(exc)
-                ),
-            })
+            errors.append(
+                {
+                    "row": row_number,
+                    "errors": (
+                        exc.errors() if isinstance(exc, ValidationError) else str(exc)
+                    ),
+                }
+            )
 
     if errors:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={
-                "message": (
-                    "CSV validation failed. No products were inserted."
-                ),
+                "message": ("CSV validation failed. No products were inserted."),
                 "invalid_rows": errors,
             },
         )
@@ -418,14 +414,10 @@ async def upload_products_csv(
         }
 
     # 5. Find product IDs that already exist in PostgreSQL.
-    uploaded_ids = [
-        product.product_id for product in validated_products
-    ]
+    uploaded_ids = [product.product_id for product in validated_products]
 
     existing_ids = set(
-        db.query(Product.product_id)
-        .filter(Product.product_id.in_(uploaded_ids))
-        .all()
+        db.query(Product.product_id).filter(Product.product_id.in_(uploaded_ids)).all()
     )
 
     # SQLAlchemy query returns one-element tuples.
@@ -482,4 +474,3 @@ async def upload_products_csv(
             for product in new_products
         ],
     }
-

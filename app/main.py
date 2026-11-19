@@ -1,4 +1,4 @@
-
+# app/main.py
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -6,7 +6,6 @@ from fastapi.staticfiles import StaticFiles
 
 from app.api.api_router import api_router
 from app.config import settings
-
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -20,6 +19,7 @@ app = FastAPI(
 
 # API routes
 app.include_router(api_router)
+
 
 @app.get("/health", tags=["Health"])
 def health_check():

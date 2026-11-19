@@ -1,11 +1,12 @@
+# app\api\routes\admin_routes.py
+from datetime import UTC, datetime
+from decimal import Decimal
 from uuid import uuid4
-from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, status
+
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session, joinedload
 
-from decimal import Decimal
-from app.models import ReturnItem
 from app.config import settings
 from app.core.dependencies import get_current_admin
 from app.core.security import (
@@ -13,6 +14,7 @@ from app.core.security import (
     create_access_token,
     verify_password,
 )
+from app.db.session import get_db
 from app.models import (
     ActivityLog,
     ChatLog,
@@ -20,16 +22,17 @@ from app.models import (
     Order,
     OrderItem,
     Product,
-    Shipment,
-    ReturnRequest,
     Refund,
+    ReturnItem,
+    ReturnRequest,
+    Shipment,
 )
-from app.db.session import get_db
 from app.schemas.auth import TokenResponse
 from app.schemas.shipment import (
     ShipmentCreate,
     ShipmentStatusUpdate,
 )
+from app.services.mock_courier import simulate_delivery
 
 router = APIRouter(prefix="/admin", tags=["Administrator"])
 
@@ -37,6 +40,7 @@ router = APIRouter(prefix="/admin", tags=["Administrator"])
 class AdminLoginRequest(BaseModel):
     identifier: str = Field(min_length=1, max_length=254)
     password: str = Field(min_length=1, max_length=128)
+
 
 class AdminReturnRejectRequest(BaseModel):
     reason: str = Field(
@@ -46,9 +50,11 @@ class AdminReturnRejectRequest(BaseModel):
         description="Reason for rejecting the return request",
     )
 
+
 # ---------------------------------------------------------
 # 1. ADMIN LOGIN
 # ---------------------------------------------------------
+
 
 @router.post("/login", response_model=TokenResponse)
 def admin_login(request: AdminLoginRequest):
@@ -89,6 +95,7 @@ def admin_login(request: AdminLoginRequest):
 # ---------------------------------------------------------
 # 2. LIST ALL CUSTOMERS
 # ---------------------------------------------------------
+
 
 @router.get("/customers")
 def list_customers(
@@ -135,6 +142,7 @@ def list_customers(
 # ---------------------------------------------------------
 # 3. LIST ALL ORDERS WITH PRODUCTS AND SHIPMENTS
 # ---------------------------------------------------------
+
 
 @router.get("/orders")
 def list_all_orders(
@@ -213,6 +221,7 @@ def list_all_orders(
 # 4. LIST ALL CHAT CONVERSATIONS
 # ---------------------------------------------------------
 
+
 @router.get("/chats")
 def list_all_chats(
     limit: int = 50,
@@ -268,6 +277,7 @@ def list_all_chats(
 # 5. LIST CUSTOMER ACTIVITY
 # ---------------------------------------------------------
 
+
 @router.get("/activity")
 def list_activity(
     limit: int = 50,
@@ -281,10 +291,7 @@ def list_activity(
             detail="Use limit between 1 and 100 and a non-negative offset.",
         )
 
-    query = (
-        db.query(ActivityLog)
-        .order_by(ActivityLog.created_at.desc())
-    )
+    query = db.query(ActivityLog).order_by(ActivityLog.created_at.desc())
 
     total = db.query(ActivityLog).count()
     logs = query.offset(offset).limit(limit).all()
@@ -310,20 +317,17 @@ def list_activity(
 # 6. CREATE SHIPMENT FOR AN ORDER
 # ---------------------------------------------------------
 
+
 @router.post("/orders/{order_id}/shipment", status_code=201)
 def create_shipment(
     order_id: int,
     shipment_data: ShipmentCreate,
+    background_tasks: BackgroundTasks,
     _: str = Depends(get_current_admin),
     db: Session = Depends(get_db),
 ):
     try:
-        order = (
-            db.query(Order)
-            .filter(Order.id == order_id)
-            .with_for_update()
-            .first()
-        )
+        order = db.query(Order).filter(Order.id == order_id).with_for_update().first()
 
         if order is None:
             raise HTTPException(
@@ -344,9 +348,7 @@ def create_shipment(
             )
 
         existing_shipment = (
-            db.query(Shipment)
-            .filter(Shipment.order_id == order_id)
-            .first()
+            db.query(Shipment).filter(Shipment.order_id == order_id).first()
         )
 
         if existing_shipment:
@@ -367,6 +369,12 @@ def create_shipment(
         db.commit()
         db.refresh(shipment)
 
+        # Start mock courier after the response is prepared.
+        background_tasks.add_task(
+            simulate_delivery,
+            shipment.id,
+        )
+
         return {
             "message": "Shipment created successfully.",
             "shipment_id": shipment.id,
@@ -385,6 +393,7 @@ def create_shipment(
 # ---------------------------------------------------------
 # 7. UPDATE SHIPMENT STATUS
 # ---------------------------------------------------------
+
 
 @router.patch("/shipments/{shipment_id}")
 def update_shipment_status(
@@ -432,9 +441,7 @@ def update_shipment_status(
             "returned": set(),
         }
 
-        if new_status not in allowed_transitions.get(
-            current_status, set()
-        ):
+        if new_status not in allowed_transitions.get(current_status, set()):
             raise HTTPException(
                 status_code=409,
                 detail=(
@@ -443,7 +450,7 @@ def update_shipment_status(
                 ),
             )
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         shipment.shipment_status = new_status
 
@@ -483,6 +490,7 @@ def update_shipment_status(
 # 8. LIST ALL SHIPMENTS
 # ---------------------------------------------------------
 
+
 @router.get("/shipments")
 def list_shipments(
     limit: int = 50,
@@ -496,10 +504,7 @@ def list_shipments(
             detail="Use limit between 1 and 100 and a non-negative offset.",
         )
 
-    query = (
-        db.query(Shipment)
-        .order_by(Shipment.id.desc())
-    )
+    query = db.query(Shipment).order_by(Shipment.id.desc())
 
     total = query.count()
     shipments = query.offset(offset).limit(limit).all()
@@ -523,9 +528,11 @@ def list_shipments(
         ],
     }
 
+
 # ---------------------------------------------------------
 # 9. LIST ALL CUSTOMER RETURN REQUESTS
 # ---------------------------------------------------------
+
 
 @router.get("/returns")
 def list_return_requests(
@@ -580,6 +587,7 @@ def list_return_requests(
 # 10. APPROVE RETURN REQUEST
 # ---------------------------------------------------------
 
+
 @router.patch("/returns/{return_id}/approve")
 def approve_return_request(
     return_id: int,
@@ -632,6 +640,7 @@ def approve_return_request(
 # ---------------------------------------------------------
 # 11. REJECT RETURN REQUEST
 # ---------------------------------------------------------
+
 
 @router.patch("/returns/{return_id}/reject")
 def reject_return_request(
@@ -695,6 +704,7 @@ def reject_return_request(
 # 12. COMPLETE RETURN REQUEST
 # ---------------------------------------------------------
 
+
 @router.patch("/returns/{return_id}/complete")
 def complete_return_request(
     return_id: int,
@@ -718,9 +728,7 @@ def complete_return_request(
         if return_request.return_status != "approved":
             raise HTTPException(
                 status_code=409,
-                detail=(
-                    "Only approved return requests can be completed."
-                ),
+                detail=("Only approved return requests can be completed."),
             )
 
         return_request.return_status = "completed"
@@ -739,6 +747,7 @@ def complete_return_request(
     except Exception:
         db.rollback()
         raise
+
 
 # ---------------------------------------------------------
 # 13. CREATE REFUND FOR COMPLETED RETURN
@@ -781,11 +790,7 @@ def create_return_refund(
             )
 
         # 4. Prevent duplicate refunds.
-        existing = (
-            db.query(Refund)
-            .filter(Refund.return_id == return_id)
-            .first()
-        )
+        existing = db.query(Refund).filter(Refund.return_id == return_id).first()
 
         if existing:
             raise HTTPException(
@@ -832,25 +837,22 @@ def create_return_refund(
         refund_items = []
 
         for return_item, order_item in returned_items:
-            item_amount = (
-                Decimal(str(order_item.unit_price))
-                * return_item.quantity
-            )
+            item_amount = Decimal(str(order_item.unit_price)) * return_item.quantity
 
             refund_amount += item_amount
 
-            refund_items.append({
-                "order_item_id": order_item.id,
-                "product_id": order_item.product_id,
-                "product_name": order_item.product_name,
-                "returned_quantity": return_item.quantity,
-                "unit_price": str(order_item.unit_price),
-                "refund_amount": str(item_amount),
-            })
+            refund_items.append(
+                {
+                    "order_item_id": order_item.id,
+                    "product_id": order_item.product_id,
+                    "product_name": order_item.product_name,
+                    "returned_quantity": return_item.quantity,
+                    "unit_price": str(order_item.unit_price),
+                    "refund_amount": str(item_amount),
+                }
+            )
 
-        refund_amount = refund_amount.quantize(
-            Decimal("0.01")
-        )
+        refund_amount = refund_amount.quantize(Decimal("0.01"))
 
         if refund_amount <= 0:
             raise HTTPException(
@@ -892,6 +894,7 @@ def create_return_refund(
 # 14. MARK REFUND AS PROCESSED
 # ---------------------------------------------------------
 
+
 @router.patch("/refunds/{refund_id}/process")
 def process_refund(
     refund_id: int,
@@ -901,10 +904,7 @@ def process_refund(
 ):
     try:
         refund = (
-            db.query(Refund)
-            .filter(Refund.id == refund_id)
-            .with_for_update()
-            .first()
+            db.query(Refund).filter(Refund.id == refund_id).with_for_update().first()
         )
 
         if refund is None:
@@ -963,6 +963,7 @@ def process_refund(
 # 15. MARK REFUND AS FAILED
 # ---------------------------------------------------------
 
+
 @router.patch("/refunds/{refund_id}/fail")
 def fail_refund(
     refund_id: int,
@@ -972,10 +973,7 @@ def fail_refund(
 ):
     try:
         refund = (
-            db.query(Refund)
-            .filter(Refund.id == refund_id)
-            .with_for_update()
-            .first()
+            db.query(Refund).filter(Refund.id == refund_id).with_for_update().first()
         )
 
         if refund is None:
@@ -1013,14 +1011,15 @@ def fail_refund(
         db.rollback()
         raise
 
+
 # ---------------------------------------------------------
 # 16. INSPECT RETURN AND RESTORE INVENTORY
 # ---------------------------------------------------------
 
+
 class ReturnInspectionRequest(BaseModel):
     resellable: bool
     note: str | None = Field(default=None, max_length=1000)
-
 
 
 @router.patch("/returns/{return_id}/inspect")
@@ -1058,9 +1057,7 @@ def inspect_return(
 
         # Retrieve only the items included in this return.
         return_items = (
-            db.query(ReturnItem)
-            .filter(ReturnItem.return_id == return_id)
-            .all()
+            db.query(ReturnItem).filter(ReturnItem.return_id == return_id).all()
         )
 
         if not return_items:
@@ -1073,10 +1070,7 @@ def inspect_return(
 
         if payload.resellable:
             # Lock all returned products before updating inventory.
-            product_ids = sorted({
-                item.order_item.product_id
-                for item in return_items
-            })
+            product_ids = sorted({item.order_item.product_id for item in return_items})
 
             products = (
                 db.query(Product)
@@ -1086,10 +1080,7 @@ def inspect_return(
                 .all()
             )
 
-            products_by_id = {
-                product.product_id: product
-                for product in products
-            }
+            products_by_id = {product.product_id: product for product in products}
 
             # Validate all products before modifying stock.
             for item in return_items:
@@ -1108,15 +1099,17 @@ def inspect_return(
 
                 product.stock_quantity += item.quantity
 
-                restored_items.append({
-                    "product_id": product.product_id,
-                    "product_name": product.product_name,
-                    "restored_quantity": item.quantity,
-                    "available_stock": product.stock_quantity,
-                })
+                restored_items.append(
+                    {
+                        "product_id": product.product_id,
+                        "product_name": product.product_name,
+                        "restored_quantity": item.quantity,
+                        "available_stock": product.stock_quantity,
+                    }
+                )
 
             return_request.inspection_status = "resellable"
-            return_request.restocked_at = datetime.now(timezone.utc)
+            return_request.restocked_at = datetime.now(UTC)
 
             message = "Inspection completed. Returned quantities restored successfully."
 

@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     Boolean,
@@ -10,6 +10,7 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.models.base import Base, utc_now
 
 if TYPE_CHECKING:
@@ -33,9 +34,7 @@ class FAQ(Base):
         ForeignKey("document_versions.id", ondelete="SET NULL"),
         nullable=True,
     )
-    needs_review: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=False
-    )
+    needs_review: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
@@ -70,6 +69,4 @@ class ChatLog(Base):
         DateTime(timezone=True), default=utc_now, nullable=False
     )
 
-    customer: Mapped["Customer | None"] = relationship(
-        back_populates="chat_logs"
-    )
+    customer: Mapped["Customer | None"] = relationship(back_populates="chat_logs")

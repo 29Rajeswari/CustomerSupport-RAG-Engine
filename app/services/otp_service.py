@@ -1,13 +1,11 @@
-
-from datetime import datetime, timedelta, timezone
 import secrets
+from datetime import UTC, datetime, timedelta
 
 from fastapi import HTTPException, status
 from pwdlib import PasswordHash
 from sqlalchemy.orm import Session
 
-from app.models import PendingRegistration, PasswordResetOTP
-
+from app.models import PasswordResetOTP, PendingRegistration
 
 # ---------------------------------------------------------
 # OTP CONFIGURATION
@@ -25,16 +23,18 @@ otp_hasher = PasswordHash.recommended()
 # DATETIME HELPER
 # ---------------------------------------------------------
 
+
 def ensure_utc(value: datetime) -> datetime:
     """Ensure a database datetime is timezone-aware."""
     if value.tzinfo is None:
-        return value.replace(tzinfo=timezone.utc)
+        return value.replace(tzinfo=UTC)
     return value
 
 
 # ---------------------------------------------------------
 # OTP GENERATION AND HASHING
 # ---------------------------------------------------------
+
 
 def generate_otp() -> str:
     """Generate a cryptographically secure six-digit OTP."""
@@ -56,11 +56,12 @@ def verify_otp_hash(otp: str, otp_hash: str) -> bool:
 # RESEND COOLDOWN
 # ---------------------------------------------------------
 
+
 def check_resend_cooldown(last_sent_at: datetime | None) -> None:
     if last_sent_at is None:
         return
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     last_sent = ensure_utc(last_sent_at)
 
     elapsed = (now - last_sent).total_seconds()
@@ -78,6 +79,7 @@ def check_resend_cooldown(last_sent_at: datetime | None) -> None:
 # REGISTRATION OTP CREATION
 # ---------------------------------------------------------
 
+
 def create_pending_registration(
     db: Session,
     email: str,
@@ -85,7 +87,7 @@ def create_pending_registration(
     username: str | None = None,
 ) -> PendingRegistration:
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     pending = (
         db.query(PendingRegistration)
@@ -95,7 +97,6 @@ def create_pending_registration(
     )
 
     if pending is not None:
-
         if pending.is_verified:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -135,6 +136,7 @@ def create_pending_registration(
 # REGISTRATION OTP VERIFICATION
 # ---------------------------------------------------------
 
+
 def verify_registration_otp(
     db: Session,
     email: str,
@@ -160,7 +162,7 @@ def verify_registration_otp(
             detail="Email has already been verified.",
         )
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     if ensure_utc(pending.expires_at) <= now:
         db.commit()
@@ -206,13 +208,14 @@ def verify_registration_otp(
 # PASSWORD RESET OTP CREATION
 # ---------------------------------------------------------
 
+
 def create_password_reset_otp(
     db: Session,
     customer_id: int,
     otp: str,
 ) -> PasswordResetOTP:
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     reset_record = (
         db.query(PasswordResetOTP)
@@ -225,9 +228,7 @@ def create_password_reset_otp(
         check_resend_cooldown(reset_record.last_sent_at)
 
         reset_record.otp_hash = hash_otp(otp)
-        reset_record.expires_at = now + timedelta(
-            minutes=OTP_EXPIRY_MINUTES
-        )
+        reset_record.expires_at = now + timedelta(minutes=OTP_EXPIRY_MINUTES)
         reset_record.attempt_count = 0
         reset_record.is_verified = False
         reset_record.verified_at = None
@@ -255,6 +256,7 @@ def create_password_reset_otp(
 # PASSWORD RESET OTP VERIFICATION
 # ---------------------------------------------------------
 
+
 def verify_password_reset_otp(
     db: Session,
     customer_id: int,
@@ -280,7 +282,7 @@ def verify_password_reset_otp(
             detail="This OTP has already been verified.",
         )
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     if ensure_utc(reset_record.expires_at) <= now:
         db.commit()
@@ -326,6 +328,7 @@ def verify_password_reset_otp(
 # CHECK VERIFIED PASSWORD RESET
 # ---------------------------------------------------------
 
+
 def get_verified_password_reset(
     db: Session,
     customer_id: int,
@@ -347,15 +350,12 @@ def get_verified_password_reset(
             detail="Please verify your password reset OTP first.",
         )
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     expires_at = ensure_utc(reset_record.expires_at)
     verified_at = ensure_utc(reset_record.verified_at)
 
-    if (
-        expires_at <= now
-        or now - verified_at > timedelta(
-            minutes=OTP_VERIFICATION_WINDOW_MINUTES
-        )
+    if expires_at <= now or now - verified_at > timedelta(
+        minutes=OTP_VERIFICATION_WINDOW_MINUTES
     ):
         db.delete(reset_record)
         db.commit()
@@ -371,6 +371,7 @@ def get_verified_password_reset(
 # ---------------------------------------------------------
 # CONSUME PASSWORD RESET OTP
 # ---------------------------------------------------------
+
 
 def consume_password_reset_otp(
     db: Session,

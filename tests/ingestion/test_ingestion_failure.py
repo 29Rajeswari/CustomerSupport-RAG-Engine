@@ -1,4 +1,3 @@
-
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -9,8 +8,7 @@ from app.ingestion import processor
 def test_embedding_failure_marks_version_failed(tmp_path):
     document_path = tmp_path / "new_warranty.txt"
     document_path.write_text(
-        "Mixer grinder warranty covers manufacturing defects "
-        "for twelve months.",
+        "Mixer grinder warranty covers manufacturing defects for twelve months.",
         encoding="utf-8",
     )
 
@@ -59,9 +57,7 @@ def test_embedding_failure_marks_version_failed(tmp_path):
         session_factory.return_value.__enter__.return_value = initial_session
         session_factory.return_value.__exit__.return_value = False
 
-        session_factory.begin.return_value.__enter__.return_value = (
-            failure_session
-        )
+        session_factory.begin.return_value.__enter__.return_value = failure_session
         session_factory.begin.return_value.__exit__.return_value = False
 
         with pytest.raises(
@@ -74,5 +70,3 @@ def test_embedding_failure_marks_version_failed(tmp_path):
     assert version.is_active is False
     assert "Simulated embedding failure" in version.error_message
     session_factory.begin.assert_called_once()
-
-

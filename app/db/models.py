@@ -1,5 +1,4 @@
-
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from decimal import Decimal
 
 from pgvector.sqlalchemy import Vector
@@ -22,12 +21,13 @@ class Base(DeclarativeBase):
 
 
 def utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 # ---------------------------------------------------------
 # 1. DOCUMENTS
 # ---------------------------------------------------------
+
 
 class Document(Base):
     __tablename__ = "documents"
@@ -57,6 +57,7 @@ class Document(Base):
 # ---------------------------------------------------------
 # 2. DOCUMENT VERSIONS
 # ---------------------------------------------------------
+
 
 class DocumentVersion(Base):
     __tablename__ = "document_versions"
@@ -108,6 +109,7 @@ class DocumentVersion(Base):
 # 3. DOCUMENT CHUNKS
 # ---------------------------------------------------------
 
+
 class DocumentChunk(Base):
     __tablename__ = "document_chunks"
 
@@ -123,16 +125,12 @@ class DocumentChunk(Base):
     category: Mapped[str] = mapped_column(
         String(100), nullable=False, default="general"
     )
-    embedding: Mapped[list[float] | None] = mapped_column(
-        Vector(768), nullable=True
-    )
+    embedding: Mapped[list[float] | None] = mapped_column(Vector(768), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
 
-    version: Mapped["DocumentVersion"] = relationship(
-        back_populates="chunks"
-    )
+    version: Mapped["DocumentVersion"] = relationship(back_populates="chunks")
 
     __table_args__ = (
         UniqueConstraint(
@@ -146,6 +144,7 @@ class DocumentChunk(Base):
 # ---------------------------------------------------------
 # 4. FAQS
 # ---------------------------------------------------------
+
 
 class FAQ(Base):
     __tablename__ = "faqs"
@@ -164,9 +163,7 @@ class FAQ(Base):
         ForeignKey("document_versions.id", ondelete="SET NULL"),
         nullable=True,
     )
-    needs_review: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=False
-    )
+    needs_review: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
@@ -181,6 +178,7 @@ class FAQ(Base):
 # ---------------------------------------------------------
 # 5. CHAT LOGS
 # ---------------------------------------------------------
+
 
 class ChatLog(Base):
     __tablename__ = "chat_logs"
@@ -205,14 +203,13 @@ class ChatLog(Base):
         DateTime(timezone=True), default=utc_now, nullable=False
     )
 
-    customer: Mapped["Customer | None"] = relationship(
-        back_populates="chat_logs"
-    )
+    customer: Mapped["Customer | None"] = relationship(back_populates="chat_logs")
 
 
 # ---------------------------------------------------------
 # 6. CUSTOMERS
 # ---------------------------------------------------------
+
 
 class Customer(Base):
     __tablename__ = "customers"
@@ -223,18 +220,12 @@ class Customer(Base):
         String(50), nullable=False, unique=True, index=True
     )
 
-    full_name: Mapped[str] = mapped_column(
-        String(150), nullable=False
-    )
+    full_name: Mapped[str] = mapped_column(String(150), nullable=False)
     email: Mapped[str] = mapped_column(
         String(254), nullable=False, unique=True, index=True
     )
-    password_hash: Mapped[str] = mapped_column(
-        String(255), nullable=False
-    )
-    is_active: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=True
-    )
+    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     is_email_verified: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
@@ -248,17 +239,14 @@ class Customer(Base):
         DateTime(timezone=True), default=utc_now, nullable=False
     )
 
-    orders: Mapped[list["Order"]] = relationship(
-        back_populates="customer"
-    )
-    chat_logs: Mapped[list["ChatLog"]] = relationship(
-        back_populates="customer"
-    )
+    orders: Mapped[list["Order"]] = relationship(back_populates="customer")
+    chat_logs: Mapped[list["ChatLog"]] = relationship(back_populates="customer")
 
 
 # ---------------------------------------------------------
 # 7. ORDERS
 # ---------------------------------------------------------
+
 
 class Order(Base):
     __tablename__ = "orders"
@@ -278,9 +266,7 @@ class Order(Base):
     payment_status: Mapped[str] = mapped_column(
         String(30), nullable=False, default="pending"
     )
-    total_amount: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2), nullable=False
-    )
+    total_amount: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
@@ -291,9 +277,7 @@ class Order(Base):
         nullable=False,
     )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="orders"
-    )
+    customer: Mapped["Customer"] = relationship(back_populates="orders")
     items: Mapped[list["OrderItem"]] = relationship(
         back_populates="order",
         cascade="all, delete-orphan",
@@ -309,6 +293,7 @@ class Order(Base):
 # 8. ORDER ITEMS
 # ---------------------------------------------------------
 
+
 class OrderItem(Base):
     __tablename__ = "order_items"
 
@@ -318,27 +303,18 @@ class OrderItem(Base):
         nullable=False,
         index=True,
     )
-    product_id: Mapped[str] = mapped_column(
-        String(100), nullable=False
-    )
-    product_name: Mapped[str] = mapped_column(
-        String(255), nullable=False
-    )
-    quantity: Mapped[int] = mapped_column(
-        Integer, nullable=False
-    )
-    unit_price: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2), nullable=False
-    )
+    product_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    product_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    quantity: Mapped[int] = mapped_column(Integer, nullable=False)
+    unit_price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
 
-    order: Mapped["Order"] = relationship(
-        back_populates="items"
-    )
+    order: Mapped["Order"] = relationship(back_populates="items")
 
 
 # ---------------------------------------------------------
 # 9. SHIPMENTS
 # ---------------------------------------------------------
+
 
 class Shipment(Base):
     __tablename__ = "shipments"
@@ -350,12 +326,8 @@ class Shipment(Base):
         unique=True,
         index=True,
     )
-    courier_name: Mapped[str | None] = mapped_column(
-        String(100), nullable=True
-    )
-    tracking_number: Mapped[str | None] = mapped_column(
-        String(100), nullable=True
-    )
+    courier_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    tracking_number: Mapped[str | None] = mapped_column(String(100), nullable=True)
     shipment_status: Mapped[str] = mapped_column(
         String(30), nullable=False, default="not_shipped"
     )
@@ -369,15 +341,14 @@ class Shipment(Base):
         DateTime(timezone=True), nullable=True
     )
 
-    order: Mapped["Order"] = relationship(
-        back_populates="shipment"
-    )
+    order: Mapped["Order"] = relationship(back_populates="shipment")
 
 
 # ---------------------------------------------------------
 # 10. LEGACY EMAIL VERIFICATIONS
 # Retained for compatibility with the previous registration flow.
 # ---------------------------------------------------------
+
 
 class EmailVerification(Base):
     __tablename__ = "email_verifications"
@@ -388,9 +359,7 @@ class EmailVerification(Base):
         nullable=False,
         index=True,
     )
-    otp_hash: Mapped[str] = mapped_column(
-        String(255), nullable=False
-    )
+    otp_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, index=True
     )
@@ -415,6 +384,7 @@ class EmailVerification(Base):
 # OTP verification before creating a Customer account.
 # ---------------------------------------------------------
 
+
 class PendingRegistration(Base):
     __tablename__ = "pending_registrations"
 
@@ -427,9 +397,7 @@ class PendingRegistration(Base):
         String(254), nullable=False, unique=True, index=True
     )
 
-    otp_hash: Mapped[str] = mapped_column(
-        String(255), nullable=False
-    )
+    otp_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, index=True
     )
@@ -457,6 +425,7 @@ class PendingRegistration(Base):
 # 12. ACTIVITY LOGS
 # ---------------------------------------------------------
 
+
 class ActivityLog(Base):
     __tablename__ = "activity_logs"
 
@@ -466,12 +435,8 @@ class ActivityLog(Base):
         nullable=True,
         index=True,
     )
-    action: Mapped[str] = mapped_column(
-        String(100), nullable=False, index=True
-    )
-    details: Mapped[str | None] = mapped_column(
-        Text, nullable=True
-    )
+    action: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    details: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,
@@ -486,6 +451,7 @@ class ActivityLog(Base):
 # Separate OTP storage for customer password recovery.
 # ---------------------------------------------------------
 
+
 class PasswordResetOTP(Base):
     __tablename__ = "password_reset_otps"
 
@@ -498,9 +464,7 @@ class PasswordResetOTP(Base):
         index=True,
     )
 
-    otp_hash: Mapped[str] = mapped_column(
-        String(255), nullable=False
-    )
+    otp_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, index=True
@@ -535,6 +499,7 @@ class PasswordResetOTP(Base):
 # ---------------------------------------------------------
 # 13. PRODUCTS
 # ---------------------------------------------------------
+
 
 class Product(Base):
     __tablename__ = "products"
@@ -609,9 +574,11 @@ class Product(Base):
         ),
     )
 
+
 # ---------------------------------------------------------
 # 14. CUSTOMER RETURN REQUESTS
 # ---------------------------------------------------------
+
 
 class ReturnRequest(Base):
     __tablename__ = "return_requests"
@@ -681,12 +648,7 @@ class ReturnRequest(Base):
 
     __table_args__ = (
         CheckConstraint(
-            "return_status IN ("
-            "'pending_review', "
-            "'approved', "
-            "'rejected', "
-            "'completed'"
-            ")",
+            "return_status IN ('pending_review', 'approved', 'rejected', 'completed')",
             name="ck_return_requests_status",
         ),
     )
@@ -701,15 +663,17 @@ class ReturnRequest(Base):
         DateTime(timezone=True),
         nullable=True,
     )
+
+
 # ---------------------------------------------------------
 # 14. CUSTOMER RETURN REQUESTS
 # ---------------------------------------------------------
 
 
-
 # ---------------------------------------------------------
 # 15. REFUND MANAGEMENT
 # ---------------------------------------------------------
+
 
 class Refund(Base):
     __tablename__ = "refunds"

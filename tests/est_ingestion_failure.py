@@ -1,4 +1,3 @@
-
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -11,8 +10,7 @@ def test_embedding_failure_does_not_start_activation_transaction(
 ):
     document_path = tmp_path / "new_warranty.txt"
     document_path.write_text(
-        "Mixer grinder warranty covers manufacturing defects "
-        "for twelve months.",
+        "Mixer grinder warranty covers manufacturing defects for twelve months.",
         encoding="utf-8",
     )
 

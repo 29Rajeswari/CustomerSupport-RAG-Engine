@@ -1,4 +1,3 @@
-
 # tests/test_ingestion.py
 
 import pytest
@@ -28,9 +27,7 @@ def test_extract_word_document(tmp_path):
     path = tmp_path / "product.docx"
 
     document = WordDocument()
-    document.add_paragraph(
-        "Prestige mixer grinder has a 12-month warranty."
-    )
+    document.add_paragraph("Prestige mixer grinder has a 12-month warranty.")
 
     table = document.add_table(rows=1, cols=2)
     table.cell(0, 0).text = "Warranty"
