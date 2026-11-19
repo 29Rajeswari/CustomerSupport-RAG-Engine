@@ -1,12 +1,10 @@
-
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 
 import jwt
 from pwdlib import PasswordHash
 
 from app.config import settings
-
 
 # ---------------------------------------------------------
 # SECURITY CONFIGURATION
@@ -24,6 +22,7 @@ UserRole = Literal["admin", "customer"]
 # ---------------------------------------------------------
 # PASSWORD HASHING
 # ---------------------------------------------------------
+
 
 def hash_password(password: str) -> str:
     """
@@ -53,6 +52,7 @@ def verify_password(
 # JWT ACCESS TOKEN CREATION
 # ---------------------------------------------------------
 
+
 def create_access_token(
     subject: str | int,
     role: UserRole,
@@ -68,12 +68,10 @@ def create_access_token(
         Either 'customer' or 'admin'.
     """
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     if expires_delta is None:
-        expires_delta = timedelta(
-            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
-        )
+        expires_delta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
     payload = {
         "sub": str(subject),
@@ -93,6 +91,7 @@ def create_access_token(
 # ---------------------------------------------------------
 # JWT ACCESS TOKEN VALIDATION
 # ---------------------------------------------------------
+
 
 def decode_access_token(token: str) -> dict[str, Any]:
     """

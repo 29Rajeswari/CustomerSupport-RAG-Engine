@@ -1,3 +1,4 @@
+# app/models/document.py
 from datetime import datetime
 
 from pgvector.sqlalchemy import Vector
@@ -11,6 +12,7 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.models.base import Base, utc_now
 
 
@@ -100,16 +102,12 @@ class DocumentChunk(Base):
     category: Mapped[str] = mapped_column(
         String(100), nullable=False, default="general"
     )
-    embedding: Mapped[list[float] | None] = mapped_column(
-        Vector(768), nullable=True
-    )
+    embedding: Mapped[list[float] | None] = mapped_column(Vector(768), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
 
-    version: Mapped["DocumentVersion"] = relationship(
-        back_populates="chunks"
-    )
+    version: Mapped["DocumentVersion"] = relationship(back_populates="chunks")
 
     __table_args__ = (
         UniqueConstraint(

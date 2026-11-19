@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List
+#app\schemas\return_request.py
+
+from pydantic import BaseModel, Field
 
 
 class ReturnItemCreate(BaseModel):
@@ -19,7 +20,7 @@ class ReturnRequestCreate(BaseModel):
         max_length=1000,
     )
 
-    items: List[ReturnItemCreate] = Field(
+    items: list[ReturnItemCreate] = Field(
         ...,
         min_length=1,
     )

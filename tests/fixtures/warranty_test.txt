@@ -1,1 +1,21 @@
-The test phone warranty covers manufacturing defects for 12 months from the purchase date.
+#notepad tests/fixtures/warranty_test.txt
+
+Product: Mixer Grinder
+Product ID: 001
+Category: Warranty
+
+The mixer grinder includes a 12-month manufacturer warranty
+from the date of purchase. The warranty covers manufacturing
+defects and eligible electrical or mechanical failures.
+
+Product: Refrigerator
+Product ID: 002
+Category: Warranty
+
+The refrigerator includes a 24-month manufacturer warranty
+from the date of purchase. The warranty covers eligible
+manufacturing defects and component failures.
+
+Updated warranty policy:
+Customers must retain their purchase invoice to claim warranty
+service. Physical damage and unauthorized repairs are excluded.

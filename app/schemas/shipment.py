@@ -1,9 +1,8 @@
-
+# app/schemas/shipments.py
 from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
-
 
 ShipmentStatus = Literal[
     "not_shipped",
@@ -27,4 +26,3 @@ class ShipmentStatusUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     shipment_status: ShipmentStatus
-

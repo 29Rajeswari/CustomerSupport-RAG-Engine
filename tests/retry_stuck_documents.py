@@ -1,7 +1,6 @@
-
 from sqlalchemy import select
 
-from app.db.models import Document, DocumentVersion, DocumentChunk
+from app.db.models import Document, DocumentChunk, DocumentVersion
 from app.db.session import SessionLocal
 from app.ingestion.processor import process_document_version
 
@@ -22,10 +21,7 @@ def main():
     print(f"Found {len(rows)} versions to inspect.")
 
     for version_id, document_id, title in rows:
-        print(
-            f"\nProcessing version {version_id} "
-            f"(document {document_id}: {title})"
-        )
+        print(f"\nProcessing version {version_id} (document {document_id}: {title})")
 
         try:
             process_document_version(version_id)

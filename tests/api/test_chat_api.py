@@ -1,13 +1,12 @@
-﻿from types import SimpleNamespace
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
 
-from app.main import app
 from app.core.dependencies import get_current_customer
 from app.db.session import get_db
-
+from app.main import app
 
 client = TestClient(app)
 
@@ -91,9 +90,7 @@ def test_chat_without_product_id():
     ) as mock_answer:
         response = client.post(
             "/chat",
-            json={
-                "question": "What is the warranty period?"
-            },
+            json={"question": "What is the warranty period?"},
         )
 
     assert response.status_code == 200

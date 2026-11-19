@@ -1,9 +1,7 @@
-
 # app/core/text_normalizer.py
 
 import re
 import unicodedata
-
 
 # Common number words used in customer questions and product documents.
 NUMBER_WORDS = {
@@ -112,9 +110,7 @@ def normalize_text(text: str) -> str:
 
     # Convert number words when they directly precede a duration unit.
     # Examples: "six months" -> "6 months", "two years" -> "2 years".
-    number_pattern = "|".join(
-        sorted(NUMBER_WORDS.keys(), key=len, reverse=True)
-    )
+    number_pattern = "|".join(sorted(NUMBER_WORDS.keys(), key=len, reverse=True))
 
     duration_pattern = (
         r"\b(" + number_pattern + r")\s+"

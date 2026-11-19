@@ -1,4 +1,6 @@
-﻿import pytest
+# tests/ingestion/test_ingestion.py
+
+import pytest
 from docx import Document as WordDocument
 from openpyxl import Workbook
 
@@ -25,9 +27,7 @@ def test_extract_word_document(tmp_path):
     path = tmp_path / "product.docx"
 
     document = WordDocument()
-    document.add_paragraph(
-        "Prestige mixer grinder has a 12-month warranty."
-    )
+    document.add_paragraph("Prestige mixer grinder has a 12-month warranty.")
 
     table = document.add_table(rows=1, cols=2)
     table.cell(0, 0).text = "Warranty"
@@ -86,6 +86,7 @@ def test_empty_text_file_raises_error(tmp_path):
         match="No readable text",
     ):
         extract_text(path)
+
 
 from app.ingestion.processor import split_into_chunks
 

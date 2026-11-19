@@ -1,10 +1,9 @@
-
+# app/ingestion/parsers.py
 from pathlib import Path
 
 from docx import Document as WordDocument
 from openpyxl import load_workbook
 from pypdf import PdfReader
-
 
 SUPPORTED_EXTENSIONS = {".pdf", ".docx", ".xlsx", ".txt"}
 
@@ -24,18 +23,14 @@ def extract_text(file_path: str | Path) -> str:
     extension = path.suffix.lower()
 
     if extension not in SUPPORTED_EXTENSIONS:
-        raise DocumentParsingError(
-            f"Unsupported file type: {extension}"
-        )
+        raise DocumentParsingError(f"Unsupported file type: {extension}")
 
     try:
         if extension == ".pdf":
             reader = PdfReader(str(path))
 
             if reader.is_encrypted:
-                raise DocumentParsingError(
-                    "Encrypted PDFs are not supported."
-                )
+                raise DocumentParsingError("Encrypted PDFs are not supported.")
 
             parts = []
 
@@ -43,9 +38,7 @@ def extract_text(file_path: str | Path) -> str:
                 page_text = page.extract_text()
 
                 if page_text:
-                    parts.append(
-                        f"[Page {page_number}]\n{page_text.strip()}"
-                    )
+                    parts.append(f"[Page {page_number}]\n{page_text.strip()}")
 
             result = "\n\n".join(parts)
 
@@ -59,10 +52,7 @@ def extract_text(file_path: str | Path) -> str:
 
             for table in document.tables:
                 for row in table.rows:
-                    cells = [
-                        cell.text.strip().replace("\n", " ")
-                        for cell in row.cells
-                    ]
+                    cells = [cell.text.strip().replace("\n", " ") for cell in row.cells]
 
                     if any(cells):
                         parts.append(" | ".join(cells))
@@ -102,16 +92,12 @@ def extract_text(file_path: str | Path) -> str:
     except DocumentParsingError:
         raise
     except Exception as exc:
-        raise DocumentParsingError(
-            f"Could not parse '{path.name}': {exc}"
-        ) from exc
+        raise DocumentParsingError(f"Could not parse '{path.name}': {exc}") from exc
 
     result = result.replace("\x00", "").strip()
 
     if not result:
-        raise DocumentParsingError(
-            f"No readable text found in '{path.name}'."
-        )
+        raise DocumentParsingError(f"No readable text found in '{path.name}'.")
 
     return result
 
@@ -125,6 +111,4 @@ def _read_text_file(path: Path) -> str:
         except UnicodeDecodeError:
             continue
 
-    raise DocumentParsingError(
-        "The text file encoding could not be recognized."
-    )
+    raise DocumentParsingError("The text file encoding could not be recognized.")

@@ -1,6 +1,3 @@
-
-from pathlib import Path
-
 import pytest
 
 from app.services.document_service import (
@@ -20,9 +17,7 @@ from app.services.document_service import (
         ("WARRANTY.PDF", ".pdf"),
     ],
 )
-def test_validate_document_file_accepts_supported_extensions(
-    filename, expected
-):
+def test_validate_document_file_accepts_supported_extensions(filename, expected):
     assert validate_document_file(filename) == expected
 
 
@@ -44,9 +39,7 @@ def test_allowed_extensions_are_expected():
     assert ALLOWED_EXTENSIONS == {".pdf", ".docx", ".xlsx", ".txt"}
 
 
-def test_get_upload_directory_creates_configured_directory(
-    tmp_path, monkeypatch
-):
+def test_get_upload_directory_creates_configured_directory(tmp_path, monkeypatch):
     from app.services import document_service
 
     test_directory = tmp_path / "test_uploads"
@@ -67,6 +60,7 @@ def test_get_upload_directory_creates_configured_directory(
     assert result == test_directory
     assert result.exists()
     assert result.is_dir()
+
 
 def test_save_uploaded_file_creates_unique_file(tmp_path, monkeypatch):
     from app.services import document_service
@@ -120,9 +114,7 @@ def test_save_uploaded_file_rejects_unsupported_extension(tmp_path, monkeypatch)
         document_service.save_uploaded_file("program.exe", b"content")
 
 
-def test_save_uploaded_file_rejects_file_over_size_limit(
-    tmp_path, monkeypatch
-):
+def test_save_uploaded_file_rejects_file_over_size_limit(tmp_path, monkeypatch):
     from app.services import document_service
 
     monkeypatch.setattr(
@@ -147,4 +139,3 @@ def test_save_uploaded_file_requires_bytes():
 
     with pytest.raises(TypeError, match="must be bytes"):
         save_uploaded_file("manual.txt", "not bytes")
-

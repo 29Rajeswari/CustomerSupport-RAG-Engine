@@ -1,10 +1,11 @@
+# app/retrieval/search.py
 
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.models import Document, DocumentChunk, DocumentVersion
 from app.llm.ollama_client import generate_embedding
+from app.models import Document, DocumentChunk, DocumentVersion
 
 
 def _normalize_category(category: str | None) -> str | None:
@@ -26,6 +27,7 @@ def search_relevant_chunks(
     top_k: int | None = None,
     product_id: str | None = None,
     category: str | None = None,
+    general_only: bool = False,
 ) -> list[dict]:
     """
     Search semantically relevant chunks from active document versions.
@@ -49,7 +51,7 @@ def search_relevant_chunks(
 
     # 3. Normalize and validate the product ID.
     normalized_product_id = (
-        product_id.strip() if product_id is not None else None
+        product_id.strip().upper() if product_id is not None else None
     )
 
     if product_id is not None and not normalized_product_id:
@@ -64,9 +66,7 @@ def search_relevant_chunks(
     # 5. Generate the question embedding.
     query_embedding = generate_embedding(question.strip())
 
-    distance = DocumentChunk.embedding.cosine_distance(
-        query_embedding
-    )
+    distance = DocumentChunk.embedding.cosine_distance(query_embedding)
 
     # 6. Find the highest active version number for each document.
     latest_active_version = (
@@ -111,19 +111,35 @@ def search_relevant_chunks(
         )
     )
 
-    # 8. Filter by product ID when supplied.
-    if normalized_product_id is not None:
+    # 8. Apply product filters.
+    if general_only:
         statement = statement.where(
-            Document.product_id == normalized_product_id,
-            DocumentChunk.product_id == normalized_product_id,
+            DocumentVersion.product_id.is_(None),
+            DocumentChunk.product_id.is_(None),
+        )
+    elif normalized_product_id is not None:
+        version_product = func.upper(func.trim(DocumentVersion.product_id))
+        chunk_product = func.upper(func.trim(DocumentChunk.product_id))
+        statement = statement.where(
+            or_(
+                (
+                    (version_product == normalized_product_id)
+                    & (chunk_product == normalized_product_id)
+                ),
+                (
+                    DocumentVersion.product_id.is_(None)
+                    & DocumentChunk.product_id.is_(None)
+                ),
+            )
         )
 
-    # 9. Filter by category when supplied.
+    # 9. Apply category filters.
     if normalized_category is not None:
-        if normalized_category == "warranty":
-            category_aliases = ["warranty", "warrenty"]
-        else:
-            category_aliases = [normalized_category]
+        category_aliases = (
+            ["warranty", "warrenty"]
+            if normalized_category == "warranty"
+            else [normalized_category]
+        )
 
         statement = statement.where(
             func.lower(func.trim(Document.category)).in_(category_aliases),
@@ -131,14 +147,7 @@ def search_relevant_chunks(
         )
 
     # 10. Retrieve the closest matching chunks.
-    rows = (
-        db.execute(
-            statement
-            .order_by(distance.asc())
-            .limit(limit)
-        )
-        .all()
-    )
+    rows = db.execute(statement.order_by(distance.asc()).limit(limit)).all()
 
     # 11. Return the results with source metadata.
     return [

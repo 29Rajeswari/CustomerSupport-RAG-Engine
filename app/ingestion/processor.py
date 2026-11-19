@@ -1,4 +1,3 @@
-
 # app/ingestion/processor.py
 
 from pathlib import Path
@@ -6,15 +5,14 @@ from pathlib import Path
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.utils.text_normalizer import normalize_text
-from app.models import Document, DocumentChunk, DocumentVersion
 from app.db.session import SessionLocal
 from app.ingestion.parsers import extract_text
 from app.ingestion.versioning import (
     activate_version_and_supersede_conflicts,
 )
 from app.llm.ollama_client import generate_embedding
-
+from app.models import Document, DocumentChunk, DocumentVersion
+from app.utils.text_normalizer import normalize_text
 
 CHUNK_SIZE = 1200
 CHUNK_OVERLAP = 200
@@ -31,9 +29,7 @@ def split_into_chunks(
         raise ValueError("chunk_size must be greater than zero.")
 
     if overlap < 0 or overlap >= chunk_size:
-        raise ValueError(
-            "overlap must be non-negative and smaller than chunk_size."
-        )
+        raise ValueError("overlap must be non-negative and smaller than chunk_size.")
 
     text = text.strip()
 
@@ -71,27 +67,15 @@ def _get_document_and_version(
     version_id: int,
 ) -> tuple[Document, DocumentVersion]:
     """Load a document and its requested version."""
-    version = db.scalar(
-        select(DocumentVersion).where(
-            DocumentVersion.id == version_id
-        )
-    )
+    version = db.scalar(select(DocumentVersion).where(DocumentVersion.id == version_id))
 
     if version is None:
-        raise ValueError(
-            f"Document version {version_id} was not found."
-        )
+        raise ValueError(f"Document version {version_id} was not found.")
 
-    document = db.scalar(
-        select(Document).where(
-            Document.id == version.document_id
-        )
-    )
+    document = db.scalar(select(Document).where(Document.id == version.document_id))
 
     if document is None:
-        raise ValueError(
-            f"Parent document for version {version_id} was not found."
-        )
+        raise ValueError(f"Parent document for version {version_id} was not found.")
 
     return document, version
 
@@ -122,9 +106,7 @@ def process_document_version(version_id: int) -> int:
             )
 
         if version.status == "superseded":
-            raise ValueError(
-                "A superseded version cannot be processed."
-            )
+            raise ValueError("A superseded version cannot be processed.")
 
         document_id = document.id
 
@@ -137,26 +119,15 @@ def process_document_version(version_id: int) -> int:
         # 2. Validate version metadata and file.
         # -----------------------------------------------------
         if not version_file_path:
-            raise ValueError(
-                "The document version does not have a file path."
-            )
-
-        if not version_product_id:
-            raise ValueError(
-                "The document version does not have a product ID."
-            )
+            raise ValueError("The document version does not have a file path.")
 
         if not version_category:
-            raise ValueError(
-                "The document version does not have a category."
-            )
+            raise ValueError("The document version does not have a category.")
 
         file_path = Path(version_file_path)
 
         if not file_path.is_file():
-            raise FileNotFoundError(
-                f"Document file does not exist: {file_path}"
-            )
+            raise FileNotFoundError(f"Document file does not exist: {file_path}")
 
         # -----------------------------------------------------
         # 3. Extract and normalize document text.
@@ -166,9 +137,7 @@ def process_document_version(version_id: int) -> int:
         normalized_text = normalize_text(extracted_text)
 
         if not normalized_text:
-            raise ValueError(
-                "The document contains no searchable text."
-            )
+            raise ValueError("The document contains no searchable text.")
 
         # -----------------------------------------------------
         # 4. Split normalized text into chunks.
@@ -213,30 +182,20 @@ def process_document_version(version_id: int) -> int:
             )
 
             if current_version is None:
-                raise ValueError(
-                    f"Document version {version_id} no longer exists."
-                )
+                raise ValueError(f"Document version {version_id} no longer exists.")
 
             if current_version.is_active:
-                raise ValueError(
-                    "This version was activated by another process."
-                )
+                raise ValueError("This version was activated by another process.")
 
             if current_version.status == "superseded":
-                raise ValueError(
-                    "This version was superseded by another version."
-                )
+                raise ValueError("This version was superseded by another version.")
 
             current_document = db.scalar(
-                select(Document)
-                .where(Document.id == document_id)
-                .with_for_update()
+                select(Document).where(Document.id == document_id).with_for_update()
             )
 
             if current_document is None:
-                raise ValueError(
-                    "The parent document no longer exists."
-                )
+                raise ValueError("The parent document no longer exists.")
 
             # Ensure metadata has not changed since processing began.
             if (
@@ -289,10 +248,7 @@ def process_document_version(version_id: int) -> int:
                 .with_for_update()
             )
 
-            if (
-                failed_version is not None
-                and not failed_version.is_active
-            ):
+            if failed_version is not None and not failed_version.is_active:
                 failed_version.status = "failed"
                 failed_version.error_message = str(exc)[:4000]
 

@@ -1,15 +1,14 @@
-
 # tests/test_versioning.py
 
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.models import Base, Document, DocumentVersion
 from app.ingestion.versioning import (
     create_document_version,
     get_active_version,
 )
+from app.models import Document, DocumentVersion
 
 
 @pytest.fixture
@@ -20,8 +19,6 @@ def db_session():
     # SQLite cannot create PostgreSQL's vector column directly.
     # These tests use a temporary SQLite engine only for the
     # document-versioning tables, which do not need embeddings.
-    from sqlalchemy import JSON
-    from sqlalchemy.dialects.postgresql import JSONB
 
     # Create the required tables only, excluding document_chunks.
     Document.__table__.create(engine)

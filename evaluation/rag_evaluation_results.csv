@@ -1,0 +1,26 @@
+question_id,category,question,expected_chunks,retrieved_chunks,precision_at_3,recall_at_3,mrr,retrieval_success
+Q01,warranty,How many months of warranty does the Galaxy A15 have?,"[11, 13]","[9, 11, 13]",0.3333333333333333,1.0,0.5,True
+Q02,warranty,When does the smartphone warranty begin?,"[11, 13]","[12, 14, 10]",0.0,0.0,0.0,False
+Q03,warranty,What type of defects are covered under the warranty?,"[11, 13]","[9, 11, 13]",0.3333333333333333,1.0,0.5,True
+Q04,warranty,Does the warranty cover manufacturing defects?,"[11, 13]","[9, 11, 13]",0.3333333333333333,1.0,0.5,True
+Q05,warranty,What proof is required to request warranty service?,"[11, 13]","[9, 11, 13]",0.3333333333333333,1.0,0.5,True
+Q06,warranty,Do I need the product serial number for a warranty claim?,"[11, 13]","[9, 11, 13]",0.3333333333333333,1.0,0.5,True
+Q07,warranty,Is accidental damage covered by the warranty?,"[11, 13]","[9, 11, 13]",0.3333333333333333,1.0,0.5,True
+Q08,warranty,Does liquid damage qualify for warranty service?,"[11, 13]","[9, 11, 13]",0.3333333333333333,1.0,0.5,True
+Q09,warranty,Are unauthorized repairs covered?,"[11, 13]","[9, 11, 13]",0.3333333333333333,1.0,0.5,True
+Q10,warranty,What information should I provide when contacting support about a warranty issue?,"[11, 13]","[9, 11, 13]",0.3333333333333333,1.0,0.5,True
+Q11,warranty,Is a replacement guaranteed when a warranty claim is approved?,"[12, 14]","[10, 12, 14]",0.3333333333333333,1.0,0.5,True
+Q12,warranty,What happens after a warranty claim is approved?,"[12, 14]","[12, 14, 10]",0.3333333333333333,1.0,1.0,True
+Q13,warranty,How is the warranty expiry date calculated in the example policy?,"[12, 14]","[12, 14, 10]",0.3333333333333333,1.0,1.0,True
+Q14,warranty,How long is the warranty for the integration test smartphone?,[36],[36],0.3333333333333333,1.0,1.0,True
+Q15,warranty,Does the integration test smartphone warranty cover battery manufacturing defects?,[36],[36],0.3333333333333333,1.0,1.0,True
+Q16,warranty,Is water damage covered under the integration test smartphone warranty?,[36],[36],0.3333333333333333,1.0,1.0,True
+Q17,warranty,What document is needed to claim warranty service for the integration test smartphone?,[36],[36],0.3333333333333333,1.0,1.0,True
+Q18,return,How many days do customers have to return the integration test smartphone?,[37],[37],0.3333333333333333,1.0,1.0,True
+Q19,return,Must the product be unused to qualify for a return?,[37],[37],0.3333333333333333,1.0,1.0,True
+Q20,return,Should the original packaging be included when returning a product?,[37],[37],0.3333333333333333,1.0,1.0,True
+Q21,return,Are the original accessories required for a return?,[37],[37],0.3333333333333333,1.0,1.0,True
+Q22,return,Is a purchase invoice required for a return?,[37],[37],0.3333333333333333,1.0,1.0,True
+Q23,return,Can a customer return a product damaged through their own handling after delivery?,[37],[37],0.3333333333333333,1.0,1.0,True
+Q24,return,When does refund processing begin after a return?,[37],[37],0.3333333333333333,1.0,1.0,True
+Q25,return,Does the returned product undergo quality inspection before refund processing starts?,[37],[37],0.3333333333333333,1.0,1.0,True
