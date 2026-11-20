@@ -1,0 +1,1355 @@
+{
+  "evaluation_type": "Individual LLM-judged RAG evaluation",
+  "judge_model": "qwen2.5:3b",
+  "top_k_values": [
+    3,
+    4,
+    5
+  ],
+  "total_questions": 25,
+  "generated_at": "2026-11-20T13:05:58.389142+05:30",
+  "questions": {
+    "Q01": {
+      "question": "How many months of warranty does the Galaxy A15 have?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q02": {
+      "question": "When does the smartphone warranty begin?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            12,
+            14,
+            10
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            12,
+            14,
+            10,
+            9
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            12,
+            14,
+            10,
+            9,
+            11
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q03": {
+      "question": "What type of defects are covered under the warranty?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q04": {
+      "question": "Does the warranty cover manufacturing defects?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q05": {
+      "question": "What proof is required to request warranty service?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q06": {
+      "question": "Do I need the product serial number for a warranty claim?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q07": {
+      "question": "Is accidental damage covered by the warranty?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q08": {
+      "question": "Does liquid damage qualify for warranty service?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q09": {
+      "question": "Are unauthorized repairs covered?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 1,
+      "metrics": {
+        "top_3": {
+          "precision": 0.3333333333333333,
+          "recall": 1.0,
+          "mrr": 1.0,
+          "hit": true,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13
+          ],
+          "relevant_contents_retrieved": 1,
+          "total_relevant_contents": 1,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.25,
+          "recall": 1.0,
+          "mrr": 1.0,
+          "hit": true,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12
+          ],
+          "relevant_contents_retrieved": 1,
+          "total_relevant_contents": 1,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.2,
+          "recall": 1.0,
+          "mrr": 1.0,
+          "hit": true,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 1,
+          "total_relevant_contents": 1,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q10": {
+      "question": "What information should I provide when contacting support about a warranty issue?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            9,
+            11,
+            13,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q11": {
+      "question": "Is a replacement guaranteed when a warranty claim is approved?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            10,
+            12,
+            14
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            10,
+            12,
+            14,
+            9
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            10,
+            12,
+            14,
+            9,
+            11
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q12": {
+      "question": "What happens after a warranty claim is approved?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            12,
+            14,
+            10
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            12,
+            14,
+            10,
+            9
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            12,
+            14,
+            10,
+            9,
+            11
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q13": {
+      "question": "How is the warranty expiry date calculated in the example policy?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "eligible_chunk_count": 6,
+      "unique_contents_judged": 3,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            12,
+            14,
+            10
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 3
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            12,
+            14,
+            10,
+            9
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 4
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            12,
+            14,
+            10,
+            9,
+            11
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 5
+        }
+      }
+    },
+    "Q14": {
+      "question": "How long is the warranty for the integration test smartphone?",
+      "product_id": "TEST-INGEST-001",
+      "category": "warranty",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q15": {
+      "question": "Does the integration test smartphone warranty cover battery manufacturing defects?",
+      "product_id": "TEST-INGEST-001",
+      "category": "warranty",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q16": {
+      "question": "Is water damage covered under the integration test smartphone warranty?",
+      "product_id": "TEST-INGEST-001",
+      "category": "warranty",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q17": {
+      "question": "What document is needed to claim warranty service for the integration test smartphone?",
+      "product_id": "TEST-INGEST-001",
+      "category": "warranty",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            36
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q18": {
+      "question": "How many days do customers have to return the integration test smartphone?",
+      "product_id": "TEST-INGEST-001",
+      "category": "return",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q19": {
+      "question": "Must the product be unused to qualify for a return?",
+      "product_id": "TEST-INGEST-001",
+      "category": "return",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q20": {
+      "question": "Should the original packaging be included when returning a product?",
+      "product_id": "TEST-INGEST-001",
+      "category": "return",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q21": {
+      "question": "Are the original accessories required for a return?",
+      "product_id": "TEST-INGEST-001",
+      "category": "return",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q22": {
+      "question": "Is a purchase invoice required for a return?",
+      "product_id": "TEST-INGEST-001",
+      "category": "return",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q23": {
+      "question": "Can a customer return a product damaged through their own handling after delivery?",
+      "product_id": "TEST-INGEST-001",
+      "category": "return",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 1.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q24": {
+      "question": "When does refund processing begin after a return?",
+      "product_id": "TEST-INGEST-001",
+      "category": "return",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    },
+    "Q25": {
+      "question": "Does the returned product undergo quality inspection before refund processing starts?",
+      "product_id": "TEST-INGEST-001",
+      "category": "return",
+      "eligible_chunk_count": 1,
+      "unique_contents_judged": 1,
+      "relevant_contents_judged": 0,
+      "metrics": {
+        "top_3": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_4": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        },
+        "top_5": {
+          "precision": 0.0,
+          "recall": null,
+          "mrr": 0.0,
+          "hit": false,
+          "ndcg": 0.0,
+          "retrieved_chunk_ids": [
+            37
+          ],
+          "relevant_contents_retrieved": 0,
+          "total_relevant_contents": 0,
+          "retrieved_count": 1
+        }
+      }
+    }
+  }
+}

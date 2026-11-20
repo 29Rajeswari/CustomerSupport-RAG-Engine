@@ -1,20 +1,19 @@
 # app/services/answer_service.py
 
 import re
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from decimal import Decimal, InvalidOperation
 
 from sqlalchemy.orm import Session
 
-from app.models import Product
 from app.llm.ollama_client import generate_answer
+from app.models import Product
 from app.retrieval.search import search_relevant_chunks
 from app.services.order_data_service import (
     get_customer_order_by_number,
     get_customer_orders,
 )
 from app.services.product_data_service import search_products
-
 
 SYSTEM_PROMPT = """
 You are an Indian e-commerce customer support assistant.
@@ -714,7 +713,7 @@ def _order_created_at_sort_key(order: dict) -> float:
             parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
 
         if parsed.tzinfo is None:
-            parsed = parsed.replace(tzinfo=timezone.utc)
+            parsed = parsed.replace(tzinfo=UTC)
 
         return parsed.timestamp()
 
