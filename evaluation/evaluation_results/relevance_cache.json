@@ -1,0 +1,1073 @@
+{
+  "88baa65b776edc7487d86608189394098146e5857104d249b7e997b80241c381": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not provide information about the number of months of warranty for the Galaxy A15."
+  },
+  "26071ddb8eaccb3cedafcfb5bd340c77030c18e0c18aa47e4c40bfb3a0018131": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about the length of the warranty for the Galaxy A15, only an example of a warranty expiry date."
+  },
+  "f60f085f845af4dcf0b6ece40a4d33dc43c8ba3e42cebaa66136056fdb379c13": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about the length of the warranty for the Galaxy A15."
+  },
+  "c36066c88727b9e7076570463fe05a5bcccb9d196d137db45290cee061631050": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not provide information about when the warranty begins."
+  },
+  "eace4bf992dedc0089880dd30d3e952fd02f66c30d63f30538dca6f3f1b358f1": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not provide information about when the warranty begins for a smartphone."
+  },
+  "e001739d74cfc0e101d52c869ca3dc6139f1d80db5a1ac08048e186d7f4908bb": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about when the warranty begins for a smartphone."
+  },
+  "b193afb8f5622916d94bffd6c4e12bc539d40afa91ddc17eebdc14256bca48ac": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not mention anything about the types of defects covered under the warranty."
+  },
+  "aa7ce34d9da9e96b631f2ffba4ecd396814ca8969e850bb0a19e8afe91faec96": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not mention any defects covered under the warranty."
+  },
+  "05d3601f0bfc2c105b675dc091f47ff66a4163a2466a3e94b62ef57ab4273ab0": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not mention any defects covered under the warranty."
+  },
+  "48721314043e0c7f531dce5763c5f2b4236f5564e7aa160f0e9ebeb7f822ec51": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions warranty coverage for manufacturing defects, which is relevant to the question but does not provide a direct answer."
+  },
+  "6dac3ba7474f313a868ac068124a7828ee93d3fb9512d49bf0717dca5823b8f9": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about the coverage of manufacturing defects under the warranty."
+  },
+  "37c44b847e73f8d6749bb2d0fcab0321eaa571be7ab1b749502540d4a88bbbcf": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain information about the coverage of manufacturing defects under the warranty."
+  },
+  "a93930c1a7b90941457f42c8f326378ddb4939c8f6f8270e1ab43b5957d739ff": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions proof of purchase and product serial number required for warranty service, but does not specify what kind of proof is required."
+  },
+  "dfbd01f9818ec58f810959108c50246e60130b5e59ca4c6b10f7d7a22ee651ed": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about required proof for warranty service."
+  },
+  "12fb771ca2e61b1a5aa3f0d8b726968519987b91d4b06a06aaa29ae2baa75363": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about the proof required for warranty service."
+  },
+  "91d1f66bd2592641d7dd8989d26c5026a0a07e3387a394a22e6a0ab5f46b8fd1": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about whether a product serial number is needed for a warranty claim."
+  },
+  "73ceff226448158262ce79fca0bfb972425e8095ffb487d66398a13e7c93f01b": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not provide information about whether a product serial number is needed for a warranty claim."
+  },
+  "ee794dc9ea8b3ebaa2c25b56e4a57a5dccf2868e440dc566f9201b4c85543d0e": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about whether a product serial number is needed for a warranty claim."
+  },
+  "0f6370fc254cc425fd3ae3829004b440ed7bf10bcacd1830895a08c768e76e91": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about accidental damage coverage."
+  },
+  "a916cd9c5ae61f89eb85c63f154607de99e1ae22b32e9ce70dfcf8624f32b571": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about accidental damage coverage in the warranty."
+  },
+  "98aadb4e5e4a7d120954ab0668a8b40d09e2feb5141b025e898a8ca989579f99": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about accidental damage coverage in the warranty."
+  },
+  "7739f7d48809454e579ae131e9b8c089a6f60fc932ac6797eb788eada56f6d40": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain information about liquid damage eligibility for warranty service."
+  },
+  "c6a99138e9028089832f279035a1a17bd9497a90e3769991aedc954a6b26090e": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not contain information about liquid damage warranty eligibility."
+  },
+  "f0ca6cdf8b2f7b48f6d7b9b7b150bd64c8958b8ffd1ee687e5952f2c7ea91cab": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not provide information about liquid damage warranty eligibility."
+  },
+  "a6e3c421e05553cf231f89cc91b8ca2cb4968e306a8c698d10bf45cebce8a921": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly and sufficiently answers the question by specifying that unauthorized repairs are excluded from warranty coverage."
+  },
+  "4af7c35456fd4ca2af0922592e7ebf4be2c806b1a00996a84458abe404a86c86": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not provide information about unauthorized repairs or their coverage."
+  },
+  "9f597618c2e8626ca106a1050276badbe433aea3d96ce9bbc1b5d33b3f757716": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not provide information about unauthorized repairs or their coverage."
+  },
+  "839f05f9b19150bb73f76acf8d3274045eb241ddc02e4d92033d4ead191d4057": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions warranty coverage and how to request warranty service, but does not provide specific information about what to provide when contacting support about a warranty issue."
+  },
+  "b4709404ee74a903414057ec6b6cafb9bfb5b409af5bb5217107ab8f15146610": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about what information should be provided when contacting support about a warranty issue."
+  },
+  "0a26af44a8541b536f7c0109cb87158f7ffefa720e6519aaa3053cbe3790bb70": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not provide information about what information should be provided when contacting support about a warranty issue."
+  },
+  "3b2260ea07c540898b4ac084e286b2b98088b4f258b24a26fee2d7eb782b83b2": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The document chunk does not contain information about warranty claim approval or replacement guarantees."
+  },
+  "f9a0288a337366329b82f07712daf199bebfcfc65f099b2738bea29bea8b63ba": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about warranty guarantees or eligibility for replacement after a claim is approved."
+  },
+  "397a9a9847a439f2b8d52b3fd918ee106136043bf8ffb0f6b5770fabbb4ac7a8": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about warranty guarantees or eligibility for replacement after a claim is approved."
+  },
+  "12016250f229fd3a2a1b46dc8cc0c4160c8a241c0e8b6939eb93b510d6b5fb9e": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about what happens after a warranty claim is approved."
+  },
+  "e258952486744b590e1c8072f3bb0be4f2e6e163e71e4dd6dafe8b2b1348a06b": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about what happens after a warranty claim is approved."
+  },
+  "007bf9e703142f0389790e21c6337dbb66118afad6724d34317acfbd0e8ca874": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about what happens after a warranty claim is approved, only information about warranty expiry and eligibility."
+  },
+  "22e126a2e53a03f951da723cc06c5fd01f12d430ff4f683fd32259674aa864be": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain information about how the warranty expiry date is calculated."
+  },
+  "b3a56f9ea747acb373d8ceeec1896123e9e4938c27dfbb271c513890ca095abd": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about how the warranty expiry date is calculated."
+  },
+  "f79ce0ae78690ba655df29c64b8d307bda6b6a12f5300c4dd35779fab98f2c65": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about how the warranty expiry date is calculated."
+  },
+  "dab209775e7e309a9e20f7abbc5c5121db7ec34635a74900ff0c75b9ad8a402b": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk provides the warranty duration (18 months) but does not specify the start date of the warranty."
+  },
+  "53d927eb701c347ac6b10fd70a93885ee8d0fbffd0c09ade52b3027c29e7800f": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions battery manufacturing defects are covered under the warranty, but does not provide a specific start date for the warranty."
+  },
+  "69a4586f73e778e06d8515ff1718f3fee149eb41db85005bd42226f90378fe5d": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain information about water damage coverage under the warranty policy."
+  },
+  "8de01f755d8f5c01b1b312193392d0febf058d082a7dd0b48e454734b4c69851": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about the documents needed to claim warranty service."
+  },
+  "abc0b9d1245003cc8ca42d0e9bd67aed1f0021b729a210a18899ff36bae48346": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions the return policy for the integration test smartphone, including the time frame of 7 days from the date of delivery, which is relevant to the question about return eligibility."
+  },
+  "063d4b2c012817efe412a9ed39e5fc869137f675d0dc6146ab108d35dc2efcb3": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions return conditions but does not specify whether the product must be unused to qualify for a return."
+  },
+  "1e5a47f3c0a8db4e7bd478a89230020394eb1c9d31647639daa51da60e2e10f5": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that the product must be returned with its original packaging, which is relevant to whether the original packaging should be included when returning the product."
+  },
+  "90d6de2347ef9532a242b9c53bc33cb3dcda0ec397377ea14d1e21f5aaf69e14": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that original accessories are required for a return, which is relevant to the question."
+  },
+  "43b58843d2911fdb21cc3c4bfa5037f3d5aca1ed01a0dec5776fe1e6c3e00cdc": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that a valid purchase invoice is required for a return, which is relevant to the question."
+  },
+  "66ec108dc35496a1d7611d40472828ea53de1504f5e2c20ee7cb35f6ab6e020c": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that products damaged after delivery due to customer handling are not eligible for return, which is relevant to the question."
+  },
+  "a85f940a3ff58c4c99f3fd0278d9177eeb6cc549ff8130fbb8e7c0cec9f742dd": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about refund processing start date after a return, only the general return policy and a fictional scenario."
+  },
+  "a8cfe994c5c2ceeaa283783a87efef2a4d63e62a02ded06a35292324916394c8": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide information about quality inspection or refund processing for the returned product."
+  },
+  "33afcef9ddeec5a2e7e2f51b9a5f3603ae344a457270062e3fee994e76c77c41": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention any warranty duration for the Galaxy A15."
+  },
+  "e1827f9dc427f80e8562309d450723e3285d6c23d06d20d28a873c4aea8bed28": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention warranty duration or any specific warranty period for the Galaxy A15."
+  },
+  "0d446abd96454b65c9a5d6658dd68d494316358736454e8f9a98356de3f1c3ae": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about the warranty duration for the Galaxy A15. It only discusses the warranty expiry and a fictional sample document for software testing."
+  },
+  "51c3aa256f5c9c2d7a3fedf304284e06f6a2df5f75dce8b67e7f00bc03379a6c": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about when the warranty begins."
+  },
+  "de9cd12bd462f66b61d6c8ec47ba3ebc8db27c5d2007172991ae42cbe7339f02": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about warranty start dates or eligibility. It only discusses the process after a claim is approved and provides an example of a warranty expiry date."
+  },
+  "bcd8626de3489cf3084b41eb5b6bab0d0a8faf4c613896b76feb6c8a01a7f461": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about warranty start dates or eligibility. It only discusses the process after a claim is approved and an example of warranty expiry."
+  },
+  "87a95b9e929327dca03091cc4f571c4b5be81dfb6d7285ec0982a1f0b4e49196": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention any defects or specify what types of defects are covered under the warranty."
+  },
+  "1dcee39939967cbd27ad6c591fb8813928de45b0095a07afcd7d4c174d338bd0": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention any defects or coverage under the warranty. It only discusses the next steps after checking eligibility, warranty expiry, and mentions that the document is fictional and not an official policy."
+  },
+  "d6d0b28ffa0748abacf747a0b14c127c6e7dbe08b57a70fedbd6ce44687a4865": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention any defects or their coverage under the warranty."
+  },
+  "2aa38caa927ebc885588e54a882fb56f18f62e17266be70fc3d300a9c7442d4e": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about manufacturing defects or coverages related to them."
+  },
+  "26048f151e92854077082ab7dbd9d474d9fc095b05845204fdbcec046ea8786e": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about manufacturing defects or warranty coverage. It only discusses the process after a claim is approved and the expiration of a fictional warranty."
+  },
+  "66ac36a4d9e6a561f0e29c6774a47d901a2c69c91b06aae3383bd154ebb93caa": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about manufacturing defects or warranty coverage. It only discusses the next steps after a claim is approved and provides an example of a warranty expiry date."
+  },
+  "bab3dc012174b19431e6430cb45dd9525bc247b6b95d74d7931d5b854bfb5301": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention any proof required for requesting warranty service. It only mentions that customers must provide a valid proof of purchase and the product serial number when requesting warranty service, but does not specify what that proof is."
+  },
+  "2cc68802af330ea2d2f6a8e4c4e1863cc72c12a4364ec3b04e22769fbfa3c75e": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention any proof required for warranty service. It only discusses the next steps after checking eligibility and warranty expiry conditions."
+  },
+  "31bfd6f8319fb461b7cb793dc796d9da3833f39ae453f62529f651929d2be569": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention any proof required for warranty service. It only discusses the next steps after checking eligibility and warranty expiry conditions."
+  },
+  "a3923cbbc25ab1fc5e5ade2f1b79b98758a4cce41fdeffa13e5617830149a884": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about needing a product serial number for a warranty claim. It only states that the product serial number is required when requesting warranty service, but does not indicate whether it is needed for all warranty claims or only specific ones."
+  },
+  "a3bcbb15bfcf3df77f4b23fa5bcd0474cb5266ba8101604fcbe0016fa305589f": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about the need for a product serial number for a warranty claim."
+  },
+  "54e80a533152f8078b8a093a20bf2f3179f675eac38617a0f1d710113a475cd3": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about the need for a product serial number for a warranty claim."
+  },
+  "767669d17af6412eb62612732f495fd322d2e67da2ad3eff0b90e4d148a56f0d": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that the warranty does not cover accidental damage, which is relevant to the question of whether accidental damage is covered by the warranty."
+  },
+  "a20db83aba0a538e4b1e901de975e3222d170adf1a459c862edefe9596608782": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about accidental damage coverage or any exclusions. It only discusses the warranty expiry and a fictional example of next steps after a claim is approved."
+  },
+  "f02ede003307f66534becb2ecd3c9c1d3fa2804df6214300b2d0a67d48963b69": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about accidental damage coverage or any exclusions. It only discusses the warranty expiry and a fictional example of next steps after a claim is approved."
+  },
+  "ee7bee6a569b47b72cf4c759308633d9b38b5d4ce563256b45905392ad9a7b3d": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention liquid damage or any exclusions related to it. It only covers general warranty exclusions and does not provide information about liquid damage coverage."
+  },
+  "5222455e34bf9e6943c5135a4d50db48791fd1aeda59e86be00a5adc2d5e1bdb": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about liquid damage or warranty eligibility for such damage."
+  },
+  "3b242cfdcc2bac37f12ee78df917dcb720f1cae26d84c36ba975e590f6e6cdc9": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about liquid damage or warranty eligibility for such damage."
+  },
+  "51e6bb82ac7b6caf6653be8dde1ac4b0fcf995e222bf889602fcc241f49e5426": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that the warranty does not cover unauthorized repairs, which is relevant to the question of whether unauthorized repairs are covered."
+  },
+  "3ae6b8b3423f3ce2b5476f0df60b0d8906b89cf675db9d8ee5232a8b9388a8ed": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about unauthorized repairs or their coverage. It only discusses warranty terms and eligibility."
+  },
+  "cda87293e1956dbfbb0fc661cfc57a5c122111bb8f8125b1146890ec70ce8adc": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about unauthorized repairs or their coverage. It only discusses warranty expiry and a fictional sample document for testing purposes."
+  },
+  "2c0f6ac707e20aa14c13f9e7b19418f0a8c0c67f418c4fb4e2a024b234ca654d": {
+    "relevance_score": 2,
+    "relevant": true,
+    "reason": "The chunk provides information on how to request warranty service, including the required details (order number, date of purchase, product serial number, and a description of the issue). This is relevant to the question about what information should be provided when contacting support about a warranty issue."
+  },
+  "910a175011db3e3e11e8334bd39cd06c8b85cbe1836a345a9531b8b28da7e65a": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about what information should be provided when contacting support about a warranty issue. It only discusses the process of warranty claims and expiry."
+  },
+  "2e331031b533b47fb2e643bd5f9ed59594a238e74ff8b4069c8714c27ca24c2a": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about what information should be provided when contacting support about a warranty issue. It only discusses the next steps after checking eligibility, warranty expiry, and important disclaimers."
+  },
+  "c8bf83ce17f342bf5c9098f6f12ca5d767a7dad95ec00d605568aa55c3515a6a": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about replacement or repair processes after a warranty claim is approved. It only mentions that the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law, but does not provide details on what happens after the claim is approved."
+  },
+  "7cda55e130179f7e1e98d2f9ed40d4a06eaba590b7bf5b83e5a16601b7425261": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about replacement guarantees after a warranty claim is approved. It only discusses the general process and warranty expiry."
+  },
+  "31f964bdc335b44c49c06afe9d68926638f87f1272500c2beca1ca80f9b51d72": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about replacement guarantees after a warranty claim is approved. It only discusses the general process and warranty expiry."
+  },
+  "ef54e01ec116b2f99efcf2fe5305743e170a161351df76a6edf646d63d2be2cf": {
+    "relevance_score": 2,
+    "relevant": true,
+    "reason": "The chunk mentions that if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. This provides information about what happens after a warranty claim is approved, even though it does not explicitly state the steps or details of the process."
+  },
+  "ab5236d6e02a85179e7ed79cdd594e0062ecc5b496ff0e6ef932ce6c673356d8": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk describes the next steps after a warranty claim is approved, including repair or replacement. This directly addresses the question."
+  },
+  "1c82de4d6684331f76db2c7451a0467ddf56bec5d0f6aef7aca68e38bee26c93": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk describes the next steps after a warranty claim is approved, including repair or replacement. This directly addresses the question."
+  },
+  "6e6ff1814f35c9fc9cd2af454ffef4c1cd4686e4b5bc42d6ed418bd38c45afc9": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about how the warranty expiry date is calculated. It only provides details about the warranty period, coverage, exclusions, and the process for requesting warranty service."
+  },
+  "260038b6ae999425d8ac48554852e6fc05655a675d8c9c5ab432d7e0156ea6a4": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not provide any information about how the warranty expiry date is calculated in the example policy."
+  },
+  "b6639193e5f857b13bc3c7fcc97368f7d31f011d27e7d39129334d238e086537": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about how the warranty expiry date is calculated in the example policy. It only mentions the general terms and conditions of a warranty, including the example of a 12-month warranty expiring on January 15, 2027, based on a purchase date of January 16, 2026. It does not provide details on the calculation method."
+  },
+  "72f38bf9b0536538774b6939a9d36bc6973e83263e9b9485b90ae4536f2b054a": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions an 18-month manufacturer warranty for the integration test smartphone, which is relevant to the question about the warranty duration."
+  },
+  "4506a0bd53d4673e52efe3601d4217daaa5a22818084d965fd842e453a58a805": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that the warranty covers 'battery manufacturing defects' under normal usage conditions, which is relevant to the question about whether the warranty covers battery manufacturing defects."
+  },
+  "bd23c6d31dd3bb305c8d55cb97083ff462b40c8b6b86d6c2a33a858e189a8837": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that water damage is not covered under the warranty, which is relevant to the question about whether water damage is covered."
+  },
+  "628d319f06e1036dab736db3736b2265bf0830c237ec8ef4209d75e2067d0655": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention any document or specific documents needed for warranty service. It only describes the warranty policy and exclusions."
+  },
+  "b43b71e9f6f89b63c0d11f043bb27115605cdf6b5e141b74a37a756809935a8d": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about return days for the integration test smartphone. It only describes a fictional return policy for integration testing."
+  },
+  "6704aad11b12e1d64d0b75f95df0cd08c05764c4c5a6cea846c0b185c23889d4": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about return eligibility for unused products. It only describes the return policy for damaged products and the process of refund processing."
+  },
+  "8a501fdbe150443be9f96fc4db78596e23f3a1ad7d200d16a87a03106240dbe2": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about the original packaging or return eligibility conditions."
+  },
+  "2d2da1a8ec4a5a1a8dac5550f73e4d183eafd8d26ce3c2d61049e3336d5ea382": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about original accessories or their requirement for a return. It only discusses the return policy regarding unused products and their accessories."
+  },
+  "05b86b1c1a04fea11278aba4ad7886cfc3d8b42adf5ff4ee1b215bee7439bc8d": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about purchase invoices or return processes. It only describes a fictional return policy for an integration test product."
+  },
+  "3599fd8a863815601492001356b71ea3d683d90f0ad22bc60e0404c05bf38576": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that products damaged after delivery due to customer handling are not eligible for return, which is relevant to the question about return eligibility for damaged products due to customer handling."
+  },
+  "40e157a5530ff639f4c851b7ef42f9b0da3347d02e42f8c1f829345a97d969d0": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not mention anything about refund processing or when it begins after a return. It only describes the return policy and a fictional scenario for integration testing."
+  },
+  "45dfb80048c410f2a322f9fe01a17ca07fda0032b7d6d6ff3438d67f448f6ab2": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk mentions a quality inspection for returns but does not specify whether the returned product undergoes this inspection before refund processing starts. It only states that refund processing begins after the returned product passes the quality inspection."
+  },
+  "42b97008c1df7345dc16e4f542f8ce66c7d3e5f5f1f9ac72a81f5da0fbac08d6": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly provides the requested information about the warranty period of 12 months."
+  },
+  "a5ab1fbd32a76710661344181e7de5965732935c37185fb3a13c210a79216953": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly provides the requested information about the warranty period."
+  },
+  "ae5e1e8135efe6e5d488f3e40da2ce2fac64383367bc7da05a8a89b5fa152f7f": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly provides the requested information about the warranty period."
+  },
+  "34e086098bb94a7b6512a66ab1b89aa0bf0ec48c3db723430c0fcf7512f46aa6": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly provides the requested information about when the warranty begins."
+  },
+  "dcc161dbe1a5b698fcc76a556b8357a5f8eeb41ef33e825f5e913996c4870b64": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about when the warranty begins."
+  },
+  "227b9d0996b9c6036d513202cf1fefaae04a75eb422eebcbabcb05c74f2641f3": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about when the warranty begins for a smartphone."
+  },
+  "9fe1bf9ccd075c825a7f553d2d7941533a55517106942c545e38f0b3808138c4": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly provides the requested information about the type of defects covered under the warranty."
+  },
+  "51da8f0c9257a0889b3fc8104da5839a14327526291a367daf61428c840b0982": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about the types of defects covered under the warranty."
+  },
+  "feadbb870bcf594bbff1d0701bfbc254a18c1635ed5377e8e420db1024a32bca": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about the types of defects covered under the warranty."
+  },
+  "55c0079a0e2e15d5344ac5420243da3645a63a09e4e7dfed7ae2edc682b8d564": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly provides the requested information about the warranty coverage for manufacturing defects."
+  },
+  "d3cbd43724bf9643e000839ae748c929544d2d235563f7ad66f1bfc320034a61": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about the coverage of manufacturing defects in the warranty."
+  },
+  "138a5ab34c3368ec07f842f1b3c20ea5e57394c9d2e2cb5877977acf899b2964": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about the coverage of manufacturing defects in the warranty."
+  },
+  "237de2d837e69c9196548dd02838616d3e1fff2c588c84605280093f67ecd1e6": {
+    "relevance_score": 2,
+    "relevant": true,
+    "reason": "The chunk provides information about the required proof of purchase and product serial number for warranty service, which is part of the answer to the question."
+  },
+  "017ec3d818e17643b1a58ad1aa0af4d33d20078baa395f3a1ec0a4a033a343d8": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about required proof for warranty service."
+  },
+  "ca4b93a40ad215a115bdc7266138b86b1049be4712a53124743d28e807384984": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about required proof for warranty service."
+  },
+  "f65d1e2921679a7d8b317d7a06b965effc814d0f93b3e7f4c30acabf15e7b3ee": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the need for a product serial number for warranty service, but does not explicitly state whether it is required for all warranty claims."
+  },
+  "17517d7d64c0110c864e4ab1620166657127f80f247f03df9f5bae8a71b7630f": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about the need for a product serial number for a warranty claim."
+  },
+  "816b3550765662e2d71cc41ce9aaab92ebaf978c7801c41456c6c5cb7b16691f": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about the need for a product serial number for a warranty claim."
+  },
+  "73ecf34e7cec5bf2d2c41d524f73fbc61cce02aea20acc62fee8427ed09a48a5": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly states that the warranty does not cover accidental damage."
+  },
+  "98603c9dd3b2abbec630b93685e3b950403c169a1d48622e8fab0fc987661c94": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about accidental damage coverage."
+  },
+  "0e0a49c1f1346e4d4733006aa8bfdb87af8c3923ed305dbf33df33236914b1e4": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about accidental damage coverage."
+  },
+  "51eb65cb9df6f0e99ab33b4f91218135a696496c95d371911de27d8721a9121b": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly states that the warranty does not cover liquid damage."
+  },
+  "e5bb6ed80d0c7c9c4ecf1cf3cadefbeb0f013b835bf551bcc4391963dbd3516a": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about warranty coverage for liquid damage."
+  },
+  "53287e290ce202d50cde7e4b50f73e1eaf23a4729539914e7e98f5d37fa358cb": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about warranty coverage for liquid damage."
+  },
+  "2c1f5fd4bdcd94e223697ac26bddae70ef1c9abdfe16852969638e0b20ef323a": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly states that the warranty does not cover unauthorized repairs."
+  },
+  "ee15e93e8327ab6d93f45f9ee523a14e36ccca38ff0af7ccb19b7aeb6c24a539": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about unauthorized repairs or their coverage."
+  },
+  "d7bf9507467d458c4c8ff8a833bff7caa3a28d8467eec99310e4a1d011f51edb": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about unauthorized repairs being covered or excluded."
+  },
+  "1e8b7383c3aa3e81e8a6999d4244a75eb8751ae1db64d70d9057bddc8f46ce51": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly provides information on what information should be provided when contacting support about a warranty issue."
+  },
+  "80161f13025ce06f49162562104741c436157ac34db0cd3f52959fa023c27bf8": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses warranty expiry and eligibility, which are related to the topic but do not provide specific information about what to provide when contacting support about a warranty issue."
+  },
+  "fc8055b971cd107f09c0097e8f7aeada14667094a069b5c70f5f1af4c3a0611f": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses next steps after checking eligibility, but does not provide specific information about what to provide when contacting support about a warranty issue."
+  },
+  "dee3747cf170d57af94c0692af34bde57834507b077e47e195878e837d5bf7c5": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about replacement guarantees when a warranty claim is approved."
+  },
+  "127855a272db81f74d5b746794529b7de00465d1d8d2e8261ced9a54cc6293b1": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about warranty claims or replacements."
+  },
+  "1228c81685ab1204144b9a740687b6ba9ae0b3456ebd2e9331f7aeae802b252a": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about warranty claims or replacements."
+  },
+  "1807877480b800e2832e3de3236e5d236eb0305c80325ec3a0eb0e011cfe8663": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the process of requesting warranty service but does not provide information about what happens after a claim is approved."
+  },
+  "b117d56cfe5dc07f21f1ce690405e8c6e8fe5c335e6f1835a0bf3dfa5aa593e4": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses next steps after a claim is approved but does not provide specific information about what happens after the claim is approved."
+  },
+  "214bb3afae27fb7af924c181f1084e0d37ca2e7371c9205bc17914700ce2203e": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses next steps after a claim is approved but does not provide specific information about what happens after the claim is approved."
+  },
+  "5fa87f3ea4f7457841dee442e36d518ef9d1ffb7722aedcafc8b72d8ea27c6a1": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the warranty period and coverage but does not provide information on how the warranty expiry date is calculated."
+  },
+  "d728ea1599cee1a2530268b5636f06810d3598caab7b2d7c55e37f2073a7cd57": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the general concept of warranty expiry but does not provide specific information on how the expiry date is calculated."
+  },
+  "ba44271427185411eb404b2fd48cc6954d8ed7c06697954d3944b8311280a16c": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the general concept of warranty expiry but does not provide specific information on how the expiry date is calculated in the example policy."
+  },
+  "bab49a7967feb6489761475dfa514c62bd09d5c03942dd3f577b3a78e4528f74": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly provides the requested information about the warranty duration."
+  },
+  "459ae0afd5dd9d83a2354cf86c298a6599ea41cbe05f6890af03b64aa115b72f": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk explicitly provides the requested information about battery manufacturing defects being covered under the warranty."
+  },
+  "14da61e8f63a3a7475e0e85c16c305094d4477393341b27281363c8e8eee2507": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the warranty policy but does not explicitly state whether water damage is covered or not."
+  },
+  "c2dbb8cfd9fe17338dce1237ffbbfb9fea59a0b575113abe064be3475b32f6b1": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the warranty policy but does not specify what document is needed for warranty service."
+  },
+  "0970be2c2fd9e55fe94538918f8ac5e92d6c9c88b102e996fe2bd2bdbcf89dec": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the return policy but does not specify the number of days customers have to return the product."
+  },
+  "9e87236dd7bbe7bdcbcfca58e15f76870705ecfcdfe08efad5af18bc4c7e9763": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about whether the product must be unused to qualify for a return."
+  },
+  "9e24333f60fe1eb23c0280e6d1e76c1bfba4d0a08aadd8624d039d8833462551": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about whether original packaging should be included when returning a product."
+  },
+  "5d08194ff0f526562caaf51e14ff8bb83bdaddf6648448884461e754236f19e0": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the return policy but does not specify whether original accessories are required for a return."
+  },
+  "092517113b2f0406924869f1d7657c83aeaa0adc462015ed0732808d99a8e2ce": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk mentions that a valid purchase invoice is required for a return, but does not explicitly state whether a purchase invoice is required."
+  },
+  "b40c5ed772336ba09e7377a958eae6724fb77a0b824b261d6244bdda8077589f": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the return policy but does not provide information about whether products damaged by customer handling are eligible for return."
+  },
+  "86daaaf3718291eceb574ea823df86dd4b47777de15d2b9200b271cc641411f9": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about refund processing or when it begins after a return."
+  },
+  "ab4e831a10ce38e53eb4de9c9efa6f0149bccac79dbc237c957bf94eac58d26b": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about quality inspection or refund processing."
+  },
+  "ab9e4efb2719f9005c20d6f4dde43955ddb1a85c2f898734727e09dd276cd8b6": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy."
+  },
+  "faf7909feefebce77bef608621fce291c617d1f3fb432eaa3cf2bfd6c98881ce": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law."
+  },
+  "2fd3ef1fad36e322b94a0a3d1b7dfa0629d8b0e8c0948ed1ce063d888c187f8a": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the warranty period but does not provide the specific number of months for the Galaxy A15.",
+    "evidence": "warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law."
+  },
+  "43dd8a4c0b358b73d708b02759249920d18579f8750ddd77de483bf6c0879170": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the warranty period but does not directly answer when the warranty begins.",
+    "evidence": ""
+  },
+  "36f74eaa1a3572c94b9917e4c9ec6d6c170630f74b460026dc0a8b604594cb02": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about warranty start dates.",
+    "evidence": ""
+  },
+  "0f4368c8647bb301d54e06d55be7da57ca9702af09a0fb77f984fcc8eb7fae24": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information that directly answers the question.",
+    "evidence": ""
+  },
+  "6c09212a2c2fb03b09da2d099bfb19cf905e39da2ba192a5609dea5f73fc4421": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the warranty coverage but does not specify the types of defects covered.",
+    "evidence": ""
+  },
+  "b75160f24489be359fbd52a321d5e198b8b3f5010726c8e8224120e74d5d6373": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk contains no useful information for the question.",
+    "evidence": ""
+  },
+  "fae28ca3ada8502f59f671343f7fbe135acb8e203dc27bca83ea1c26b97efc0a": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information that directly answers the question.",
+    "evidence": ""
+  },
+  "d87976028bd593c5a53a55c7bc539568d348fa09f05f0772593704b69991ad75": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "the warranty covers manufacturing defects in the smartphone hardware under normal use."
+  },
+  "8f3c281d465066d99986432b15b5c05c0eace602ac4cc9451d0d8bf403b84101": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk is irrelevant to the question about warranty coverage for manufacturing defects.",
+    "evidence": ""
+  },
+  "80318c71b113ff0ad98f477d2606f2f0df93125c4cdcd7a84d44dd357da500d4": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk is irrelevant to the question about warranty coverage for manufacturing defects.",
+    "evidence": ""
+  },
+  "0a6d8900047a11b39ea310e93f8bf28a8c58c1de4788777b7d6a24ac17b6abc0": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "customers must provide a valid proof of purchase and the product serial number when requesting warranty service."
+  },
+  "5b5f3429f1cbfc834f99584097e7582200fa46dc933f4e64b8fb1e1994a2a568": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information that directly answers the question.",
+    "evidence": ""
+  },
+  "6aa2ea29dffd9e8bd141c19b6e2a92d766a3b1b0d1ace462fe59f2221808cf48": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information that directly answers the question.",
+    "evidence": ""
+  },
+  "b459002f1f0b59ea04bf8fc948e5745ab92e7d18f6263c65d11c03074a71c83a": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "customers must provide a valid proof of purchase and the product serial number when requesting warranty service."
+  },
+  "1cb6a4f1b212df8d739c0548afdffc976c30bde76170d6c793d0251521380e63": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "a replacement is not guaranteed in every case."
+  },
+  "a54a3d351e4e81cbffccb7c278a219732127c03462d97f59076c502635bfe889": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk contains no useful information for the question.",
+    "evidence": ""
+  },
+  "38b604a76b082fcb171f87c239e546bade4384f13c61eb92260bef90a6cfa980": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory."
+  },
+  "a1a6beeae29146578d3e896b1afc46d6d4d76f85db8e709443dcf7f37c912ae5": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk contains no useful information for the question.",
+    "evidence": ""
+  },
+  "ac0e6f458ceff94f8b45bbc5928f3e97a7cafeffcd7e4b3b3b5c4ebad37cdb23": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk contains no useful information for the question.",
+    "evidence": ""
+  },
+  "6a2aab15bd2db9ee6699b4c154dba8440935a2d77ecc14084efd531ec2fafaa0": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory."
+  },
+  "f6cd545e18372153272673a29ad48aed2cf823cca36ba649d725a8406fc1c56a": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk contains no useful information for the question.",
+    "evidence": ""
+  },
+  "701a0c722bc69df2aaf77fc19ebb67c8e1d19ef3f13f63bb39815a5cc962ca34": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information that directly answers the question.",
+    "evidence": ""
+  },
+  "26ca8eb8acab8672e757bf9093b50bedc526e6926f0f0a4ce481345b2f421fca": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory."
+  },
+  "9e92ec8d085ed1add5047a880e14a2d950c44555efed9a52357e77eab81b3168": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk contains no useful information for the question.",
+    "evidence": ""
+  },
+  "cd0db040a264e255e828282013ef43a22eeb1bb1e2d0a7aa01b38eaf8e89015e": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk contains no useful information for the question.",
+    "evidence": ""
+  },
+  "1f5dc6fc7aa8c70e89a418cd747b07ea5ee039b2d857be89ccbff5a30c2b7260": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "contact customer support with the order number, date of purchase, product serial number, and a description of the issue."
+  },
+  "fd9c83a5da0ebd988de3fe0d043b4e66375a62bc9abd62fe77989e8937a33642": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information that directly answers the question.",
+    "evidence": ""
+  },
+  "cb8fe96b0d4f05d52ea34346a4652367ffa30146fe7434b989564bdb8589ae55": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information that directly answers the question.",
+    "evidence": ""
+  },
+  "3f2fc138218ccc717e2303de70fbf6b0500297e194d98669bf003a098f3d27f3": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law."
+  },
+  "e7b44c844e2211d80a0ca2ce890a80bf6989f080270367b473baadfdd322746a": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the topic but does not contain a direct answer to the question.",
+    "evidence": ""
+  },
+  "3b86a37feaca19619f592a1a82cf56f90daabae1f89018bb54c978df4c11a8e2": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the topic but does not contain a direct answer to the question.",
+    "evidence": ""
+  },
+  "58be7cea79ba20811b51e43a0431855c2724e76a42302f4b51db0ff6d4d896b6": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information that directly answers the question.",
+    "evidence": ""
+  },
+  "e7e43d3b84aa4e459cc390a97469659d3ec6a84b3d9c03d1df8eb54822305866": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law."
+  },
+  "e42809926dfb2e37095ff30d31cd9a6a55b7937af08ae69379bc3013165023e9": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law."
+  },
+  "0549dd26df67d7020dbdf2de8a5e2776a46acb03d3700597f215f11ce15ab3fe": {
+    "relevance_score": 0,
+    "relevant": false,
+    "reason": "The chunk does not contain any information about warranty expiry date calculation.",
+    "evidence": ""
+  },
+  "16641edaca62efb281defe62987cf4b3869fbe147255331df6c23420784cb46d": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law."
+  },
+  "f2f0988a69f298157f1e618140a400bfb3cb419502f537d1fecc76dd3c9efe6a": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law."
+  },
+  "0bf7b34f662e1b5bd5f50df0ab9c4a73a4bdcc42b96e325dcd3e86cd64ae94e6": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "this smartphone comes with an 18 months manufacturer warranty."
+  },
+  "503c0d6c8b4112071483bd6f2168b47710bead7f885c198e12f207d3bc755a36": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "the warranty covers manufacturing defects, hardware failures, and battery manufacturing defects under normal usage conditions."
+  },
+  "4a859b31afe0929cd8a2f37616b3ef1d15b70f97357dbae69ba7a48192d69846": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "the warranty covers manufacturing defects, hardware failures, and battery manufacturing defects under normal usage conditions. physical damage, water damage, and unauthorized repairs are not covered under this warranty."
+  },
+  "ded021ecc8316d76631bc1a4655e6638a188cacf994a5353f23b4192c7e9e2a1": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "customers must provide a valid purchase invoice to claim warranty service."
+  },
+  "d966f614637afef416abce48de410917cb763c05984a9de32cd0d871b5594fdc": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "customers can request a return within 7 days from the date of delivery."
+  },
+  "d128c721a02818a8e4fcb447fa5eca00c8e00b6035a4b38a6bb72aa5465a7a1c": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "the product must be unused and returned with its original packaging and accessories."
+  },
+  "c71bbb7578e913ec3ed8059d309b5e7931a75f39d33456abb3b46cdb574402a3": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "customers can request a return within 7 days from the date of delivery. the product must be unused and returned with its original packaging and accessories."
+  },
+  "efd276d2689763b7b59009dbc7835e9259d964261a54ea422032f135b37fa292": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "customers can request a return within 7 days from the date of delivery. the product must be unused and returned with its original packaging and accessories."
+  },
+  "9ddc847c944901341d8d09fad19ffec5d16200df76149d76caaf9029af05f7ce": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "a valid purchase invoice is required."
+  },
+  "e884bf9f5e4bc95b78f6e6cb672de1622afe73eb681fa090c8fb66cc945bee41": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "products damaged after delivery due to customer handling are not eligible for return."
+  },
+  "363356924cf28797ccd9151e913f172a56286c8a682ae02710310239e242e4ac": {
+    "relevance_score": 1,
+    "relevant": false,
+    "reason": "The chunk discusses the return policy but does not provide information about when refund processing begins after a return.",
+    "evidence": ""
+  },
+  "dc4e3f10ca6d5d8fd4afb55c78170a109e0cc966aa1b9dd34643db2b32d9b238": {
+    "relevance_score": 3,
+    "relevant": true,
+    "reason": "The chunk directly answers the question.",
+    "evidence": "refund processing begins after the returned product passes the quality inspection."
+  }
+}
