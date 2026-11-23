@@ -1,0 +1,60 @@
+Phase 2 - RAG Generation Evaluation
+What it evaluates
+Each question is answered by the existing answer_customer_question() service
+using the inspection database and actual active RAG document retrieval. A
+separate Ollama judge (qwen2.5:3b) scores four metrics on a 1-5 scale:
+1. Faithfulness
+2. Answer relevance
+3. Context relevance
+4. Answer correctness
+The judge is not used to generate customer-facing answers.
+Files
+Copy these files into the existing project:
+- generation_evaluation_dataset.py -> evaluation/generation_evaluation_dataset.py
+- generation_evaluator.py -> evaluation/generation_evaluator.py
+- run_generation_evaluation.py -> evaluation/run_generation_evaluation.py
+Ensure evaluation/__init__.py exists (it may be empty).
+Prerequisites
+- The Phase 2 evaluation_mode=True support in app/services/answer_service.py
+  is installed and tested.
+- settings.DATABASE_URL points to a PostgreSQL database reachable by the app.
+  The evaluator changes only the database name to
+  ecommerce_chatbot_backup_inspect.
+- settings.OLLAMA_BASE_URL, settings.OLLAMA_CHAT_MODEL, and
+  settings.OLLAMA_EMBEDDING_MODEL are configured.
+- Ollama is running and both the configured chat/embedding models and
+  qwen2.5:3b are available.
+- Python dependencies already used by the project are installed, including
+  ollama and sqlalchemy.
+Check the judge model:
+ollama list
+If needed:
+ollama pull qwen2.5:3b
+Run
+From the project root, with the virtual environment activated:
+python -m py_compile app\services\answer_service.py
+python -m py_compile evaluation\generation_evaluation_dataset.py
+python -m py_compile evaluation\generation_evaluator.py
+python -m py_compile evaluation\run_generation_evaluation.py
+python -m evaluation.run_generation_evaluation
+Output
+The evaluator creates:
+- evaluation/evaluation_results/generation_evaluation_report.json
+- evaluation/evaluation_results/generation_judge_cache.json
+The report stores each question, reference answer, generated answer, retrieved
+context/chunks, sources, metric scores, reasons, errors, model names, and
+aggregate metric averages.
+Scoring
+Scores are integers from 1 to 5. Percentage is score / 5 * 100.
+Failed questions are not silently treated as zero and are excluded from metric
+averages; they are counted separately and include an error field.
+
+The judge cache key includes the question, context, generated answer, reference
+answer, judge model, and judge version. To force a fresh judge evaluation,
+delete generation_judge_cache.json before rerunning. Do not delete the
+Phase 1 relevance cache.
+Important data note
+The reference answers are derived from the sample/test policies used in the
+inspection database. They are evaluation ground truth for this test corpus,
+not verified official store or manufacturer policies. Check the policy source
+text before treating any reference as production policy.

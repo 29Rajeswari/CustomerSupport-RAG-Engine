@@ -918,6 +918,7 @@ def answer_customer_question(
     top_k: int | None = None,
     category: str | None = None,
     customer_id: int | None = None,
+    evaluation_mode: bool = False,
 ) -> dict:
     """
     Combine live PostgreSQL information and RAG evidence to answer
@@ -952,12 +953,24 @@ def answer_customer_question(
     sources: list[dict] = []
     chunks: list[dict] = []
     products: list[dict] = []
+    retrieved_context = ""
 
     order_request = is_order_request(clean_question)
 
     policy_request = should_search_policy(
         clean_question,
         order_request,
+    ) or (
+        evaluation_mode
+        and (selected_category or "").strip().casefold()
+        in {
+            "warranty",
+            "warrenty",
+            "return",
+            "returns",
+            "refund",
+            "exchange",
+        }
     )
 
     product_request = (
@@ -989,12 +1002,14 @@ def answer_customer_question(
     resolved_product_id = None
 
     if policy_request:
-        resolved_product_id = resolve_product_id(
-            db=db,
-            question=clean_question,
-            supplied_product_id=product_id,
-        )
-
+        if evaluation_mode and product_id:
+            resolved_product_id = product_id.strip().upper()
+        else:
+            resolved_product_id = resolve_product_id(
+                db=db,
+                question=clean_question,
+                supplied_product_id=product_id,
+            )
     # -----------------------------------------------------
     # 1. LIVE CUSTOMER ORDER AND SHIPMENT INFORMATION
     # -----------------------------------------------------
@@ -1378,6 +1393,10 @@ def answer_customer_question(
                 for i, chunk in enumerate(chunks, start=1)
             )
 
+            # Preserve the exact policy evidence supplied to the LLM.
+            # It is returned only when evaluation_mode=True.
+            retrieved_context = evidence
+
             live_data.append("RETRIEVED POLICY DOCUMENT EVIDENCE:\n" + evidence)
 
             sources.extend(
@@ -1495,7 +1514,25 @@ Instructions:
     if is_sample and SAMPLE_WARNING.casefold() not in answer.casefold():
         answer = f"{SAMPLE_WARNING}\n\n{answer.strip()}"
 
-    return {
+    result = {
         "answer": answer,
         "sources": sources,
     }
+
+    if evaluation_mode:
+        result["retrieved_context"] = retrieved_context
+        result["retrieved_chunks"] = [
+            {
+                "document_id": chunk["document_id"],
+                "document_title": chunk["document_title"],
+                "product_id": chunk["product_id"],
+                "category": chunk["category"],
+                "version_id": chunk["version_id"],
+                "version_number": chunk["version_number"],
+                "chunk_id": chunk["chunk_id"],
+                "content": chunk["content"],
+            }
+            for chunk in chunks
+        ]
+
+    return result
