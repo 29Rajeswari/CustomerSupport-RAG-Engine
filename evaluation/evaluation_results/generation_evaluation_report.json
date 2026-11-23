@@ -1,0 +1,1702 @@
+{
+  "evaluation_name": "Phase 2 - RAG Generation Evaluation",
+  "created_at_utc": "2026-11-23T08:16:48.929183+00:00",
+  "database": "ecommerce_chatbot_backup_inspect",
+  "generation_model": "qwen2.5:1.5b",
+  "embedding_model": "nomic-embed-text",
+  "judge_model": "qwen2.5:3b",
+  "judge_version": "generation-judge-v1",
+  "score_scale": "1-5; percentage = score / 5 * 100",
+  "metric_definitions": {
+    "faithfulness": "Factual claims in the answer are supported by retrieved context.",
+    "answer_relevance": "The answer directly addresses the customer question.",
+    "context_relevance": "Retrieved context is useful for answering the question.",
+    "answer_correctness": "The answer agrees with the reference answer and retrieved context."
+  },
+  "summary": {
+    "total_questions": 13,
+    "successful_questions": 13,
+    "failed_questions": 0,
+    "success_rate_percentage": 100.0,
+    "metrics": {
+      "faithfulness": {
+        "average_score": 2.462,
+        "maximum_score": 5,
+        "percentage": 49.23,
+        "evaluated_questions": 13
+      },
+      "answer_relevance": {
+        "average_score": 4.077,
+        "maximum_score": 5,
+        "percentage": 81.54,
+        "evaluated_questions": 13
+      },
+      "context_relevance": {
+        "average_score": 2.923,
+        "maximum_score": 5,
+        "percentage": 58.46,
+        "evaluated_questions": 13
+      },
+      "answer_correctness": {
+        "average_score": 2.615,
+        "maximum_score": 5,
+        "percentage": 52.31,
+        "evaluated_questions": 13
+      }
+    },
+    "failed_question_ids": []
+  },
+  "results": [
+    {
+      "id": "Q01",
+      "question": "How many months of warranty does the Galaxy A15 have?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "The Galaxy A15 sample policy provides a 12-month warranty from the date of purchase.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nThe Galaxy A15 smartphone sold by Example Indian Electronics Store has a limited manufacturer warranty of 12 months from the date of purchase, subject to the conditions in this policy. This means the warranty expires on the 12th month after the purchase date, not including holidays. The warranty covers manufacturing defects in the smartphone hardware under normal use. To request warranty service, please contact customer support with the order number, date of purchase, product serial number, and a description of the issue. Support staff will explain the next steps after checking eligibility.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 4:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 2,
+          "reason": "claims about holidays are not supported by context"
+        },
+        "answer_relevance": {
+          "score": 4,
+          "reason": "answer directly addresses the question"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "context contains relevant warranty information"
+        },
+        "answer_correctness": {
+          "score": 3,
+          "reason": "answer contains additional information not in reference answer"
+        }
+      }
+    },
+    {
+      "id": "Q02",
+      "question": "When does the smartphone warranty begin?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "The warranty period begins on the date of purchase.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nThe warranty for the smartphone starts 12 months after the date of purchase. For example, if you purchased the smartphone on January 15, 2026, the warranty would begin on January 15, 2027. Please note that the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. If you encounter any issues with your smartphone, please contact our customer support for further assistance.",
+      "retrieved_context": "Source 1:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 3:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 4:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a",
+      "retrieved_chunks": [
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 10,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 10
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 1,
+          "reason": "Claims about warranty start date are not supported by context"
+        },
+        "answer_relevance": {
+          "score": 2,
+          "reason": "Partially addresses the question but does not provide a specific start date"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "Context contains relevant warranty information but does not specify the start date"
+        },
+        "answer_correctness": {
+          "score": 1,
+          "reason": "Does not match the reference answer"
+        }
+      }
+    },
+    {
+      "id": "Q03",
+      "question": "What type of defects are covered under the warranty?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "The policy covers manufacturing defects in smartphone hardware under normal use.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nThe Samsung warranty covers manufacturing defects in the smartphone hardware under normal use. Customers must provide a valid proof of purchase and the product serial number when requesting warranty service. The warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. For more details, please contact customer support with the order number, date of purchase, product serial number, and a description of the issue. Support staff will assist with the next steps after checking eligibility.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 4:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 3,
+          "reason": "Claims about exclusions are not supported by context"
+        },
+        "answer_relevance": {
+          "score": 4,
+          "reason": "Answer directly addresses the question"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "Context contains relevant warranty information but not specific to the question"
+        },
+        "answer_correctness": {
+          "score": 2,
+          "reason": "Answer includes irrelevant information about sample documents"
+        }
+      }
+    },
+    {
+      "id": "Q04",
+      "question": "Does the warranty cover manufacturing defects?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "Yes. Manufacturing defects in smartphone hardware are covered under normal use.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nYes, the warranty covers manufacturing defects.\n\nAccording to the Samsung warranty policy document, the manufacturer's warranty covers manufacturing defects in the smartphone hardware under normal use. However, the policy also includes exclusions such as accidental damage, liquid damage, unauthorized repairs, and misuse. To verify this, we would need to check the specific warranty details for the product and order number provided by the customer.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 4:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 2,
+          "reason": "claims about sample documents are invented"
+        },
+        "answer_relevance": {
+          "score": 3,
+          "reason": "partially addresses the question but includes irrelevant information"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "context contains relevant warranty policy information"
+        },
+        "answer_correctness": {
+          "score": 2,
+          "reason": "correctly states that manufacturing defects are covered but includes irrelevant information"
+        }
+      }
+    },
+    {
+      "id": "Q05",
+      "question": "What proof is required to request warranty service?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "Valid proof of purchase and the product serial number are required for a warranty claim.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nTo request warranty service on your Samsung Galaxy A15 smartphone, you need the following proof:\n\n1. Valid proof of purchase: The receipt or invoice of your purchase.\n2. Product serial number: The unique identifier provided by the retailer when you bought the phone.\n3. A description of the issue you're experiencing with the phone.\n\nWhen you contact customer support with the order number, date of purchase, product serial number, and a detailed description of the problem, they will check your eligibility for warranty coverage.\n\nPlease ensure that you provide accurate and complete information to avoid any delays in your warranty claim.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 4:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 2,
+          "reason": "claims about fictional documents are not supported by context"
+        },
+        "answer_relevance": {
+          "score": 4,
+          "reason": "answer directly addresses the question"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "context contains relevant warranty coverage information"
+        },
+        "answer_correctness": {
+          "score": 2,
+          "reason": "answer includes additional information not matching the reference answer"
+        }
+      }
+    },
+    {
+      "id": "Q06",
+      "question": "Do I need the product serial number for a warranty claim?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "Yes. The product serial number is required, along with valid proof of purchase.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nThe product serial number is not necessary for a warranty claim, but it is recommended to provide it as requested when contacting customer support. This information is needed to verify the eligibility for warranty service and to ensure proper documentation.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 4:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 3,
+          "reason": "claims about fictional documents are correct but not supported by context"
+        },
+        "answer_relevance": {
+          "score": 4,
+          "reason": "answer directly addresses the question"
+        },
+        "context_relevance": {
+          "score": 2,
+          "reason": "context contains fictional documents not relevant to the question"
+        },
+        "answer_correctness": {
+          "score": 2,
+          "reason": "answer does not match the reference answer exactly"
+        }
+      }
+    },
+    {
+      "id": "Q07",
+      "question": "Is accidental damage covered by the warranty?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "No. Accidental damage is excluded from the sample warranty policy.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nNo, accidental damage is not covered under the warranty for the Samsung Galaxy A15 smartphone. According to the policy, this type of damage is excluded. If you experienced accidental damage, please refer to the documentation provided by Samsung for further assistance.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 4:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 3,
+          "reason": "claims about sample documents are correct, but not invented"
+        },
+        "answer_relevance": {
+          "score": 5,
+          "reason": "answer directly addresses the customer's question"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "context contains relevant exclusions information, but not all sources provide it"
+        },
+        "answer_correctness": {
+          "score": 4,
+          "reason": "answer agrees with the reference answer while respecting the retrieved context"
+        }
+      }
+    },
+    {
+      "id": "Q08",
+      "question": "Does liquid damage qualify for warranty service?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "No. Liquid damage is excluded from the sample warranty policy.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nNo, liquid damage does not qualify for warranty service according to the Samsung Mobile Warranty Policy. The policy explicitly excludes \"liquid damage\" as one of the exclusions, which covers damage due to water, moisture, or liquid. For liquid damage, you should contact customer support to discuss options for repair or replacement.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 4:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 3,
+          "reason": "claims are supported by context but sample policy is noted"
+        },
+        "answer_relevance": {
+          "score": 5,
+          "reason": "answer directly addresses the customer's question"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "context contains relevant exclusions but is fictional"
+        },
+        "answer_correctness": {
+          "score": 4,
+          "reason": "answer agrees with reference answer while respecting the retrieved context"
+        }
+      }
+    },
+    {
+      "id": "Q09",
+      "question": "Are unauthorized repairs covered?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "No. Damage or issues involving unauthorized repairs are excluded from the warranty.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nUnauthorized repairs are not covered under the Samsung warranty policy. According to the policy, unauthorized repairs are excluded from the coverage. To ensure the best possible service, please contact our support team with the order number, date of purchase, product serial number, and a description of the issue. They will guide you on the appropriate steps to take.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 4:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 3,
+          "reason": "Claims are supported but not all context is used"
+        },
+        "answer_relevance": {
+          "score": 5,
+          "reason": "Directly addresses the customer's question"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "Context contains relevant exclusions information but not all sources are used"
+        },
+        "answer_correctness": {
+          "score": 4,
+          "reason": "Answer aligns with reference answer while respecting the retrieved context"
+        }
+      }
+    },
+    {
+      "id": "Q10",
+      "question": "What information should I provide when contacting support about a warranty issue?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "Provide the order number, purchase date, product serial number, and a description of the issue.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nWhen contacting support about a warranty issue, you should provide the following information:\n\n1. Order number: It will help us locate the specific product you purchased.\n2. Date of purchase: We need this to determine the expiration of the warranty.\n3. Product serial number: This is crucial for verifying the exact model of the product.\n4. Description of the issue: Detailing the problem you're experiencing will help us identify whether it's covered under warranty.\n\nPlease provide these details, and we will help you determine the appropriate course of action.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 4:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 13
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 2,
+          "reason": "claims about warranty expiry are not in context"
+        },
+        "answer_relevance": {
+          "score": 5,
+          "reason": "answers directly address the customer's question"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "context contains relevant warranty information but not about warranty expiry"
+        },
+        "answer_correctness": {
+          "score": 2,
+          "reason": "claims about warranty expiry are not in context"
+        }
+      }
+    },
+    {
+      "id": "Q11",
+      "question": "Is a replacement guaranteed when a warranty claim is approved?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "No. A replacement is not guaranteed in every case. An approved claim may result in repair or replacement.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nThe replacement is not guaranteed when a warranty claim is approved. According to the Samsung Mobile Warranty Policy, a replacement may be provided as a repair or replacement, but it is not guaranteed in every case. The warranty period for the example galaxy A15 smartphone sold by Example Indian Electronics Store is 12 months, and the warranty coverage includes manufacturing defects in the smartphone hardware under normal use. If a repair or replacement is approved, you should contact the support staff for the next steps after checking eligibility.",
+      "retrieved_context": "Source 1:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 3:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 4:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a",
+      "retrieved_chunks": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 10,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 10
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 3,
+          "reason": "claims are supported by context but some are from fictional documents"
+        },
+        "answer_relevance": {
+          "score": 5,
+          "reason": "directly addresses the customer's question"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "context contains relevant warranty policy information but some are from fictional documents"
+        },
+        "answer_correctness": {
+          "score": 4,
+          "reason": "answer agrees with reference answer while respecting the retrieved context"
+        }
+      }
+    },
+    {
+      "id": "Q12",
+      "question": "What happens after a warranty claim is approved?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "After approval, the product may be repaired or replaced, depending on the applicable policy terms.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nAfter a warranty claim is approved, the product will be repaired or replaced according to the manufacturer's warranty terms and applicable law. A replacement is not guaranteed in every case. The warranty period for the example Galaxy A15 smartphone sold by Example Indian Electronics Store is 12 months from the date of purchase. If your claim is approved, the product will be repaired or replaced, and a replacement is not guaranteed in every case.",
+      "retrieved_context": "Source 1:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 3:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 4:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a",
+      "retrieved_chunks": [
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 10,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 10
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 2,
+          "reason": "claims about warranty period and exclusions are not supported by context"
+        },
+        "answer_relevance": {
+          "score": 3,
+          "reason": "partially addresses the question but does not fully answer"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "context contains relevant warranty policy information"
+        },
+        "answer_correctness": {
+          "score": 2,
+          "reason": "correctly states the general policy but does not match the reference answer exactly"
+        }
+      }
+    },
+    {
+      "id": "Q13",
+      "question": "How is the warranty expiry date calculated in the example policy?",
+      "product_id": "MOB-1001",
+      "category": "warranty",
+      "reference_answer": "The example policy calculates expiry by adding 12 months to the purchase date. For a purchase on 15 January 2026, the warranty expires on 15 January 2027.",
+      "status": "success",
+      "generated_answer": "Important: The retrieved information comes from sample, fictional or testing documents. It has not been verified as an official store policy.\n\nBased on the information provided, the warranty expiry date for a product like the example Galaxy A15 smartphone sold by Example Indian Electronics Store is calculated as follows:\n\n1. The smartphone comes with a 12-month limited manufacturer warranty.\n2. The warranty period starts from the date of purchase.\n3. The standard 12-month warranty period generally ends on the anniversary of the purchase date, subject to official warranty terms and applicable law.\n\nFor example, if the purchase date is January 15, 2026:\n- The standard 12-month warranty period generally reaches its anniversary on January 15, 2027.\n\nIf the purchase date is January 16, 2026:\n- The standard 12-month warranty period reaches its anniversary on January 15, 2027.\n\nThe policy document specifies that this is a fictional sample document for software testing purposes only and must not be used to determine real customer warranty eligibility.",
+      "retrieved_context": "Source 1:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 2:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 3:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility.\n\nSource 4:\nDocument: Samsung\nProduct ID: MOB-1001\nCategory: Warrenty\nVersion: 2\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a\n\nSource 5:\nDocument: Samsung Mobile Warranty Policy\nProduct ID: MOB-1001\nCategory: warranty\nVersion: 1\nContent: indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a",
+      "retrieved_chunks": [
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 15 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 10,
+          "content": "e next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a replacement is not guaranteed in every case. 7. warranty expiry example if the purchase date is 16 january 2026, the standard 12-month warranty period generally reaches its anniversary on 15 january 2027, subject to the official warranty terms and applicable law. 8. important this is a fictional sample document for software testing only. it is not an official samsung policy and must not be used to determine real customer warranty eligibility."
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11,
+          "content": "indian e-commerce product warranty policy document id: mob-1001-warranty product id: mob-1001 category: warranty version: 1 1. product this policy applies to the example galaxy a15 smartphone sold by example indian electronics store. 2. warranty period the smartphone includes a limited manufacturer warranty of 12 months (12 months) from the date of purchase, subject to the conditions in this policy. 3. warranty coverage the warranty covers manufacturing defects in the smartphone hardware under normal use. customers must provide a valid proof of purchase and the product serial number when requesting warranty service. 4. exclusions the warranty does not cover accidental damage, liquid damage, unauthorized repairs, misuse, normal wear and tear, or damage caused by an unauthorized charger or accessory. 5. how to request warranty service contact customer support with the order number, date of purchase, product serial number, and a description of the issue. support staff will explain the next steps after checking eligibility. 6. repair or replacement if the claim is approved, the product may be repaired or replaced according to the manufacturer's warranty terms and applicable law. a"
+        }
+      ],
+      "sources": [
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 12
+        },
+        {
+          "document_id": 2,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 2,
+          "version_number": 1,
+          "chunk_id": 14
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 10
+        },
+        {
+          "document_id": 4,
+          "document_title": "Samsung",
+          "product_id": "MOB-1001",
+          "category": "Warrenty",
+          "version_id": 12,
+          "version_number": 2,
+          "chunk_id": 9
+        },
+        {
+          "document_id": 1,
+          "document_title": "Samsung Mobile Warranty Policy",
+          "product_id": "MOB-1001",
+          "category": "warranty",
+          "version_id": 1,
+          "version_number": 1,
+          "chunk_id": 11
+        }
+      ],
+      "scores": {
+        "faithfulness": {
+          "score": 3,
+          "reason": "claims about anniversary are not directly supported by the context"
+        },
+        "answer_relevance": {
+          "score": 4,
+          "reason": "addresses the customer's question about warranty expiry calculation"
+        },
+        "context_relevance": {
+          "score": 3,
+          "reason": "context contains relevant warranty information but does not explicitly state the calculation method"
+        },
+        "answer_correctness": {
+          "score": 2,
+          "reason": "the reference answer provides a different calculation method that is not contradicted but not directly supported by the context"
+        }
+      }
+    }
+  ]
+}

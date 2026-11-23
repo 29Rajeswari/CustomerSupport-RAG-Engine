@@ -434,44 +434,138 @@ def run_evaluation():
                 },
             }
 
-            # ------------------------------------------
-            # STEP 7: PRINT ONLY FIVE METRICS
-            # ------------------------------------------
 
-            print(f"\n{question_id}: {question}")
+        # ==============================================
+        # CALCULATE COMBINED METRICS FOR ALL QUESTIONS
+        # ==============================================
 
-            print(
-                f"Precision@{TOP_K}: "
-                f"{metrics['precision']:.4f}"
-            )
+        question_results = list(
+            all_results["individual_questions"].values()
+        )
 
-            recall_display = (
-                f"{metrics['recall']:.4f}"
-                if metrics["recall"] is not None
-                else "N/A"
-            )
+        total_questions = len(question_results)
 
-            print(
-                f"Recall@{TOP_K}: "
-                f"{recall_display}"
-            )
+        precision_values = [
+            item["metrics"]["precision"]
+            for item in question_results
+        ]
 
-            print(
-                f"MRR@{TOP_K}: "
-                f"{metrics['mrr']:.4f}"
-            )
+        recall_values = [
+            item["metrics"]["recall"]
+            for item in question_results
+            if item["metrics"]["recall"] is not None
+        ]
 
-            print(
-                f"nDCG@{TOP_K}: "
-                f"{metrics['ndcg']:.4f}"
-            )
+        mrr_values = [
+            item["metrics"]["mrr"]
+            for item in question_results
+        ]
 
-            print(
-                f"Hit@{TOP_K}: "
-                f"{metrics['hit']}"
-            )
+        ndcg_values = [
+            item["metrics"]["ndcg"]
+            for item in question_results
+        ]
 
-            print("-" * 65)
+        hit_values = [
+            item["metrics"]["hit"]
+            for item in question_results
+        ]
+
+        combined_metrics = {
+            "precision_at_5": (
+                sum(precision_values) / total_questions
+                if total_questions else 0.0
+            ),
+
+            "recall_at_5": (
+                sum(recall_values) / len(recall_values)
+                if recall_values else None
+            ),
+
+            "mrr_at_5": (
+                sum(mrr_values) / total_questions
+                if total_questions else 0.0
+            ),
+
+            "ndcg_at_5": (
+                sum(ndcg_values) / total_questions
+                if total_questions else 0.0
+            ),
+
+            "hit_at_5": (
+                sum(hit_values) / total_questions
+                if total_questions else 0.0
+            ),
+
+            "successful_questions": sum(hit_values),
+
+            "failed_questions": total_questions - sum(hit_values),
+
+            "total_questions": total_questions,
+
+            "questions_with_valid_recall": len(recall_values),
+
+            "recall_na_questions": (
+                total_questions - len(recall_values)
+            ),
+
+            "aggregation_method": "Macro Average",
+        }
+
+        all_results["overall_metrics"] = combined_metrics
+
+        # ==============================================
+        # PRINT COMBINED METRICS
+        # ==============================================
+
+        print("\n" + "=" * 65)
+        print("COMBINED RAG EVALUATION METRICS")
+        print(f"TOTAL QUESTIONS: {total_questions}")
+        print(f"RETRIEVAL: TOP-{TOP_K}")
+        print("AGGREGATION: MACRO AVERAGE")
+        print("=" * 65)
+
+        print(
+            f"Overall Precision@{TOP_K}: "
+            f"{combined_metrics['precision_at_5']:.4f}"
+        )
+
+        recall_value = combined_metrics["recall_at_5"]
+
+        print(
+            f"Overall Recall@{TOP_K}: "
+            f"{recall_value:.4f}"
+            if recall_value is not None
+            else f"Overall Recall@{TOP_K}: N/A"
+        )
+
+        print(
+            f"Overall MRR@{TOP_K}: "
+            f"{combined_metrics['mrr_at_5']:.4f}"
+        )
+
+        print(
+            f"Overall nDCG@{TOP_K}: "
+            f"{combined_metrics['ndcg_at_5']:.4f}"
+        )
+
+        print(
+            f"Overall Hit@{TOP_K}: "
+            f"{combined_metrics['hit_at_5']:.4f}"
+        )
+
+        print(
+            f"Successful Questions: "
+            f"{combined_metrics['successful_questions']}"
+        )
+
+        print(
+            f"Failed Questions: "
+            f"{combined_metrics['failed_questions']}"
+        )
+
+        print("=" * 65)
+
 
         # ==============================================
         # SAVE COMPLETE JSON REPORT

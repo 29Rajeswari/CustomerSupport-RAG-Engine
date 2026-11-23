@@ -4,7 +4,7 @@
   "judge_version": "v3",
   "top_k": 5,
   "total_questions": 25,
-  "generated_at": "2026-11-20T15:45:48.696268+05:30",
+  "generated_at": "2026-11-23T13:39:03.648218+05:30",
   "individual_questions": {
     "Q01": {
       "question": "How many months of warranty does the Galaxy A15 have?",
@@ -3533,5 +3533,18 @@
         ]
       }
     }
+  },
+  "overall_metrics": {
+    "precision_at_5": 0.20800000000000002,
+    "recall_at_5": 1.0,
+    "mrr_at_5": 0.8533333333333333,
+    "ndcg_at_5": 0.86,
+    "hit_at_5": 0.88,
+    "successful_questions": 22,
+    "failed_questions": 3,
+    "total_questions": 25,
+    "questions_with_valid_recall": 22,
+    "recall_na_questions": 3,
+    "aggregation_method": "Macro Average"
   }
 }

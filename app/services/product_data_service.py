@@ -13,6 +13,7 @@ def search_products(
     category: str | None = None,
     max_price: Decimal | None = None,
     limit: int = 10,
+    in_stock: bool | None = None,
 ) -> list[dict]:
     """
     Search active products using product name, ID,
@@ -77,6 +78,13 @@ def search_products(
             raise ValueError("Maximum price cannot be negative.")
 
         statement = statement.filter(Product.price <= max_price)
+
+    # Stock availability filtering.
+    if in_stock is True:
+        statement = statement.filter(Product.stock_quantity > 0)
+
+    elif in_stock is False:
+        statement = statement.filter(Product.stock_quantity <= 0)
 
     products = statement.order_by(Product.product_name.asc()).limit(limit).all()
 
